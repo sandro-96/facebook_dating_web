@@ -1,0 +1,239 @@
+.btn {
+  --bs-btn-color: #9D68FA;
+  --bs-btn-color: #9D68FA;
+  --bs-btn-border-color: #ECE3FC;
+  --bs-btn-hover-color: #9D68FA;
+  --bs-btn-hover-bg: white;
+  --bs-btn-hover-border-color: #9D68FA;
+  --bs-btn-focus-shadow-rgb: 13,110,253;
+  --bs-btn-active-color: #9D68FA;
+  --bs-btn-active-bg: #ECE3FC;
+  --bs-btn-active-border-color: #ECE3FC;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(236,227,252, 0.125);
+  --bs-btn-disabled-color: #ECE3FC;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #ECE3FC;
+  --bs-gradient: none;
+  --bs-btn-border-radius: 2rem;
+  --bs-btn-font-size: 12px;
+  --bs-btn-focus-box-shadow: 0 0 0 0.25 rem rgba(var(--bs-btn-focus-shadow-rgb), .5);
+}
+
+.btn {
+}
+
+
+.form-check-input:checked[type=radio] {
+  background: url('./assets/radio_checked.svg') center ;
+  border-color: #E0DEE1;
+  border-width: 2px;
+}
+
+.form-check-label {
+  font-size: 14px;
+}
+
+
+.form-check {
+
+  label {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+    color: #000000;
+  }
+}
+
+.form-control {
+  border: 1px solid #E0DEE1;
+  border-radius: 8px;
+  min-height: 48px;
+  &:focus {
+    color: #3F3942;
+    background-color: #fff;
+    border-color: #97949A;
+    outline: 0;
+    box-shadow: none;
+  }
+}
+
+input.form-control{
+  padding: 11px 12px !important;
+  &::placeholder {
+    color: #C4C1C8;
+  }
+  color: #3F3942;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.form-select {
+  min-height: 48px;
+  background:#fff url('./assets/arrow-down.png') no-repeat right center ;
+  &:focus {
+    box-shadow: none;
+    border: 1px solid #97949A;
+  }
+}
+
+.btn.btn-primary.btn-lg.big-btn {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02px;
+  color: #FFFFFF;
+  padding: 23px 80px;
+  background: #9D68FA !important;
+  border-radius: 48px;
+}
+
+
+.form-check {
+  label {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #C4C1C8;
+  }
+
+  input[type=checkbox] {
+    background: url('./assets/uncheck_icon.svg') center ;
+    border: none;
+    border-radius: 4px;
+    width: 16px;
+    height: 16px;
+    margin-top: 3px;
+    margin-right: 7px;
+    &:checked {
+      background: url('./assets/check_icon.svg') center ;
+      border: none;
+      border-radius: 4px;
+    }
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+textarea.form-control {
+  padding: 12px;
+  gap: 10px;
+  background: #FFFFFF;
+  border: 1px solid #E0DEE1;
+  border-radius: 8px;
+  min-height: 144px;
+  &::placeholder {
+    color: #C4C1C8;
+  }
+  &.large-type {
+    min-height: 224px;
+  }
+  &.small-type {
+    min-height: 72px;
+  }
+}
+.btn-bottom {
+  position: absolute;
+  bottom: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.eg-wrap {
+  color: #97949A;
+  font-size: 12px;
+}
+.mt-25 {
+  margin-top: 25px !important;
+}
+.mt-40 {
+  margin-top: 40px;
+}
+.mt-80 {
+  margin-top: 80px;
+}
+.mt-100 {
+  margin-top: 100px;
+}
+//Font Inter
+@font-face {
+  font-family: 'Inter';
+  font-weight:normal;
+  font-style:normal;
+  src:url(./assets/fonts/InterRegular.otf) format("opentype"),
+  url(./assets/fonts/InterRegular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-weight: 700;
+  font-style: normal;
+  src: url(./assets/fonts/Inter-Bold.ttf) format('truetype');
+}
+
+//Confirm Popup Style 
+.react-confirm-alert-overlay {
+  background: rgba(0,0,0,0.3)!important;
+}
+.react-confirm-alert {
+  .react-confirm-alert-body {
+    width: 336px;
+    min-height: 172px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    box-shadow: none;
+    padding: 24px 24px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #333333;
+    font-family: "Inter", Arial, Helvetica, sans-serif !important;
+    text-align: center;
+    position: relative;
+  }
+  .react-confirm-alert-button-group {
+    justify-content: space-around;
+    flex-direction: row-reverse;
+    margin-top: 22px;
+    position: absolute;
+    bottom: 40px;
+    width: 240px;
+    left: calc((100% - 240px) / 2);
+    > button {
+      background:none;
+      color: #FD98A7;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0;
+      padding: 0;
+      &:last-of-type {
+        color: #A0A3AA;
+      }
+    }
+  }
+}
+//End Confirm Popup Style 
+.custom-ui {
+  .react-confirm-alert-body {
+    width: 348px;
+    min-height: 164px;
+    .react-confirm-alert-button-group {
+      .cancel-button {
+        color: #A0A3AA;
+      }
+      .delete-button {
+        color: #FF0000;
+      }
+      button {
+        color: #69cdfb;
+      }
+      a {
+        color: #69cdfb;
+      }
+    }
+  }
+  
+}
