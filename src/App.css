@@ -45,3 +45,13 @@
   font-weight: normal;
   margin-left: 0 !important;
 }
+
+#root {
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #4f5050;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: 648px;
+}
