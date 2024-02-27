@@ -12,6 +12,7 @@ function App() {
         <UserContextProvider>
             <Routes>
                 <Route path='' element={<Login />} />
+                <Route path='home' element={<Home />} />
                 <Route path='callBack' element={<LoginRedirectCallBack />} />
                 <Route path='signUp' element={<Signup />} />
             </Routes>

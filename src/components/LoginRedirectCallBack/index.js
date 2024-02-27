@@ -22,7 +22,8 @@ const LoginRedirectCallBack = () => {
         const queryParams = new URLSearchParams(location.search);
         const authorizationCode = queryParams.get(QUERY_PARAMS.AUTHORIZATION_CODE);
         let loginUrl = '';
-
+        localStorage.setItem('Authorization', authorizationCode)
+        navigate('/home')
     }, [location, navigate, t]);
 
     return <div>Loading...</div>;
