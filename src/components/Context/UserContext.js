@@ -5,6 +5,8 @@ export const UserContext = createContext(defaultUserContext);
 
 export const UserContextProvider = (props) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [role, setRole] = useState('ROLE_USER');
+    const [userData, setUserData] = useState({});
 
     useEffect(() => {
     }, []);
@@ -12,7 +14,11 @@ export const UserContextProvider = (props) => {
     return <UserContext.Provider
         value={{
             isAuthenticated,
-            setIsAuthenticated
+            setIsAuthenticated,
+            role,
+            setRole,
+            userData,
+            setUserData
         }}
     >
         {props.children}

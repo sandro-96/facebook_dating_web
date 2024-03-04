@@ -10,6 +10,14 @@ export default class Constant {
         }
     };
 
+    static LOCAL_STORAGE = {
+        AUTHORIZATION: 'Authorization',
+        TOKEN: 'token',
+        IS_FORCE_LOGIN: 'isForceLogin',
+        BROWSER_ID: 'browserId',
+        LANGUAGE: 'lang'
+    };
+
     static CITY = [
         'test',
         'An Giang',
