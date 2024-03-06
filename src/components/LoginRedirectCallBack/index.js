@@ -23,7 +23,6 @@ const LoginRedirectCallBack = () => {
 
     const loginProcess = useCallback(
         (res) => {
-            debugger
             let jwtToken = res.data.jwtToken;
             let role = res.data.role;
             let user = res.data.user;
@@ -43,12 +42,9 @@ const LoginRedirectCallBack = () => {
         let loginUrl = `/oauth2/google/login/process?authorizationCode=${authorizationCode}`;
         axios.get(loginUrl)
             .then(res => {
-                debugger
                 loginProcess(res);
             })
             .catch(reason => {
-                debugger
-                console.log(reason);
                 navigate('/');
             })
 
