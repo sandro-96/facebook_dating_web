@@ -30,7 +30,8 @@ const LoginRedirectCallBack = () => {
             setIsAuthenticated(true);
             setRole(role);
             setUserData(user);
-            sessionStorage.setItem(Constant.LOCAL_STORAGE.AUTHORIZATION, JWT_TOKEN_PREFIX + jwtToken);
+
+            localStorage.setItem(Constant.LOCAL_STORAGE.AUTHORIZATION, JWT_TOKEN_PREFIX + jwtToken);
             navigate('/home');
         },
         [setIsAuthenticated, setRole, setUserData, navigate]

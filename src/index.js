@@ -26,7 +26,7 @@ axios.interceptors.request.use(function (config) {
     console.info('config.url isIgnorePath ' + isIgnorePath);
     if (isIgnorePath) return config;
 
-    config.headers.Authorization = sessionStorage.getItem(Constants.LOCAL_STORAGE.AUTHORIZATION) || sessionStorage.getItem(Constants.LOCAL_STORAGE.TOKEN) || '';
+    config.headers.Authorization = localStorage.getItem(Constants.LOCAL_STORAGE.AUTHORIZATION) || sessionStorage.getItem(Constants.LOCAL_STORAGE.TOKEN) || '';
 
     return config;
 });
