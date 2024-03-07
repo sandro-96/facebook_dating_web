@@ -1,7 +1,7 @@
 @import 'Themes.scss';
 .App {
   text-align: center;
-  padding: 10%;
+  height: 100vh;
 }
 
 .App-logo {
@@ -44,15 +44,4 @@
   color: #fe496a;
   font-weight: normal;
   margin-left: 0 !important;
-}
-
-#root {
-  height: 100vh;
-  overflow-y: auto;
-  background-color: #4f5050;
-  color: #FFFFFF;
-  margin-right: auto;
-  margin-left: auto;
-  width: 100%;
-  max-width: 648px;
 }
