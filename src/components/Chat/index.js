@@ -7,7 +7,7 @@ export const Chat = () => {
 
     return (
         <div className="chat-wrap">
-            <div>Profile</div>
+            <div>Chat</div>
         </div>
     )
 }

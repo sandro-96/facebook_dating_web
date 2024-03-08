@@ -1,4 +1,69 @@
 .profile-wrap {
   height: 100vh;
   padding-bottom: 50px;
+  padding: 20px;
+  font-weight: bold;
+  .MuiFormControl-root.customize-form-control,
+  .customize-autocomplete-control .MuiFormControl-root {
+    > div {
+      max-height: 36px !important;
+      min-height: 36px !important;
+      border-radius: 6px;
+      background-color: #fff;
+      &.MuiAutocomplete-inputRoot {
+        padding: 1px 12px;
+      }
+    }
+    .MuiSelect-select {
+      font-size: 14px;
+      color: #2c3034;
+    }
+  }
+}
+.gender-wrap {
+  display: flex;
+  width: 50%;
+  gap: 10px;
+  .male {
+    padding: 4px 10px 4px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    &.active {
+      background-color: rgba(34, 118, 203, 0.88);
+    }
+  }
+  .female {
+    padding: 4px 10px 4px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    &.active {
+      background-color: #b929d9;
+    }
+  }
+  .other {
+    padding: 4px 10px 4px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    &.active {
+      background-color: #d98729;
+    }
+  }
+}
+.save-btn {
+  border: none;
+  border-radius: 10px;
+  margin-top: 50px !important;
+  color: #fff;
+  background-color: #0066cc;
+  padding: 10px 20px 10px 20px;
+  font-weight: bold;
+}
+.label-item {
+  text-align: left !important;
+  align-self: center;
+  width: 25%;
+}
+.save-success {
+  text-align: left;
+  color: #33c955;
 }

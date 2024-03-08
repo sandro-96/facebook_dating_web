@@ -4,16 +4,19 @@ import axios from "axios";
 import {UserContext} from "../Context/UserContext";
 import Navbar from "../Navbar";
 import Profile from "../Profile";
+import Constant from "../Utils/Constant";
+import Match from "../Match";
+import Chat from "../Chat";
 
 const Home = () => {
-    const { isAuthenticated } = useContext(UserContext);
+    const { isAuthenticated, contextStatus } = useContext(UserContext);
     const [data, setData] = useState([])
     const [selectedTab, setSelectedTab] = useState('chat');
     useEffect(() => {
-        if (isAuthenticated) {
+        if (isAuthenticated && contextStatus === Constant.CONTEXT_STATUS.SUCCESS) {
             loadGroups()
         }
-    }, []);
+    }, [contextStatus]);
     const loadGroups = () => {
         axios.get('fbd_groups').then(res => {
             res.data && setData(res.data._embedded.fbd_groups)
@@ -25,8 +28,13 @@ const Home = () => {
     return (
         <div className="d-flex flex-column">
             {
-                selectedTab === 'profile' ? <Profile></Profile>
-                    : <div>{selectedTab}</div>
+                selectedTab === 'chat' && <Chat></Chat>
+            }
+            {
+                selectedTab === 'match' && <Match></Match>
+            }
+            {
+                selectedTab === 'profile' && <Profile></Profile>
             }
             <Navbar selectedTab={selectedTab} setSelectedTab={(tab) => setSelectedTab(tab)} />
         </div>

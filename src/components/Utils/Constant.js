@@ -1,7 +1,7 @@
 export default class Constant {
     static BLUE_SELECT_STYLE = {
         palette: {
-            purple: {
+            blue: {
                 main: '#61dafb',
                 contrastText: '#000',
                 dark: '#61dafb',
@@ -16,6 +16,14 @@ export default class Constant {
         IS_FORCE_LOGIN: 'isForceLogin',
         BROWSER_ID: 'browserId',
         LANGUAGE: 'lang'
+    };
+    static CONTEXT_STATUS = {
+        IDLE: 'IDLE',
+        LOADING: 'LOADING',
+        LOADING_ROLE: 'LOADING_ROLE',
+        SUCCESS: 'SUCCESS',
+        FAILED: 'FAILED',
+        IS_LOGOUT: 'IS_LOGOUT'
     };
 
     static CITY = [

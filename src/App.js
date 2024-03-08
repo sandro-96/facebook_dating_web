@@ -4,7 +4,6 @@ import Login from "./components/Login";
 import LoginRedirectCallBack from "./components/LoginRedirectCallBack";
 import Home from "./components/Home";
 import {UserContextProvider} from "./components/Context/UserContext";
-import Signup from "./components/Login/Signup";
 
 function App() {
   return (
@@ -14,7 +13,6 @@ function App() {
                 <Route path='' element={<Login />} />
                 <Route path='home' element={<Home />} />
                 <Route path='callBack' element={<LoginRedirectCallBack />} />
-                <Route path='signUp' element={<Signup />} />
             </Routes>
         </UserContextProvider>
     </div>

@@ -1,4 +1,29 @@
 .match-wrap {
   height: 100vh;
   padding-bottom: 50px;
+  padding: 20px;
+  .match-item {
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    margin-top: 10px;
+    color: #2c3034;
+    font-weight: bold;
+    flex-grow: 1;
+    margin-right: 15px;
+    &.male {
+      background-color: rgba(175, 232, 246, 0.75);
+    }
+    &.female {
+      background-color: rgba(236, 200, 246, 0.73);
+    }
+    &.other {
+      background-color: rgba(250, 224, 207, 0.73);
+    }
+  }
+  .heart-icon {
+    cursor: pointer;
+    align-self: center;
+    margin-top: 0.5rem;
+  }
 }
