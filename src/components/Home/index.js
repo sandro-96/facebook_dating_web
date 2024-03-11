@@ -1,42 +1,20 @@
 import "./index.scss"
-import {useContext, useEffect, useState} from "react";
-import axios from "axios";
+import {useContext, useEffect} from "react";
 import {UserContext} from "../Context/UserContext";
-import Navbar from "../Navbar";
-import Profile from "../Profile";
 import Constant from "../Utils/Constant";
-import Match from "../Match";
-import Chat from "../Chat";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
-    const { isAuthenticated, contextStatus } = useContext(UserContext);
-    const [data, setData] = useState([])
-    const [selectedTab, setSelectedTab] = useState('chat');
+    const { isAuthenticated, contextStatus, userData } = useContext(UserContext);
+    const navigate = useNavigate()
     useEffect(() => {
         if (isAuthenticated && contextStatus === Constant.CONTEXT_STATUS.SUCCESS) {
-            loadGroups()
+            if (userData.isFirstLogin) navigate('/profile?isHideNavBar=true')
         }
     }, [contextStatus]);
-    const loadGroups = () => {
-        axios.get('fbd_groups').then(res => {
-            res.data && setData(res.data._embedded.fbd_groups)
-        })
-    }
-    const updateGroupName = (id) => {
-        axios.patch(`fbd_groups/${id}`, {name: 'kkkk'})
-    }
     return (
-        <div className="d-flex flex-column">
-            {
-                selectedTab === 'chat' && <Chat></Chat>
-            }
-            {
-                selectedTab === 'match' && <Match></Match>
-            }
-            {
-                selectedTab === 'profile' && <Profile></Profile>
-            }
-            <Navbar selectedTab={selectedTab} setSelectedTab={(tab) => setSelectedTab(tab)} />
+        <div className="home-wrap">
+            home
         </div>
     )
 }

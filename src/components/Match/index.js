@@ -4,6 +4,7 @@ import {UserContext} from "../Context/UserContext";
 import {faHeart} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import DateUtils from "../Utils/DateUtils";
 
 export const Match = () => {
     const { userData, setUserData } = useContext(UserContext);
@@ -23,10 +24,13 @@ export const Match = () => {
             <h2 className='mb-4'>Match</h2>
             {
                 users.map((value, index) => (
-                    <div className="d-flex">
+                    <div className="d-flex" key={`person_${index}`}>
                         <div className={`match-item ${value.gender ? value.gender : 'other'}`}>
-                            <span className="flex-grow-1 text-start text-capitalize">{value.username}</span>
-                            {value.birthYear > 0 && <span>{value.birthYear}</span>}
+                            <div className="flex-grow-1 text-start text-capitalize d-flex flex-column">
+                                <span className='fs-2'>{value.username}</span>
+                                <span className='fw-normal'>{value.bio}</span>
+                            </div>
+                            {value.birthYear > 0 && <span className='fw-normal'>{DateUtils.calculateOlds(value.birthYear)}</span>}
                         </div>
                         <div className="heart-icon">
                             <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: "#e3e3e3"}}/>

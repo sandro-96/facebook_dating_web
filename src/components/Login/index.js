@@ -8,9 +8,7 @@ const Login = () => {
     const { isAuthenticated } = useContext(UserContext);
     const navigate = useNavigate();
     useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/home');
-        }
+        if (isAuthenticated) navigate('/home');
     }, [isAuthenticated]);
     return (
         <div className="login-wrap">
