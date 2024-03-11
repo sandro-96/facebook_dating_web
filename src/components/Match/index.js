@@ -1,14 +1,16 @@
 import "./index.scss"
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {UserContext} from "../Context/UserContext";
-import {faHeart} from "@fortawesome/free-solid-svg-icons";
+import {faHeart, faFilter} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import DateUtils from "../Utils/DateUtils";
+import Filter from "./Filter";
 
 export const Match = () => {
     const { userData, setUserData } = useContext(UserContext);
     const [users, setUsers] = useState([]);
+    let filterRef = useRef();
     useEffect(() => {
         loadData()
     }, []);
@@ -18,10 +20,20 @@ export const Match = () => {
             res.data && setUsers(res.data)
         })
     }
+    const handleFilter = () => {
+        filterRef.current.handleOpenModal()
+        console.log('filter')
+    }
 
     return (
         <div className="match-wrap">
-            <h2 className='mb-4'>Match</h2>
+            <div className='mb-4 d-flex align-items-center'>
+                <h2 className='flex-grow-1'>Match</h2>
+                <div className='btn-filter' onClick={event => handleFilter()}>
+                    <span>Bộ lọc</span>
+                    <FontAwesomeIcon icon={faFilter} size="2xl" style={{color: "#e3e3e3"}}/>
+                </div>
+            </div>
             {
                 users.map((value, index) => (
                     <div className="d-flex" key={`person_${index}`}>
@@ -54,6 +66,7 @@ export const Match = () => {
                     <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: "#ff5050"}}/>
                 </div>
             </div>
+            <Filter filterRef={filterRef}></Filter>
         </div>
     )
 }
