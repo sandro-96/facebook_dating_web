@@ -11,7 +11,7 @@ const Filter = ({ filterRef }) => {
     };
 
     React.useImperativeHandle(filterRef, () => ({
-        handleOpenModal(employeeId) {
+        handleOpenModal() {
             handleOpen();
         }
     }));
@@ -21,9 +21,9 @@ const Filter = ({ filterRef }) => {
     };
 
     return (
-        <Modal open={open} onClose={handleClose} disableEnforceFocus={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-            <div>dsdasdasasd</div>
-        </Modal>
+        <div>
+            filete
+        </div>
     );
 };
 
