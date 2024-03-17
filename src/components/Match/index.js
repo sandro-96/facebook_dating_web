@@ -6,18 +6,19 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import DateUtils from "../Utils/DateUtils";
 import Filter from "./Filter";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 export const Match = () => {
     const { userData, setUserData } = useContext(UserContext)
     const [users, setUsers] = useState([])
     const navigate = useNavigate()
+    const location = useLocation()
     useEffect(() => {
         loadData()
     }, []);
 
     const loadData = () => {
-        axios.get('users/list?gender=').then(res => {
+        axios.get(`users/list?gender=${location.state ? location.state.gender : ''}`).then(res => {
             res.data && setUsers(res.data)
         })
     }
@@ -31,6 +32,21 @@ export const Match = () => {
                     <FontAwesomeIcon icon={faFilter} size="2xl" style={{color: "#e3e3e3"}}/>
                 </div>
             </div>
+            {
+                users.map((value, index) => (
+                    <div className="d-flex" key={`person_${index}`}>
+                        <div className={`match-item ${value.gender ? value.gender : 'other'}`}>
+                            <div className="flex-grow-1 text-start text-capitalize d-flex flex-column">
+                                <span className='fs-2'>{value.username}{value.birthYear > 0 && <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}</span>
+                                <span className='fw-normal'>{value.bio}</span>
+                            </div>
+                        </div>
+                        <div className="heart-icon">
+                            <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: "#e3e3e3"}}/>
+                        </div>
+                    </div>
+                ))
+            }
             {
                 users.map((value, index) => (
                     <div className="d-flex" key={`person_${index}`}>
