@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './index.scss';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleLeft, faMars, faVenus, faVenusMars} from "@fortawesome/free-solid-svg-icons";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {UserContext} from "../Context/UserContext";
 const Filter = (props) => {
+    const { userData, setUserData } = useContext(UserContext)
     const navigate = useNavigate()
     const [gender, setGender] = useState(null);
+    const [filter, setFilter] = useState(null);
+
+    useEffect(() => {
+        axios.get(`/match/filter_option`).then(value => {
+            if (value.data) {
+                setFilter(value.data)
+                setGender(value.data.gender)
+            }
+        })
+    }, []);
     const saveFilter = () => {
-        navigate('/match', gender ? {state: {gender: gender}} : {})
+        if (filter) {
+            axios.patch(`fbd_filterOptions/${filter.id}`, {
+                gender: gender
+            }).then(value => navigate('/match'))
+        } else {
+            axios.post(`fbd_filterOptions`, {
+                gender: gender,
+                userId: userData.id
+            }).then(value => navigate('/match'))
+        }
     }
     return (
         <div className="match-wrap">
