@@ -1,12 +1,11 @@
 import "./index.scss"
-import {useContext, useEffect, useRef, useState} from "react";
-import {UserContext} from "../Context/UserContext";
+import {useEffect, useState} from "react";
 import {faHeart, faFilter} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import DateUtils from "../Utils/DateUtils";
-import Filter from "./Filter";
 import {useLocation, useNavigate} from "react-router-dom";
+import _ from 'lodash'
 
 export const Match = () => {
     const [users, setUsers] = useState([])
@@ -22,7 +21,16 @@ export const Match = () => {
         })
     }
     const handleChoose = (id) => {
-        console.log(id)
+        axios.post('fbd_matches', {
+            forUserId: id
+        }).then(value => {
+            const clone = _.clone(users)
+            const index = clone.findIndex(value1 => value1.key === id)
+            const obj = clone.find(user => user.key === id)
+            obj.liked = true
+            clone[index] = obj
+            setUsers(clone)
+        })
     }
 
     return (
@@ -43,20 +51,15 @@ export const Match = () => {
                                 <span className='fw-normal'>{value.bio}</span>
                             </div>
                         </div>
-                        <div className="heart-icon" onClick={() => handleChoose(value.key)}>
-                            <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: "#e3e3e3"}}/>
+                        <div className="heart-icon" onClick={() => {
+                            if (value.liked) return
+                            handleChoose(value.key)
+                        }}>
+                            <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: `${value.liked ? '#ff5050' : '#e3e3e3'}`}}/>
                         </div>
                     </div>
                 ))
             }
-            {/*<div className="d-flex">
-                <div className="match-item male">
-                    Nguowif banj tot
-                </div>
-                <div className="heart-icon">
-                    <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: "#ff5050"}}/>
-                </div>
-            </div>*/}
         </div>
     )
 }
