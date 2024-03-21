@@ -32,6 +32,7 @@ const Filter = (props) => {
         }
     }
     return (
+        filter &&
         <div className="match-wrap">
             <div className='mb-4 d-flex justify-content-between align-items-center'>
                 <FontAwesomeIcon icon={faAngleLeft} size="2xl" style={{color: "#e3e3e3"}} onClick={() => navigate(-1)} role='button'/>
@@ -42,6 +43,10 @@ const Filter = (props) => {
                 <div className="filter-item">
                     <span className='mb-2 fw-bold'>Giới tính</span>
                     <div className='gender-wrap filter-item-content'>
+                        <div className={`all d-flex ${gender === null ? 'active' : ''}`}
+                             onClick={() => setGender(null)}>
+                            <span className="ms-1">Tất cả</span>
+                        </div>
                         <div className={`male d-flex ${gender === 'male' ? 'active' : ''}`}
                              onClick={() => setGender('male')}>
                             <FontAwesomeIcon icon={faMars} size="lg" style={{color: "#e3e3e3"}}/>

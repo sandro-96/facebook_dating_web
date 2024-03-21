@@ -24,6 +24,14 @@
   display: flex;
   width: 50%;
   gap: 10px;
+  .all {
+    padding: 4px 10px 4px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    &.active {
+      background-color: rgba(34, 203, 155, 0.82);
+    }
+  }
   .male {
     padding: 4px 10px 4px 10px;
     border-radius: 10px;
