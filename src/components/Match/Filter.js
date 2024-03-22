@@ -32,7 +32,6 @@ const Filter = (props) => {
         }
     }
     return (
-        filter &&
         <div className="match-wrap">
             <div className='mb-4 d-flex justify-content-between align-items-center'>
                 <FontAwesomeIcon icon={faAngleLeft} size="2xl" style={{color: "#e3e3e3"}} onClick={() => navigate(-1)} role='button'/>

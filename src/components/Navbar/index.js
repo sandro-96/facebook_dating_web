@@ -33,9 +33,9 @@ export const Navbar = (props) => {
                  className={`nav-item ${selectedTab === 'match' ? 'active' : ''}`}>
                 <FontAwesomeIcon icon={faHeart} size={"xl"} style={{color: selectedTab === 'match' ? "#ff5050" : "#ffffff" }} />
             </div>
-            <div onClick={() => onSelectTab('profile')}
-                 className={`nav-item ${selectedTab === 'profile' ? 'active' : ''}`}>
-                <FontAwesomeIcon icon={faUser} size="xl" style={{color: selectedTab === 'profile' ? "#ff5050" : "#ffffff" }}/>
+            <div onClick={() => onSelectTab('setting')}
+                 className={`nav-item ${selectedTab === 'setting' ? 'active' : ''}`}>
+                <FontAwesomeIcon icon={faUser} size="xl" style={{color: selectedTab === 'setting' ? "#ff5050" : "#ffffff" }}/>
             </div>
         </div>
     )

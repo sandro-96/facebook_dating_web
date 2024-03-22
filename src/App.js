@@ -5,6 +5,7 @@ import LoginRedirectCallBack from "./components/LoginRedirectCallBack";
 import Home from "./components/Home";
 import Chat from "./components/Chat";
 import Match from "./components/Match";
+import Setting from "./components/Setting";
 import Filter from "./components/Match/Filter";
 import Profile from "./components/Profile";
 import {UserContextProvider} from "./components/Context/UserContext";
@@ -27,7 +28,10 @@ function App() {
                     <Route path="" element={<Match />} />
                     <Route path="filter" element={<Filter />} />
                 </Route>
-                <Route path='profile' element={<Profile />} />
+                <Route path="setting">
+                    <Route path="" element={<Setting />} />
+                    <Route path='profile' element={<Profile />} />
+                </Route>
                 <Route path='callBack' element={<LoginRedirectCallBack />} />
             </Routes>
             {searchParams.get('isHideNavBar') !== 'true' && <Navbar/>}
