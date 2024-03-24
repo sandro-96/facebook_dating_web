@@ -5,6 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import DateUtils from "../Utils/DateUtils";
 import {useNavigate} from "react-router-dom";
+import Avatar from "../Avatar";
 
 const MAX_LIKE_DAY = 10
 
@@ -55,9 +56,10 @@ export const Match = () => {
             {
                 users.map((value, index) => (
                     <div className="d-flex" key={`person_${index}`}>
-                        <div key={`match-item_${index}`} className={`match-item ${value.gender ? value.gender : 'other'}`}>
+                        <div key={`match-item_${index}`} className={`match-item ${value.gender ? value.gender : 'other'} gap-1`}>
+                            <Avatar imgKey={value.avatar} genderKey={value.gender} sizeKey={48}></Avatar>
                             <div className="flex-grow-1 text-start text-capitalize d-flex flex-column">
-                                <span className='fs-2'>{value.username}{value.birthYear > 0 && <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}</span>
+                                <span className='fs-3'>{value.username}{value.birthYear > 0 && <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}</span>
                                 <div className='fw-normal bio'>{value.bio}</div>
                             </div>
                         </div>

@@ -7,9 +7,22 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faVenus, faMars, faVenusMars, faAngleLeft} from "@fortawesome/free-solid-svg-icons";
 import {UserContext} from "../Context/UserContext";
 import axios from "axios";
-import ReactLoading from "react-loading";
 import {useNavigate} from "react-router-dom";
+import Man01 from "../../assets/avatar/man_01.png"
+import Man02 from "../../assets/avatar/man_02.png"
+import Man03 from "../../assets/avatar/man_03.png"
+import Man04 from "../../assets/avatar/man_04.png"
+import Man05 from "../../assets/avatar/man_05.png"
+import Man06 from "../../assets/avatar/man_06.png"
+import Woman01 from "../../assets/avatar/woman_01.png"
+import Woman02 from "../../assets/avatar/woman_02.png"
+import Woman03 from "../../assets/avatar/woman_03.png"
+import Woman04 from "../../assets/avatar/woman_04.png"
+import Woman05 from "../../assets/avatar/woman_05.png"
+import Woman06 from "../../assets/avatar/woman_06.png"
 
+const man_avatars = [Man01, Man02, Man03, Man04, Man05, Man06 ]
+const woman_avatars = [Woman01, Woman02, Woman03, Woman04, Woman05, Woman06 ]
 export const Profile = () => {
     const { userData, setUserData, contextStatus } = useContext(UserContext);
     const { register, handleSubmit, control, watch, reset, formState: { errors } } = useForm(
@@ -18,10 +31,13 @@ export const Profile = () => {
     const [birthYear, setBirthYear] = useState(userData.birthYear || new Date().getFullYear());
     const [city, setCity] = useState(userData.location ||'Thành phố Hồ Chí Minh');
     const [gender, setGender] = useState(userData.gender || 'other');
+    const [avatar, setAvatar] = useState(userData.avatar);
     const [saveSuccess, setSaveSuccess] = useState(false);
     const navigate = useNavigate()
 
     useEffect(() => {
+        setGender(userData.gender)
+        setAvatar(userData.avatar)
         reset(userData)
     }, [contextStatus]);
     const onSubmit = data => {
@@ -30,7 +46,8 @@ export const Profile = () => {
             gender: gender,
             location: city,
             birthYear: birthYear,
-            bio: data.bio
+            bio: data.bio,
+            avatar: avatar
         }
         if (userData.isFirstLogin) object.isFirstLogin = false
         axios.patch(`fbd_users/${userData.key}`, object).then(value => {
@@ -65,13 +82,18 @@ export const Profile = () => {
     const theme = createTheme(Constant.BLUE_SELECT_STYLE);
     return (
         <div className='profile-wrap'>
-            <div className='mb-4 d-flex justify-content-between align-items-center'>
-                <FontAwesomeIcon icon={faAngleLeft} size="2xl" style={{color: "#e3e3e3"}} onClick={() => navigate(-1)}
-                                 role='button'/>
-                <h2>Hồ sơ</h2>
-                <div/>
-            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
+                <div className='mb-4 d-flex justify-content-between align-items-center'>
+                    {
+                        userData.isFirstLogin ? <div/>
+                            :
+                            <FontAwesomeIcon icon={faAngleLeft} size="2xl" style={{color: "#e3e3e3"}}
+                                             onClick={() => navigate(-1)}
+                                             role='button'/>
+                    }
+                    <h2>Hồ sơ</h2>
+                    <input className='save-btn' type='submit' value="Lưu"/>
+                </div>
                 <div>
                     {
                         saveSuccess && <div className="save-success">Cập nhật thành công!</div>
@@ -146,7 +168,60 @@ export const Profile = () => {
                             </div>
                         </div>
                     </div>
-                    <input className='save-btn' type='submit' value="Cập nhật thông tin"/>
+                    <div className="d-flex mt-4">
+                        <span className='label-item'>Avatar:</span>
+                        {
+                            gender === 'male' ?
+                                <div className='d-flex flex-column gap-2'>
+                                    <div className='avatar-wrap'>
+                                        {
+                                            man_avatars.slice(0, 4).map((value, index) => (
+                                                <img
+                                                    onClick={() => setAvatar(`man_0${index + 1}`)}
+                                                    className={`${avatar === `man_0${index + 1}` ? 'active' : ''}`}
+                                                    key={`man_${index}`} src={value} width={56}
+                                                    height={56}
+                                                    alt={`image-${index}`}/>
+                                            ))
+                                        }
+                                    </div>
+                                    <div className='avatar-wrap'>
+                                        {
+                                            man_avatars.slice(4).map((value, index) => (
+                                                <img onClick={() => setAvatar(`man_0${index + 5}`)}
+                                                     className={`${avatar === `man_0${index + 5}` ? 'active' : ''}`}
+                                                     key={`man_${index + 5}`} src={value} width={56} height={56}
+                                                     alt={`image-${index + 5}`}/>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                                :
+                                <div className='d-flex flex-column gap-2'>
+                                    <div className='avatar-wrap'>
+                                        {
+                                            woman_avatars.slice(0, 4).map((value, index) => (
+                                                <img onClick={() => setAvatar(`woman_0${index + 1}`)}
+                                                     className={`${avatar === `woman_0${index + 1}` ? 'active' : ''}`}
+                                                     key={`woman_${index}`} src={value} width={56}
+                                                     height={56}
+                                                     alt={`image-woman-${index}`}/>
+                                            ))
+                                        }
+                                    </div>
+                                    <div className='avatar-wrap'>
+                                        {
+                                            woman_avatars.slice(4).map((value, index) => (
+                                                <img onClick={() => setAvatar(`woman_0${index + 5}`)}
+                                                     className={`${avatar === `woman_0${index + 5}` ? 'active' : ''}`}
+                                                     key={`woman_${index + 5}`} src={value} width={56} height={56}
+                                                     alt={`image-woman-${index + 5}`}/>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                        }
+                    </div>
                 </div>
             </form>
         </div>
