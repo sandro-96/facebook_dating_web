@@ -15,20 +15,10 @@
     border-radius: 10px;
     display: flex;
     margin-top: 10px;
-    color: #2c3034;
     font-weight: bold;
     flex-grow: 1;
     margin-right: 15px;
     align-items: center;
-    &.male {
-      background-color: rgba(175, 232, 246, 0.75);
-    }
-    &.female {
-      background-color: rgba(236, 200, 246, 0.73);
-    }
-    &.other {
-      background-color: rgba(250, 224, 207, 0.73);
-    }
     .bio {
       max-height: 3em;
       font-size: 12px;
@@ -52,7 +42,7 @@
   .filter-item {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     padding-bottom: 15px;
     .filter-item-content {
       border: solid 1px rgba(175, 232, 246, 0.75);

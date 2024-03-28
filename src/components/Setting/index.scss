@@ -1,4 +1,23 @@
 .setting-wrap {
   padding: 20px 20px 60px;
+  font-weight: bold;
   background-color: #2c3034;
+  .content-wrap {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    .item-wrap {
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(118, 119, 119, 0.78);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &.log-out {
+        margin-top: 20px;
+        background: none;
+      }
+    }
+  }
 }

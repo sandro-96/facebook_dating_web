@@ -20,12 +20,20 @@ import Woman03 from "../../assets/avatar/woman_03.png"
 import Woman04 from "../../assets/avatar/woman_04.png"
 import Woman05 from "../../assets/avatar/woman_05.png"
 import Woman06 from "../../assets/avatar/woman_06.png"
+import Other01 from "../../assets/avatar/other_01.png"
+import Other02 from "../../assets/avatar/other_02.png"
+import Other03 from "../../assets/avatar/other_03.png"
+import Other04 from "../../assets/avatar/other_04.png"
+import Other05 from "../../assets/avatar/other_05.png"
+import Other06 from "../../assets/avatar/other_06.png"
+import Other07 from "../../assets/avatar/other_07.png"
 
 const man_avatars = [Man01, Man02, Man03, Man04, Man05, Man06 ]
 const woman_avatars = [Woman01, Woman02, Woman03, Woman04, Woman05, Woman06 ]
+const other_avatars = [Other01, Other02, Other03, Other04, Other05, Other06, Other07 ]
 export const Profile = () => {
     const { userData, setUserData, contextStatus } = useContext(UserContext);
-    const { register, handleSubmit, control, watch, reset, formState: { errors } } = useForm(
+    const { register, handleSubmit, reset, formState: {errors} } = useForm(
         {defaultValues: userData}
     );
     const [birthYear, setBirthYear] = useState(userData.birthYear || new Date().getFullYear());
@@ -39,8 +47,9 @@ export const Profile = () => {
         setGender(userData.gender)
         setAvatar(userData.avatar)
         reset(userData)
-    }, [contextStatus]);
+    }, [contextStatus, reset, userData]);
     const onSubmit = data => {
+        console.log(errors)
         let object = {
             username: data.username,
             gender: gender,
@@ -181,7 +190,7 @@ export const Profile = () => {
                                                     className={`${avatar === `man_0${index + 1}` ? 'active' : ''}`}
                                                     key={`man_${index}`} src={value} width={56}
                                                     height={56}
-                                                    alt={`image-${index}`}/>
+                                                    alt={`man-${index}`}/>
                                             ))
                                         }
                                     </div>
@@ -191,35 +200,59 @@ export const Profile = () => {
                                                 <img onClick={() => setAvatar(`man_0${index + 5}`)}
                                                      className={`${avatar === `man_0${index + 5}` ? 'active' : ''}`}
                                                      key={`man_${index + 5}`} src={value} width={56} height={56}
-                                                     alt={`image-${index + 5}`}/>
+                                                     alt={`man-${index + 5}`}/>
                                             ))
                                         }
                                     </div>
                                 </div>
-                                :
-                                <div className='d-flex flex-column gap-2'>
-                                    <div className='avatar-wrap'>
-                                        {
-                                            woman_avatars.slice(0, 4).map((value, index) => (
-                                                <img onClick={() => setAvatar(`woman_0${index + 1}`)}
-                                                     className={`${avatar === `woman_0${index + 1}` ? 'active' : ''}`}
-                                                     key={`woman_${index}`} src={value} width={56}
-                                                     height={56}
-                                                     alt={`image-woman-${index}`}/>
-                                            ))
-                                        }
+                                : gender === 'female' ?
+                                    <div className='d-flex flex-column gap-2'>
+                                        <div className='avatar-wrap'>
+                                            {
+                                                woman_avatars.slice(0, 4).map((value, index) => (
+                                                    <img onClick={() => setAvatar(`woman_0${index + 1}`)}
+                                                         className={`${avatar === `woman_0${index + 1}` ? 'active' : ''}`}
+                                                         key={`woman_${index}`} src={value} width={56}
+                                                         height={56}
+                                                         alt={`woman-${index}`}/>
+                                                ))
+                                            }
+                                        </div>
+                                        <div className='avatar-wrap'>
+                                            {
+                                                woman_avatars.slice(4).map((value, index) => (
+                                                    <img onClick={() => setAvatar(`woman_0${index + 5}`)}
+                                                         className={`${avatar === `woman_0${index + 5}` ? 'active' : ''}`}
+                                                         key={`woman_${index + 5}`} src={value} width={56} height={56}
+                                                         alt={`woman-${index + 5}`}/>
+                                                ))
+                                            }
+                                        </div>
                                     </div>
-                                    <div className='avatar-wrap'>
-                                        {
-                                            woman_avatars.slice(4).map((value, index) => (
-                                                <img onClick={() => setAvatar(`woman_0${index + 5}`)}
-                                                     className={`${avatar === `woman_0${index + 5}` ? 'active' : ''}`}
-                                                     key={`woman_${index + 5}`} src={value} width={56} height={56}
-                                                     alt={`image-woman-${index + 5}`}/>
-                                            ))
-                                        }
+                                    :
+                                    <div className='d-flex flex-column gap-2'>
+                                        <div className='avatar-wrap'>
+                                            {
+                                                other_avatars.slice(0, 4).map((value, index) => (
+                                                    <img onClick={() => setAvatar(`other_0${index + 1}`)}
+                                                         className={`${avatar === `other_0${index + 1}` ? 'active' : ''}`}
+                                                         key={`other_${index}`} src={value} width={56}
+                                                         height={56}
+                                                         alt={`other-${index}`}/>
+                                                ))
+                                            }
+                                        </div>
+                                        <div className='avatar-wrap'>
+                                            {
+                                                other_avatars.slice(4).map((value, index) => (
+                                                    <img onClick={() => setAvatar(`other_0${index + 5}`)}
+                                                         className={`${avatar === `other_0${index + 5}` ? 'active' : ''}`}
+                                                         key={`other_${index + 5}`} src={value} width={56} height={56}
+                                                         alt={`other-${index + 5}`}/>
+                                                ))
+                                            }
+                                        </div>
                                     </div>
-                                </div>
                         }
                     </div>
                 </div>

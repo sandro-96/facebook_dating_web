@@ -58,8 +58,8 @@ export const Match = () => {
                     <div className="d-flex" key={`person_${index}`}>
                         <div key={`match-item_${index}`} className={`match-item ${value.gender ? value.gender : 'other'} gap-1`}>
                             <Avatar imgKey={value.avatar} genderKey={value.gender} sizeKey={48}></Avatar>
-                            <div className="flex-grow-1 text-start text-capitalize d-flex flex-column">
-                                <span className='fs-3'>{value.username}{value.birthYear > 0 && <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}</span>
+                            <div className="flex-grow-1 text-start text-capitalize d-flex flex-column ms-2">
+                                <span className='fs-5'>{value.username}{value.birthYear > 0 && <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}</span>
                                 <div className='fw-normal bio'>{value.bio}</div>
                             </div>
                         </div>
