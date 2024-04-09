@@ -9,25 +9,48 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGlobe} from "@fortawesome/free-solid-svg-icons";
 import DateUtils from "../Utils/DateUtils";
 import Avatar from "../Avatar";
+import {WebSocketContext} from "../WebSocket/WebSocket";
 
 const Home = () => {
     const { isAuthenticated, contextStatus, userData } = useContext(UserContext);
     const navigate = useNavigate()
     const [likedUsers, setLikedUsers] = useState([])
+    const webSocket = useContext(WebSocketContext);
     useEffect(() => {
         if (isAuthenticated && contextStatus === Constant.CONTEXT_STATUS.SUCCESS) {
             if (userData.isFirstLogin) navigate('/setting/profile?isHideNavBar=true')
             loadUserLikedYou()
         }
-    }, [contextStatus]);
+        console.log(webSocket)
+    }, [contextStatus, webSocket]);
     const loadUserLikedYou = () => {
         axios.get('users/likedList').then(value => {
             value.data && setLikedUsers(value.data)
         })
     }
     const startChat = (userId) => {
-        console.log('start a chat')
+        axios.post('chat', {
+            forUserId: userId,
+            content: 'start a chat'
+        }).then(value => {})
     }
+
+    const MatchItem = ({value, index, startChat}) => {
+        const {username, birthYear, bio, avatar, gender, id} = value;
+        const age = birthYear > 0 ? `, ${DateUtils.calculateOlds(birthYear)}` : '';
+        const genderClass = gender || 'other';
+
+        return (
+            <div key={`match-item_${index}`} className={`match-item gap-1 ${genderClass}`} onClick={() => startChat(id)}>
+                <Avatar imgKey={avatar} genderKey={gender} sizeKey={48} />
+                <div className="flex-grow-1 text-start text-capitalize d-flex flex-column">
+                    <span className='fs-3'>{username}{age}</span>
+                    <div className='fw-normal bio'>{bio}</div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         userData && <div className="home-wrap">
             <h1>Facebook Action</h1>
@@ -43,13 +66,7 @@ const Home = () => {
             <h6 className='title'>Những người đã thích bạn:</h6>
             {
                 likedUsers.map((value, index) => (
-                    <div key={`match-item_${index}`} className={`match-item gap-1 ${value.gender ? value.gender : 'other'}`} onClick={() => startChat(value.id)}>
-                        <Avatar imgKey={value.avatar} genderKey={value.gender} sizeKey={48}></Avatar>
-                        <div className="flex-grow-1 text-start text-capitalize d-flex flex-column">
-                            <span className='fs-3'>{value.username}{value.birthYear > 0 && <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}</span>
-                            <div className='fw-normal bio'>{value.bio}</div>
-                        </div>
-                    </div>
+                    <MatchItem value={value} index={index} startChat={startChat} key={value.id}/>
                 ))
             }
         </div>
