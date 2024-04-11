@@ -49,7 +49,6 @@ export const Profile = () => {
         reset(userData)
     }, [contextStatus, reset, userData]);
     const onSubmit = data => {
-        console.log(errors)
         let object = {
             username: data.username,
             gender: gender,

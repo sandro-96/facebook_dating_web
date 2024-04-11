@@ -20,7 +20,6 @@ const Home = () => {
             if (userData.isFirstLogin) navigate('/setting/profile?isHideNavBar=true')
             loadUserLikedYou()
         }
-        console.log(userData)
     }, [contextStatus, webSocket]);
     const loadUserLikedYou = () => {
         axios.get('users/likedList').then(value => {
@@ -28,10 +27,14 @@ const Home = () => {
         })
     }
     const startChat = (userId) => {
-        axios.post('chat', {
+        axios.post('topic/createTopic', {
+            forUserId: userId,
+            description: 'Bắt đầu đoạn chat'
+        }).then(value => setLikedUsers(likedUsers.filter(user => user.id !== userId)))
+        /*axios.post('chat', {
             forUserId: userId,
             content: 'start a chat'
-        }).then(value => {})
+        }).then(value => {})*/
     }
 
     const MatchItem = ({value, index, startChat}) => {
