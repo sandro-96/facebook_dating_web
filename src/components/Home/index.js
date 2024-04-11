@@ -4,7 +4,6 @@ import {UserContext} from "../Context/UserContext";
 import Constant from "../Utils/Constant";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import json from "./assets/data-users.json"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGlobe} from "@fortawesome/free-solid-svg-icons";
 import DateUtils from "../Utils/DateUtils";
@@ -21,7 +20,7 @@ const Home = () => {
             if (userData.isFirstLogin) navigate('/setting/profile?isHideNavBar=true')
             loadUserLikedYou()
         }
-        console.log(webSocket)
+        console.log(userData)
     }, [contextStatus, webSocket]);
     const loadUserLikedYou = () => {
         axios.get('users/likedList').then(value => {

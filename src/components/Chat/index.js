@@ -1,5 +1,5 @@
 import "./index.scss"
-import {useContext, useEffect, useState} from "react";
+import React, {useEffect} from "react";
 
 export const Chat = () => {
     useEffect(() => {
@@ -7,7 +7,18 @@ export const Chat = () => {
 
     return (
         <div className="chat-wrap">
-            <div>Chat</div>
+            <h2>Đoạn chat</h2>
+            <div className="content-wrap">
+                <div className="item-wrap">
+                    <span className="fs-6 fw-bold">Người dùng 1</span>
+                </div>
+                <div className="item-wrap">
+                    <span className="fs-6 fw-bold">Người dùng 2</span>
+                </div>
+                <div className="item-wrap">
+                    <span className="fs-6 fw-bold">Người dùng 3</span>
+                </div>
+            </div>
         </div>
     )
 }
