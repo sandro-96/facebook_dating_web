@@ -40,7 +40,7 @@ export const Avatar = ({imgKey, genderKey, sizeKey = 56}) => {
             case 'other_04': return Other04;
             case 'other_05': return Other05;
             case 'other_06': return Other06;
-            case 'other_07': return Other06;
+            case 'other_07': return Other07;
             default: return genderKey === 'male' ? Man01 : genderKey === 'female' ? Woman01 : Other01 ;
         }
     }
