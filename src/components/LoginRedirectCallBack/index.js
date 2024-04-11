@@ -4,8 +4,6 @@ import { UserContext } from '../Context/UserContext';
 import { useTranslation } from 'react-i18next';
 import axios from "axios";
 import Constant from "../Utils/Constant";
-
-const baseURL = process.env.REACT_APP_API_BASE_URL;
 const JWT_TOKEN_PREFIX = 'Bearer ';
 const QUERY_PARAMS = {
     AUTHORIZATION_CODE: 'authorizationCode'

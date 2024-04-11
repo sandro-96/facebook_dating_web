@@ -9,7 +9,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGlobe} from "@fortawesome/free-solid-svg-icons";
 import DateUtils from "../Utils/DateUtils";
 import Avatar from "../Avatar";
-import {WebSocketContext} from "../WebSocket/WebSocket";
+import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 
 const Home = () => {
     const { isAuthenticated, contextStatus, userData } = useContext(UserContext);

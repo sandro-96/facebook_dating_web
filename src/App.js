@@ -10,8 +10,8 @@ import Filter from "./components/Match/Filter";
 import { Profile } from "./components/Profile";
 import {UserContextProvider} from "./components/Context/UserContext";
 import Navbar from "./components/Navbar";
-import {useEffect, useState} from "react";
-import { WebSocketProvider } from './components/WebSocket/WebSocket';
+import {useEffect} from "react";
+import WebSocketComponent from './components/WebSocket/WebSocketComponent';
 
 function App() {
     const [searchParams] = useSearchParams();
@@ -19,7 +19,7 @@ function App() {
     }, [searchParams]);
   return (
     <div className="App">
-    <WebSocketProvider>
+        <WebSocketComponent>
             <UserContextProvider>
                 <Routes>
                     <Route path='' element={<Login />} />
@@ -37,7 +37,7 @@ function App() {
                 </Routes>
                 {searchParams.get('isHideNavBar') !== 'true' && <Navbar/>}
             </UserContextProvider>
-    </WebSocketProvider>
+        </WebSocketComponent>
     </div>
   );
 }
