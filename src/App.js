@@ -12,6 +12,7 @@ import {UserContextProvider} from "./components/Context/UserContext";
 import Navbar from "./components/Navbar";
 import {useEffect} from "react";
 import WebSocketComponent from './components/WebSocket/WebSocketComponent';
+import ChatScreen from "./components/Chat/ChatScreen";
 
 function App() {
     const [searchParams] = useSearchParams();
@@ -24,7 +25,10 @@ function App() {
                 <Routes>
                     <Route path='' element={<Login />} />
                     <Route path='home' element={<Home />} />
-                    <Route path='chat' element={<Chat />} />
+                    <Route path="chat">
+                        <Route path="" element={<Chat />} />
+                        <Route path=":id" element={<ChatScreen />} />
+                    </Route>
                     <Route path="match">
                         <Route path="" element={<Match />} />
                         <Route path="filter" element={<Filter />} />

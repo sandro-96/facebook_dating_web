@@ -2,35 +2,40 @@ import "./index.scss"
 import React, {useContext, useEffect, useState} from "react";
 import {UserContext} from "../Context/UserContext";
 import axios from "axios";
-import DateUtils from "../Utils/DateUtils";
 import Avatar from "../Avatar";
+import { useNavigate } from 'react-router-dom';
 
 export const Chat = () => {
     const {userData} = useContext(UserContext);
     const [topics, setTopics] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         loadTopics();
     }, [userData]);
 
+    const openChat = (id, userInfo) => {
+        navigate(`/chat/${id}?isHideNavBar=true`, { state: {topicId: id, userInfo: userInfo} });
+    };
+
     const loadTopics = async () => {
         try {
-            const response = await axios.get(`topic/user/${userData.id}`);
+            const response = await axios.get(`topic/topicsWithLatestChat/${userData.id}`);
             setTopics(response.data);
         } catch (error) {
             console.error('Failed to load topics:', error);
         }
     };
 
-    const MatchItem = ({value, index}) => {
-        const {username, bio, avatar, gender, id} = userData.id === value.user1.id ? value.user2 : value.user1;
+    const MatchItem = ({value}) => {
+        const {username, avatar, gender, birthYear, id} = userData.id === value.user1.id ? value.user2 : value.user1;
 
         return (
-            <div key={`match-item_${index}`} className={`match-item gap-1`}>
-                <Avatar imgKey={avatar} genderKey={gender} sizeKey={48} />
+            <div className={`match-item gap-1`} onClick={() => openChat(value.id, {username, avatar, gender, birthYear, id})}>
+                <Avatar imgKey={avatar} genderKey={gender} sizeKey={48}/>
                 <div className="flex-grow-1 text-start text-capitalize d-flex flex-column ms-2">
                     <span className='fs-3'>{username}</span>
-                    <div className='fw-normal bio'>{bio}</div>
+                    <div className='fw-normal bio' style={{color: '#cccaca'}}>{value.lastMessage}</div>
                 </div>
             </div>
         );
@@ -41,7 +46,7 @@ export const Chat = () => {
             <h2>Đoạn chat</h2>
             <div className="content-wrap">
                 {topics.map((topic, index) => (
-                    <MatchItem value={topic} index={index}/>
+                    <MatchItem key={`match-item_${index}`} value={topic} index={index}/>
                 ))}
             </div>
         </div>
