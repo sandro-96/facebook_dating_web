@@ -4,9 +4,8 @@
   background-color: #2c3034;
   text-align: start;
   .content-wrap {
-    margin-top: 30px;
+    margin-top: 10px;
     display: flex;
-    gap: 20px;
     flex-direction: column;
     .match-item {
       padding: 10px 10px 10px 0;
@@ -28,14 +27,27 @@
   }
 }
 .chat-screen-wrap {
-  padding: 20px 20px 60px;
+  padding: 20px 0 60px 20px;
   font-weight: bold;
   background-color: #2c3034;
+  height: 100vh; // Set the height of the parent div
+  overflow: hidden;
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 20px;
+    align-items: center;
+    .name-wrap {
+      display: flex;
+      justify-content: center;
+    }
+  }
   .content-wrap {
-    margin-top: 30px;
-    margin-bottom: 45px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
+    height: calc(100vh - 75px - 60px); // Adjust this value based on the height of your top-bar and send-message-wrap
+    overflow-y: auto;
     .message-item {
       padding: 10px 10px 10px 10px;
       border-radius: 10px;
@@ -53,12 +65,16 @@
         font-weight: normal;
         white-space: break-spaces;
         word-break: break-word;
+        margin-left: 10px;
+        align-self: center;
       }
       &.left {
-        background-color: rgba(175, 232, 246, 0.75);
+        color: #FFFFFF;
+        background-color: rgba(55, 70, 73, 0.75);
       }
       &.right {
-        background-color: rgba(236, 200, 246, 0.73);
+        align-self: end;
+        background-color: rgba(175, 232, 246, 0.75);
       }
     }
   }

@@ -1,5 +1,5 @@
 import "./index.scss"
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {UserContext} from "../Context/UserContext";
 import Constant from "../Utils/Constant";
 import {useNavigate} from "react-router-dom";
@@ -58,7 +58,11 @@ const Home = () => {
             <h1>Facebook Action</h1>
             <div className="d-flex gap-3 align-items-center mt-4">
                 <Avatar imgKey={userData.avatar} genderKey={userData.gender}></Avatar>
-                <span className="fs-2 fw-bold">{userData.username}{userData.birthYear > 0 && <span>, {DateUtils.calculateOlds(userData.birthYear)}</span>}</span>
+                <div className="flex-grow-1 text-start d-flex flex-column ms-2">
+                    <span className="fs-2 fw-bold">{userData.username}{userData.birthYear > 0 &&
+                        <span>, {DateUtils.calculateOlds(userData.birthYear)}</span>}</span>
+                    <div className='fw-normal bio'>{userData.email}</div>
+                </div>
             </div>
             <h6 className='title'>Cộng đồng</h6>
             <div className="public-chat-wrap">

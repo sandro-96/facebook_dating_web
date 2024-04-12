@@ -1,23 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef, createContext, useContext} from 'react';
 import axios from 'axios';
 import {useLocation, useParams} from 'react-router-dom';
 import Avatar from "../Avatar";
 import DateUtils from "../Utils/DateUtils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPaperPlane, faSquareArrowUpRight} from "@fortawesome/free-solid-svg-icons";
-
-const ChatScreen = () => {
+import {faPaperPlane, faBars} from "@fortawesome/free-solid-svg-icons";
+import {WebSocketContext} from "../WebSocket/WebSocketComponent";
+import {Popover, Button} from "react-bootstrap";
+export const ChatScreen = () => {
+    const { messageWs } = useContext(WebSocketContext);
     const { state } = useLocation();
     const { id } = useParams();
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
-    const [userInfo, setUserInfo] = useState(state.userInfo);
+    const [userInfo] = useState(state.userInfo);
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        // Load the chat messages when the component mounts
-        console.log(state.topicId)
         loadMessages();
     }, [id]);
+
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
+    useEffect(() => {
+        if (messageWs && messageWs.topicId === state.topicId) {
+            setMessages([...messages, messageWs]);
+        }
+    }, [messageWs]);
 
     const loadMessages = async () => {
         try {
@@ -40,28 +52,39 @@ const ChatScreen = () => {
     };
 
     const handleSendMessage = async () => {
-        try {
-            await axios.post(`chat`, {
-                forUserId: userInfo.id,
-                topicId: state.topicId,
-                content: newMessage
-            });
-            setNewMessage('');
-            //loadMessages();
-        } catch (error) {
-            console.error('Failed to send message:', error);
+        if (newMessage.trim() !== '') {
+            try {
+                await axios.post(`chat`, {
+                    forUserId: userInfo.id,
+                    topicId: state.topicId,
+                    content: newMessage
+                });
+                setNewMessage('');
+                setMessages([...messages, { content: newMessage, forUserId: userInfo.id }]);
+            } catch (error) {
+                console.error('Failed to send message:', error);
+            }
         }
     };
 
     return (
         <div className="chat-screen-wrap">
-            <div className="d-flex align-items-center justify-content-center">
-                <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
-                <span className='fs-4 ms-2'>{userInfo.username} {userInfo.birthYear > 0 && <span>, {DateUtils.calculateOlds(userInfo.birthYear)}</span>}</span>
+            <div className="top-bar">
+                <div className="name-wrap">
+                    <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
+                    <span className='fs-4 ms-2'>{userInfo.username} {userInfo.birthYear > 0 && <span>, {DateUtils.calculateOlds(userInfo.birthYear)}</span>}</span>
+                </div>
+                <FontAwesomeIcon icon={faBars} size="lg"/>
             </div>
             <div className="content-wrap">
                 {messages.map((message, index) => (
-                    <div key={index} className={`message-item ${message.forUserId === userInfo.id ? 'left' : 'right'}`}>
+                    <div key={index}
+                         className={`message-item ${message.forUserId === userInfo.id ? 'right' : 'left'}`}
+                         ref={index === messages.length - 1 ? messagesEndRef : null}>
+                        {
+                            message.forUserId !== userInfo.id &&
+                            <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
+                        }
                         <div className="message-content">
                             {message.content}
                         </div>
@@ -76,7 +99,8 @@ const ChatScreen = () => {
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                 />
-                <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x" style={{color: "#74C0FC"}}/>
+                <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x"
+                                 style={{color: "#74C0FC"}}/>
             </div>
         </div>
     );

@@ -20,7 +20,10 @@ const Setting = () => {
     const Item = ({children, icon, onClick}) => (
         <div className="item-wrap" role='button' onClick={onClick}>
             <span className="fs-6 fw-bold">{children}</span>
-            {icon ? <FontAwesomeIcon icon={icon} size="xl"/> : <Avatar imgKey={userData.avatar} genderKey={userData.gender} sizeKey={48} />}
+            {icon ?
+                <FontAwesomeIcon icon={icon} size="xl"/> :
+                <Avatar imgKey={userData.avatar} genderKey={userData.gender} sizeKey={48} />
+            }
         </div>
     )
 
@@ -29,11 +32,14 @@ const Setting = () => {
             <h2>Trang cá nhân</h2>
             <div className="content-wrap">
                 <Item onClick={() => navigate('/setting/profile')}>
-                    {userData.username}
+                    <div className="flex-grow-1 text-start d-flex flex-column ms-2">
+                        <span className='fs-3'>{userData.username}</span>
+                        <div className='fw-normal bio'>{userData.email}</div>
+                    </div>
                 </Item>
                 <Item icon={faPaperPlane}>Đóng góp ý kiến</Item>
                 <Item icon={faCircleQuestion}>Trợ giúp & hỗ trợ</Item>
-                <Item icon={faRightFromBracket} onClick={logout} style={{ color: '#ff5050'}}>Đăng xuất</Item>
+                <Item icon={faRightFromBracket} onClick={logout} style={{color: '#ff5050'}}>Đăng xuất</Item>
             </div>
         </div>
     )

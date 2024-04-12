@@ -20,8 +20,8 @@ function App() {
     }, [searchParams]);
   return (
     <div className="App">
-        <WebSocketComponent>
-            <UserContextProvider>
+        <UserContextProvider>
+            <WebSocketComponent>
                 <Routes>
                     <Route path='' element={<Login />} />
                     <Route path='home' element={<Home />} />
@@ -40,8 +40,8 @@ function App() {
                     <Route path='callBack' element={<LoginRedirectCallBack />} />
                 </Routes>
                 {searchParams.get('isHideNavBar') !== 'true' && <Navbar/>}
-            </UserContextProvider>
-        </WebSocketComponent>
+            </WebSocketComponent>
+        </UserContextProvider>
     </div>
   );
 }

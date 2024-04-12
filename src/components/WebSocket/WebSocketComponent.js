@@ -1,14 +1,20 @@
-import React, { useEffect, useRef, createContext } from 'react';
+import React, {useEffect, useRef, createContext, useContext, useState} from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
-
+import {UserContext} from "../Context/UserContext";
+import Constant from "../Utils/Constant";
 
 const defaultWebSocketContext = {};
 export const WebSocketContext = createContext(defaultWebSocketContext);
 export const WebSocketComponent = (props) => {
   const clientRef = useRef(null);
+  const {userData } = useContext(UserContext);
+  const [messageWs, setMessageWs] = useState(null);
+  const [dataWs, setDataWs] = useState(null);
 
   useEffect(() => {
+    if (!userData) return; // Don't run the effect if userData is not set
+
     const socket = new SockJS('http://localhost:8080/ws');
     const client = new Client();
 
@@ -16,10 +22,13 @@ export const WebSocketComponent = (props) => {
       return socket;
     };
 
-    client.onConnect = (frame) => {
+    client.onConnect = () => {
       client.subscribe('/queue/messages', (message) => {
-        if (message.body) {
-          console.log("Received message: ", JSON.parse(message.body));
+        const messageBody = JSON.parse(message.body);
+        if (messageBody?.forUserId === userData.id) {
+          if (messageBody.type === Constant.SOCKET.SOCKET_TOPIC_UPDATE || messageBody.type === Constant.SOCKET.SOCKET_CHAT_UPDATE) {
+            setMessageWs(messageBody);
+          }
         }
       });
     };
@@ -37,12 +46,14 @@ export const WebSocketComponent = (props) => {
         client.deactivate().then(r => console.log('Deactivated'));
       }
     };
-  }, []);
+  }, [userData]); // Add userData as a dependency
 
   return (
-      <div>
-        {props.children}
-      </div>
+      <WebSocketContext.Provider value={{messageWs}}>
+        <div>
+          {props.children}
+        </div>
+      </WebSocketContext.Provider>
   );
 };
 

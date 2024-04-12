@@ -26,6 +26,11 @@ export default class Constant {
         IS_LOGOUT: 'IS_LOGOUT'
     };
 
+    static SOCKET = {
+        SOCKET_TOPIC_UPDATE: 'SOCKET_TOPIC_UPDATE',
+        SOCKET_CHAT_UPDATE: 'SOCKET_CHAT_UPDATE'
+    };
+
     static CITY = [
         'test',
         'An Giang',

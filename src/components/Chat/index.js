@@ -4,8 +4,10 @@ import {UserContext} from "../Context/UserContext";
 import axios from "axios";
 import Avatar from "../Avatar";
 import { useNavigate } from 'react-router-dom';
+import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 
 export const Chat = () => {
+    const { messageWs } = useContext(WebSocketContext);
     const {userData} = useContext(UserContext);
     const [topics, setTopics] = useState([]);
     const navigate = useNavigate();
@@ -13,6 +15,11 @@ export const Chat = () => {
     useEffect(() => {
         loadTopics();
     }, [userData]);
+    useEffect(() => {
+        if (messageWs) {
+            loadTopics();
+        }
+    }, [messageWs]);
 
     const openChat = (id, userInfo) => {
         navigate(`/chat/${id}?isHideNavBar=true`, { state: {topicId: id, userInfo: userInfo} });
