@@ -13,15 +13,9 @@ export const Navbar = (props) => {
     const [ selectedTab, setSelectedTab ] = useState('home');
     const navigate = useNavigate()
     const location = useLocation();
-    const [ showChatDot, setShowChatDot ] = useState(false);
 
     useEffect(() => {
         setSelectedTab(location.pathname.substring(1))
-        if (messageWs) {
-            if (messageWs.type === Constant.SOCKET.SOCKET_CHAT_UPDATE) {
-                setShowChatDot(true)
-            }
-        }
     }, [location.pathname, messageWs]);
 
     const onSelectTab = (tab) => {
@@ -42,7 +36,6 @@ export const Navbar = (props) => {
                  className={`nav-item ${selectedTab.startsWith('chat') ? 'active' : ''}`}>
                 <FontAwesomeIcon icon={faCommentDots} size={"xl"}
                                  style={{color: selectedTab.startsWith('chat') ? "#ff5050" : "#ffffff"}}/>
-                {showChatDot && <div className="red-dot"></div>}
             </div>
             <div onClick={() => onSelectTab('match')}
                  className={`nav-item ${selectedTab.startsWith('match') ? 'active' : ''}`}>

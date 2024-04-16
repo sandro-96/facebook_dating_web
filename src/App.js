@@ -13,6 +13,8 @@ import Navbar from "./components/Navbar";
 import {useEffect} from "react";
 import WebSocketComponent from './components/WebSocket/WebSocketComponent';
 import ChatScreen from "./components/Chat/ChatScreen";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     const [searchParams] = useSearchParams();
@@ -40,6 +42,7 @@ function App() {
                     <Route path='callBack' element={<LoginRedirectCallBack />} />
                 </Routes>
                 {searchParams.get('isHideNavBar') !== 'true' && <Navbar/>}
+                <ToastContainer limit={1}/>
             </WebSocketComponent>
         </UserContextProvider>
     </div>

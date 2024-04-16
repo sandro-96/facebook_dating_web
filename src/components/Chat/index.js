@@ -6,6 +6,7 @@ import Avatar from "../Avatar";
 import { useNavigate } from 'react-router-dom';
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import Constant from "../Utils/Constant";
+import {ToastContainer} from "react-toastify";
 
 export const Chat = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -46,7 +47,6 @@ export const Chat = () => {
                     <span className='fs-3'>{username}</span>
                     <div className='fw-normal bio' style={{color: '#cccaca'}}>{value.lastMessage}</div>
                 </div>
-                <div className="red-dot"></div>
             </div>
         );
     };
