@@ -4,8 +4,7 @@ import { Client } from '@stomp/stompjs';
 import {UserContext} from "../Context/UserContext";
 import Constant from "../Utils/Constant";
 import {Slide, toast} from 'react-toastify';
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const defaultWebSocketContext = {};
 export const WebSocketContext = createContext(defaultWebSocketContext);
@@ -14,6 +13,7 @@ export const WebSocketComponent = (props) => {
   const {userData } = useContext(UserContext);
   const [messageWs, setMessageWs] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (!userData) return; // Don't run the effect if userData is not set
@@ -27,7 +27,8 @@ export const WebSocketComponent = (props) => {
 
     // Function to show toast notification
     const showToastNotification = (message, data) => {
-      data.topicId &&
+      console.log(location.pathname)
+      data.topicId && location.pathname !== `/chat/${data.topicId}` &&
       toast(message, {
         position: "top-center",
         autoClose: 5000,
@@ -37,12 +38,10 @@ export const WebSocketComponent = (props) => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        transition: Slide,/*
+        transition: Slide,
         onClick: () => {
-          axios.get(`fbd_users/${data.createdBy}`).then((res) => {
-            navigate(`/chat/${data.topicId}?isHideNavBar=true`, { state: {topicId: data.topicId, userInfo: res.data} });
-          })
-        }*/
+          navigate('chat')
+        }
       });
     };
 
@@ -65,13 +64,13 @@ export const WebSocketComponent = (props) => {
     // Function to handle topic update
     const handleTopicUpdate = (messageBody) => {
       const toastMessage = 'Bạn có đoạn chat mới!';
-      showToastNotification(toastMessage, messageBody);
+      //showToastNotification(toastMessage, messageBody);
     };
 
 // Function to handle chat update
     const handleChatUpdate = (messageBody) => {
-      showToastNotification(messageBody.content, messageBody);
-      showDesktopNotification(messageBody.content);
+      //showToastNotification(messageBody.content, messageBody);
+      //showDesktopNotification(messageBody.content);
     };
 
 // Function to handle topic delete
@@ -83,7 +82,6 @@ export const WebSocketComponent = (props) => {
     client.onConnect = () => {
       client.subscribe('/queue/messages', (message) => {
         const messageBody = JSON.parse(message.body);
-        console.log(messageBody)
         if (messageBody?.forUserId === userData.id) {
           setMessageWs(messageBody);
           switch (messageBody.type) {

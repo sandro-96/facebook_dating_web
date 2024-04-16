@@ -3,10 +3,8 @@ import React, {useContext, useEffect, useState} from "react";
 import {UserContext} from "../Context/UserContext";
 import axios from "axios";
 import Avatar from "../Avatar";
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
-import Constant from "../Utils/Constant";
-import {ToastContainer} from "react-toastify";
 
 export const Chat = () => {
     const { messageWs } = useContext(WebSocketContext);
