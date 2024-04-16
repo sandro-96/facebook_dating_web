@@ -28,7 +28,8 @@ export default class Constant {
 
     static SOCKET = {
         SOCKET_TOPIC_UPDATE: 'SOCKET_TOPIC_UPDATE',
-        SOCKET_CHAT_UPDATE: 'SOCKET_CHAT_UPDATE'
+        SOCKET_CHAT_UPDATE: 'SOCKET_CHAT_UPDATE',
+        SOCKET_TOPIC_DELETE: 'SOCKET_TOPIC_DELETE'
     };
 
     static CITY = [

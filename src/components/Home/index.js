@@ -30,11 +30,10 @@ const Home = () => {
         axios.post('topic/createTopic', {
             forUserId: userId,
             description: 'Bắt đầu đoạn chat'
-        }).then(value => setLikedUsers(likedUsers.filter(user => user.id !== userId)))
-        /*axios.post('chat', {
-            forUserId: userId,
-            content: 'start a chat'
-        }).then(value => {})*/
+        }).then(value => {
+            setLikedUsers(likedUsers.filter(user => user.id !== userId))
+            navigate(`/chat/${value.data.id}?isHideNavBar=true`, {state: {topicId: value.data.id, userInfo: value.data.user2}})
+        })
     }
 
     const MatchItem = ({value, index, startChat}) => {

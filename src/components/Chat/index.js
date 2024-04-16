@@ -5,6 +5,7 @@ import axios from "axios";
 import Avatar from "../Avatar";
 import { useNavigate } from 'react-router-dom';
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
+import Constant from "../Utils/Constant";
 
 export const Chat = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -38,12 +39,14 @@ export const Chat = () => {
         const {username, avatar, gender, birthYear, id} = userData.id === value.user1.id ? value.user2 : value.user1;
 
         return (
-            <div className={`match-item gap-1`} onClick={() => openChat(value.id, {username, avatar, gender, birthYear, id})}>
+            <div className={`match-item gap-1`}
+                 onClick={() => openChat(value.id, {username, avatar, gender, birthYear, id})}>
                 <Avatar imgKey={avatar} genderKey={gender} sizeKey={48}/>
                 <div className="flex-grow-1 text-start text-capitalize d-flex flex-column ms-2">
                     <span className='fs-3'>{username}</span>
                     <div className='fw-normal bio' style={{color: '#cccaca'}}>{value.lastMessage}</div>
                 </div>
+                <div className="red-dot"></div>
             </div>
         );
     };
@@ -52,9 +55,13 @@ export const Chat = () => {
         <div className="chat-wrap">
             <h2>Đoạn chat</h2>
             <div className="content-wrap">
-                {topics.map((topic, index) => (
-                    <MatchItem key={`match-item_${index}`} value={topic} index={index}/>
-                ))}
+                {topics.length === 0 ? (
+                    <span className="noRecords">Không có cuộc trò chuyện nào gần đây</span>
+                ) : (
+                    topics.map((topic, index) => (
+                        <MatchItem key={`match-item_${index}`} value={topic} index={index}/>
+                    ))
+                )}
             </div>
         </div>
     )

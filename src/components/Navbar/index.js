@@ -5,16 +5,24 @@ import { faHeart, faUser, faHouse, faCommentDots } from '@fortawesome/free-solid
 import Constant from "../Utils/Constant";
 import {UserContext} from "../Context/UserContext";
 import {useLocation, useNavigate} from "react-router-dom";
+import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 
 export const Navbar = (props) => {
+    const { messageWs } = useContext(WebSocketContext);
     const { isAuthenticated, contextStatus } = useContext(UserContext);
     const [ selectedTab, setSelectedTab ] = useState('home');
     const navigate = useNavigate()
     const location = useLocation();
+    const [ showChatDot, setShowChatDot ] = useState(false);
 
     useEffect(() => {
         setSelectedTab(location.pathname.substring(1))
-    }, [location.pathname]);
+        if (messageWs) {
+            if (messageWs.type === Constant.SOCKET.SOCKET_CHAT_UPDATE) {
+                setShowChatDot(true)
+            }
+        }
+    }, [location.pathname, messageWs]);
 
     const onSelectTab = (tab) => {
         setSelectedTab(tab);
@@ -34,6 +42,7 @@ export const Navbar = (props) => {
                  className={`nav-item ${selectedTab.startsWith('chat') ? 'active' : ''}`}>
                 <FontAwesomeIcon icon={faCommentDots} size={"xl"}
                                  style={{color: selectedTab.startsWith('chat') ? "#ff5050" : "#ffffff"}}/>
+                {showChatDot && <div className="red-dot"></div>}
             </div>
             <div onClick={() => onSelectTab('match')}
                  className={`nav-item ${selectedTab.startsWith('match') ? 'active' : ''}`}>

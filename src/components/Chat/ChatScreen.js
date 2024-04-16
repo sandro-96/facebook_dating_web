@@ -1,12 +1,21 @@
 import React, {useState, useEffect, useRef, createContext, useContext} from 'react';
 import axios from 'axios';
-import {useLocation, useParams} from 'react-router-dom';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import Avatar from "../Avatar";
 import DateUtils from "../Utils/DateUtils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPaperPlane, faBars} from "@fortawesome/free-solid-svg-icons";
+import {
+    faPaperPlane,
+    faBars,
+    faArrowRightFromBracket,
+    faArrowLeft
+} from "@fortawesome/free-solid-svg-icons";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
-import {Popover, Button} from "react-bootstrap";
+import {Popper} from "@mui/material";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import Constant from "../Utils/Constant";
+
 export const ChatScreen = () => {
     const { messageWs } = useContext(WebSocketContext);
     const { state } = useLocation();
@@ -15,6 +24,13 @@ export const ChatScreen = () => {
     const [newMessage, setNewMessage] = useState('');
     const [userInfo] = useState(state.userInfo);
     const messagesEndRef = useRef(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const navigate = useNavigate();
+    const handleClick = (event) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget);
+    };
+    const open = Boolean(anchorEl);
+    const idPopper = open ? 'leave-chat-popover' : undefined;
 
     useEffect(() => {
         loadMessages();
@@ -27,7 +43,12 @@ export const ChatScreen = () => {
     }, [messages]);
     useEffect(() => {
         if (messageWs && messageWs.topicId === state.topicId) {
-            setMessages([...messages, messageWs]);
+            console.log(messageWs.type)
+            if (messageWs.type === Constant.SOCKET.SOCKET_TOPIC_DELETE) {
+                navigate('/chat');
+            } else {
+                setMessages([...messages, messageWs]);
+            }
         }
     }, [messageWs]);
 
@@ -67,6 +88,28 @@ export const ChatScreen = () => {
         }
     };
 
+    const handleDeleteChat = () => {
+        confirmAlert({
+            title: 'Xác nhận',
+            message: 'Bạn có muốn xóa đoạn chat này?',
+            buttons: [
+                {
+                    label: 'Có',
+                    onClick: () => {
+                        axios.delete(`topic/deleteTopic/${state.topicId}`)
+                            .then(() => navigate(-1));
+                    }
+                },
+                {
+                    label: 'Không',
+                    onClick: () => {
+                        setAnchorEl(null)
+                    }
+                }
+            ]
+        });
+    };
+
     return (
         <div className="chat-screen-wrap">
             <div className="top-bar">
@@ -74,8 +117,21 @@ export const ChatScreen = () => {
                     <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                     <span className='fs-4 ms-2'>{userInfo.username} {userInfo.birthYear > 0 && <span>, {DateUtils.calculateOlds(userInfo.birthYear)}</span>}</span>
                 </div>
-                <FontAwesomeIcon icon={faBars} size="lg"/>
+                <FontAwesomeIcon icon={faBars} size="lg" onClick={handleClick}/>
             </div>
+            <Popper id={idPopper} open={open} anchorEl={anchorEl}>
+                <div className="leave-chat-popover-body">
+                    <div className="leave-chat-popover-item" onClick={() => navigate(-1) }>
+                        <span>Trở về</span>
+                        <FontAwesomeIcon icon={faArrowLeft} size="lg"/>
+                    </div>
+                    <div className="divider"></div>
+                    <div className="leave-chat-popover-item" onClick={handleDeleteChat}>
+                        <span>Xóa đoạn chat</span>
+                        <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg"/>
+                    </div>
+                </div>
+            </Popper>
             <div className="content-wrap">
                 {messages.map((message, index) => (
                     <div key={index}
