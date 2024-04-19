@@ -151,7 +151,9 @@ export const ChatScreen = () => {
                             <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                         }
                         <div className="message-content">
-                            {message.image ? <img src={message.image} alt="message"/> : message.content}
+                            {
+                                message.imagePath ? <img src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}`} alt="Chat Image"/> : message.content
+                            }
                         </div>
                     </div>
                 ))}
