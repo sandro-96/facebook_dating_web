@@ -45,6 +45,7 @@ export const Chat = () => {
                     <span className='fs-3'>{username}</span>
                     <div className='fw-normal bio' style={{color: '#cccaca'}}>{value.lastMessage}</div>
                 </div>
+                {value.unread && <div className="red-dot"></div>}
             </div>
         );
     };

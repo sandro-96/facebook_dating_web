@@ -8,7 +8,8 @@ import {
     faPaperPlane,
     faBars,
     faArrowRightFromBracket,
-    faArrowLeft
+    faArrowLeft,
+    faImage
 } from "@fortawesome/free-solid-svg-icons";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import {Popper} from "@mui/material";
@@ -43,7 +44,6 @@ export const ChatScreen = () => {
     }, [messages]);
     useEffect(() => {
         if (messageWs && messageWs.topicId === state.topicId) {
-            console.log(messageWs.type)
             if (messageWs.type === Constant.SOCKET.SOCKET_TOPIC_DELETE) {
                 navigate('/chat');
             } else {
@@ -51,6 +51,11 @@ export const ChatScreen = () => {
             }
         }
     }, [messageWs]);
+
+    const handleFileChange = (event) => {
+        // Create a new message with the selected file
+        handleSendMessage(event.target.files[0]);
+    };
 
     const loadMessages = async () => {
         try {
@@ -72,14 +77,18 @@ export const ChatScreen = () => {
         }
     };
 
-    const handleSendMessage = async () => {
-        if (newMessage.trim() !== '') {
+    const handleSendMessage = async (selectedFile) => {
+        if (newMessage.trim() !== '' || selectedFile) {
             try {
-                await axios.post(`chat`, {
-                    forUserId: userInfo.id,
-                    topicId: state.topicId,
-                    content: newMessage
-                });
+                const formData = new FormData();
+                debugger
+                formData.append('file', selectedFile);
+                formData.append('forUserId', userInfo.id);
+                formData.append('topicId', state.topicId);
+                formData.append('content', newMessage);
+
+                await axios.post(`chat`, formData);
+
                 setNewMessage('');
                 setMessages([...messages, { content: newMessage, forUserId: userInfo.id }]);
             } catch (error) {
@@ -142,12 +151,22 @@ export const ChatScreen = () => {
                             <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                         }
                         <div className="message-content">
-                            {message.content}
+                            {message.image ? <img src={message.image} alt="message"/> : message.content}
                         </div>
                     </div>
                 ))}
             </div>
             <div className="send-message-wrap stick-to-bottom">
+                <label htmlFor="file-upload">
+                    <FontAwesomeIcon icon={faImage} size="2x" style={{color: "#74C0FC"}}/>
+                </label>
+                <input
+                    id="file-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{display: 'none'}}
+                />
                 <input
                     className="form-control"
                     type="text"

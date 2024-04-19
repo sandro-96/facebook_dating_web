@@ -15,6 +15,7 @@ const Home = () => {
     const navigate = useNavigate()
     const [likedUsers, setLikedUsers] = useState([])
     const webSocket = useContext(WebSocketContext);
+    const [isCreatingTopic, setIsCreatingTopic] = useState(false);
     useEffect(() => {
         if (isAuthenticated && contextStatus === Constant.CONTEXT_STATUS.SUCCESS) {
             if (userData.isFirstLogin) navigate('/setting/profile?isHideNavBar=true')
@@ -26,14 +27,23 @@ const Home = () => {
             value.data && setLikedUsers(value.data)
         })
     }
+
     const startChat = (userId) => {
+        if (isCreatingTopic) {
+            return; // If a topic is already being created, do nothing
+        }
+
+        setIsCreatingTopic(true); // Set isCreatingTopic to true before starting the topic creation process
+
         axios.post('topic/createTopic', {
             forUserId: userId,
             description: 'Bắt đầu đoạn chat'
         }).then(value => {
             setLikedUsers(likedUsers.filter(user => user.id !== userId))
             navigate(`/chat/${value.data.id}?isHideNavBar=true`, {state: {topicId: value.data.id, userInfo: value.data.user2}})
-        })
+        }).finally(() => {
+            setIsCreatingTopic(false); // Set isCreatingTopic back to false when the topic creation process ends
+        });
     }
 
     const MatchItem = ({value, index, startChat}) => {
