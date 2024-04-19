@@ -39,6 +39,18 @@
         top: 10px; // Adjust this value as needed
         right: 10px; // Adjust this value as needed
       }
+      .flex-grow-1-text-start {
+        flex-grow: 1;
+        text-align: start;
+        display: flex;
+        flex-direction: column;
+        margin-left: 0.5rem;
+        color: rgba(204, 202, 202, 0.55);
+        &.unread {
+          font-weight: bold;
+          color: unset;
+        }
+      }
     }
   }
 }
@@ -93,6 +105,9 @@
       &.right {
         align-self: end;
         background-color: rgba(175, 232, 246, 0.75);
+      }
+      &.image {
+        background-color: unset;
       }
     }
   }

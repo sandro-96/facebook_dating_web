@@ -27,6 +27,7 @@ export const ChatScreen = () => {
     const messagesEndRef = useRef(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
+    const [selectedFile, setSelectedFile] = useState(null);
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
@@ -51,10 +52,15 @@ export const ChatScreen = () => {
             }
         }
     }, [messageWs]);
+    useEffect(() => {
+        if (selectedFile) {
+            handleSendMessage();
+        }
+    }, [selectedFile]);
 
     const handleFileChange = (event) => {
         // Create a new message with the selected file
-        handleSendMessage(event.target.files[0]);
+        setSelectedFile(event.target.files[0]);
     };
 
     const loadMessages = async () => {
@@ -77,11 +83,10 @@ export const ChatScreen = () => {
         }
     };
 
-    const handleSendMessage = async (selectedFile) => {
+    const handleSendMessage = async () => {
         if (newMessage.trim() !== '' || selectedFile) {
             try {
                 const formData = new FormData();
-                debugger
                 formData.append('file', selectedFile);
                 formData.append('forUserId', userInfo.id);
                 formData.append('topicId', state.topicId);
@@ -90,7 +95,8 @@ export const ChatScreen = () => {
                 await axios.post(`chat`, formData);
 
                 setNewMessage('');
-                setMessages([...messages, { content: newMessage, forUserId: userInfo.id }]);
+                setMessages([...messages, { content: newMessage, forUserId: userInfo.id, imagePath: selectedFile ? selectedFile.name : null}]);
+                setSelectedFile(null);
             } catch (error) {
                 console.error('Failed to send message:', error);
             }
@@ -144,7 +150,7 @@ export const ChatScreen = () => {
             <div className="content-wrap">
                 {messages.map((message, index) => (
                     <div key={index}
-                         className={`message-item ${message.forUserId === userInfo.id ? 'right' : 'left'}`}
+                         className={`message-item ${message.forUserId === userInfo.id ? 'right' : 'left'} ${message.imagePath && 'image'}`}
                          ref={index === messages.length - 1 ? messagesEndRef : null}>
                         {
                             message.forUserId !== userInfo.id &&
@@ -152,7 +158,14 @@ export const ChatScreen = () => {
                         }
                         <div className="message-content">
                             {
-                                message.imagePath ? <img src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}`} alt="Chat Image"/> : message.content
+                                message.imagePath ?
+                                    <img
+                                        src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
+                                        alt="Chat Image"
+                                        style={{ maxWidth: 200}}
+                                        onLoad={() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })}
+                                    />
+                                    : message.content
                             }
                         </div>
                     </div>
