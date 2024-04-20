@@ -19,7 +19,7 @@ export const Match = () => {
     }, []);
 
     const getLikedCount = () => {
-        axios.get(`match/count/liked`).then(res => {
+        axios.get(`match/matched_count`).then(res => {
             res.data && setLiked(liked - res.data)
         })
     }

@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar";
 import {useEffect} from "react";
 import WebSocketComponent from './components/WebSocket/WebSocketComponent';
 import ChatScreen from "./components/Chat/ChatScreen";
+import PublicChatScreen from "./components/Chat/PublicChatScreen";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -30,6 +31,7 @@ function App() {
                     <Route path="chat">
                         <Route path="" element={<Chat />} />
                         <Route path=":id" element={<ChatScreen />} />
+                        <Route path="public" element={<PublicChatScreen />} />
                     </Route>
                     <Route path="match">
                         <Route path="" element={<Match />} />

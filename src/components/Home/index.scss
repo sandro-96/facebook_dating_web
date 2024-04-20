@@ -14,10 +14,11 @@
     width: 100%;
     border-radius: 10px;
     padding: 12px;
-    color: #ff5a76;
     font-weight: bold;
     display: flex;
     gap: 10px;
+    justify-content: space-between;
+    border: 1px solid #bbb9b9;
   }
   .match-item {
     padding: 10px;

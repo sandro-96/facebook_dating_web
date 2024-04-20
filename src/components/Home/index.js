@@ -5,7 +5,7 @@ import Constant from "../Utils/Constant";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faGlobe} from "@fortawesome/free-solid-svg-icons";
+import {faEarthAsia, faGlobe} from "@fortawesome/free-solid-svg-icons";
 import DateUtils from "../Utils/DateUtils";
 import Avatar from "../Avatar";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
@@ -64,7 +64,7 @@ const Home = () => {
 
     return (
         userData && <div className="home-wrap">
-            <h1>Facebook Action</h1>
+            <h1>FAction</h1>
             <div className="d-flex gap-3 align-items-center mt-4">
                 <Avatar imgKey={userData.avatar} genderKey={userData.gender}></Avatar>
                 <div className="flex-grow-1 text-start d-flex flex-column ms-2">
@@ -74,9 +74,9 @@ const Home = () => {
                 </div>
             </div>
             <h6 className='title'>Cộng đồng</h6>
-            <div className="public-chat-wrap">
-                <FontAwesomeIcon icon={faGlobe} size={'xl'} style={{color: "#6ec487"}}/>
-                <span>Kênh chat chung</span>
+            <div className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
+                <h3>Kênh chat chung</h3>
+                <FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC",}}/>
             </div>
             <h6 className='title'>Những người đã thích bạn:</h6>
             {
