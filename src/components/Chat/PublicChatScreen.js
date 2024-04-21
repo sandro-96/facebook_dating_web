@@ -25,30 +25,51 @@ export const PublicChatScreen = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef(null);
+    const [page, setPage] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
+    const [isSending, setIsSending] = useState(false);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
 
     useEffect(() => {
-        loadMessages();
+        loadMessages(page);
     }, []);
     useEffect(() => {
-        if (messagesEndRef.current) {
+        if (messagesEndRef.current && !isLoadingMore) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
-    }, [messages]);
+    }, [messages, isLoadingMore]);
     useEffect(() => {
-        if (messageWs && messageWs.topicId === state.topicId) {
-            setMessages([...messages, messageWs]);
+        if (messageWs &&
+            messageWs.type === Constant.SOCKET.SOCKET_PUBLIC_CHAT_NEW_MESSAGE
+            && messageWs.data.createdBy !== userData.id
+        ) {
+            setMessages([...messages, messageWs.data]);
         }
     }, [messageWs]);
     const handleInputChange = (event) => {
         setNewMessage(event.target.value);
     };
 
-    const loadMessages = async () => {
+    const loadMessages = async (page) => {
         try {
-            const response = await axios.get(`chat/public`);
-            response && setMessages(response.data.content);
+            const response = await axios.get(`chat/public?page=${page}&size=50`);
+            if (response && response.data) {
+                setMessages(oldMessages => [...response.data.content.reverse(), ...oldMessages]);
+                setTotalPage(response.data.totalPages);
+            }
         } catch (error) {
             console.error('Failed to load messages:', error);
+        }
+    }
+    const handleScroll = (e) => {
+        const { scrollTop} = e.currentTarget;
+        if (scrollTop === 0) { // top of the chat
+            if (page < totalPage - 1) {
+                setIsLoadingMore(true);
+                setPage(page + 1); // increment page number
+                loadMessages(page + 1);
+                setIsLoadingMore(false);
+            }
         }
     };
 
@@ -60,7 +81,8 @@ export const PublicChatScreen = () => {
     };
 
     const handleSendMessage = async () => {
-        if (newMessage.trim() !== '') {
+        if (newMessage.trim() !== '' && !isSending) {
+            setIsSending(true);
             try {
                 const formData = new FormData();
                 formData.append('content', newMessage);
@@ -71,8 +93,20 @@ export const PublicChatScreen = () => {
                 }
             } catch (error) {
                 console.error('Failed to send message:', error);
+            } finally {
+                setIsSending(false);
             }
         }
+    };
+
+    const getRandomColor = () => {
+        let color = '#';
+        for (let i = 0; i < 3; i++) {
+            const value = Math.floor(Math.random() * 128) + 128; // Generate a number between 128 and 255
+            const part = value.toString(16); // Convert the number to a hexadecimal string
+            color += part.length < 2 ? '0' + part : part;
+        }
+        return color;
     };
 
     return (
@@ -82,7 +116,7 @@ export const PublicChatScreen = () => {
                     Kênh chat chung
                 </div>
             </div>
-            <div className="content-wrap">
+            <div className="content-wrap" onScroll={handleScroll}>
                 {messages.map((message, index) => (
                     <div key={index}
                          className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
@@ -92,7 +126,11 @@ export const PublicChatScreen = () => {
                             <Avatar imgKey={message.userInfo.avatar} genderKey={message.userInfo.gender} sizeKey={30}/>
                         }
                         <div className="message-content">
-                            {message.content}
+                            {message.createdBy !== userData.id &&
+                                <div style={{color: getRandomColor()}}>{message.userInfo.username}</div>
+                            }
+                            <span className="mt-1">{message.content}</span>
+                            <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
                         </div>
                     </div>
                 ))}
@@ -109,7 +147,7 @@ export const PublicChatScreen = () => {
                     onKeyDown={handleKeyDown}
                 />
                 <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x"
-                                 style={{color: "#74C0FC"}}/>
+                                 style={{color: "#74C0FC"}} disabled={isSending}/>
             </div>
         </div>
     );

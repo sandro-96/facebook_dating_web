@@ -78,6 +78,10 @@ export const WebSocketComponent = (props) => {
       // No action needed for topic delete
     };
 
+    const handlePublicChat = (messageBody) => {
+
+    };
+
 // Use the functions in the onConnect callback
     client.onConnect = () => {
       client.subscribe('/queue/messages', (message) => {
@@ -97,6 +101,9 @@ export const WebSocketComponent = (props) => {
             default:
               console.log('Unknown message type:', messageBody.type);
           }
+        }
+        else if (messageBody.type === Constant.SOCKET.SOCKET_PUBLIC_CHAT_NEW_MESSAGE) {
+          setMessageWs(messageBody);
         }
       });
     };

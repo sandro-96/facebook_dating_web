@@ -28,6 +28,7 @@ export const ChatScreen = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState(null);
+    const [isSending, setIsSending] = useState(false);
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
@@ -84,7 +85,8 @@ export const ChatScreen = () => {
     };
 
     const handleSendMessage = async () => {
-        if (newMessage.trim() !== '' || selectedFile) {
+        if ((newMessage.trim() !== '' || selectedFile) && !isSending) {
+            setIsSending(true);
             try {
                 const formData = new FormData();
                 formData.append('file', selectedFile);
@@ -99,6 +101,8 @@ export const ChatScreen = () => {
                 setSelectedFile(null);
             } catch (error) {
                 console.error('Failed to send message:', error);
+            } finally {
+                setIsSending(false);
             }
         }
     };
@@ -150,23 +154,21 @@ export const ChatScreen = () => {
             <div className="content-wrap">
                 {messages.map((message, index) => (
                     <div key={index}
-                         className={`message-item ${message.forUserId === userInfo.id ? 'right' : 'left'} ${message.imagePath && 'image'}`}
+                         className={`message-item ${message.forUserId === userInfo.id ? 'right' : 'left'}`}
                          ref={index === messages.length - 1 ? messagesEndRef : null}>
                         {
                             message.forUserId !== userInfo.id &&
                             <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                         }
-                        <div className="message-content">
-                            {
-                                message.imagePath ?
-                                    <img
-                                        src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
-                                        alt="Chat Image"
-                                        style={{ maxWidth: 200}}
-                                        onLoad={() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })}
-                                    />
-                                    : message.content
+                        <div className={`message-content ${message.imagePath && 'image'}`}>
+                            {message.imagePath ? <img
+                                src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
+                                alt="Chat Image"
+                                style={{ maxWidth: 200}}
+                                onLoad={() => messagesEndRef.current.scrollIntoView({ behavior: "smooth" })}
+                            /> : <span className="mt-1">{message.content}</span>
                             }
+                            <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
                         </div>
                     </div>
                 ))}
@@ -189,8 +191,7 @@ export const ChatScreen = () => {
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                 />
-                <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x"
-                                 style={{color: "#74C0FC"}}/>
+                <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x" style={{color: "#74C0FC"}} disabled={isSending}/>
             </div>
         </div>
     );

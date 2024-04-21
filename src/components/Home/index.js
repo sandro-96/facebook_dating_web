@@ -9,6 +9,7 @@ import {faEarthAsia, faGlobe} from "@fortawesome/free-solid-svg-icons";
 import DateUtils from "../Utils/DateUtils";
 import Avatar from "../Avatar";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
     const { isAuthenticated, contextStatus, userData } = useContext(UserContext);
@@ -16,6 +17,7 @@ const Home = () => {
     const [likedUsers, setLikedUsers] = useState([])
     const webSocket = useContext(WebSocketContext);
     const [isCreatingTopic, setIsCreatingTopic] = useState(false);
+    const { t } = useTranslation();
     useEffect(() => {
         if (isAuthenticated && contextStatus === Constant.CONTEXT_STATUS.SUCCESS) {
             if (userData.isFirstLogin) navigate('/setting/profile?isHideNavBar=true')
@@ -73,7 +75,7 @@ const Home = () => {
                     <div className='fw-normal bio'>{userData.email}</div>
                 </div>
             </div>
-            <h6 className='title'>Cộng đồng</h6>
+            <h6 className='title'>{t('home.publicChat')}</h6>
             <div className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
                 <h3>Kênh chat chung</h3>
                 <FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC",}}/>

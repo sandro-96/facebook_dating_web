@@ -77,8 +77,6 @@
     height: calc(100vh - 75px - 60px); // Adjust this value based on the height of your top-bar and send-message-wrap
     overflow-y: auto;
     .message-item {
-      padding: 10px 10px 10px 10px;
-      border-radius: 10px;
       display: flex;
       margin-top: 10px;
       font-weight: bold;
@@ -86,6 +84,7 @@
       color: #2c3034;
       width: fit-content;
       height: fit-content;
+      max-width: 70%;
       float: left; // Default float
       .message-content {
         font-size: 14px;
@@ -93,21 +92,37 @@
         font-weight: normal;
         white-space: break-spaces;
         word-break: break-word;
-        align-self: center;
+        text-align: start;
+        padding: 10px 10px 10px 10px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        .time {
+          font-size: 12px;
+          margin-top: 2px;
+        }
+        &.image {
+          background-color: unset !important;
+        }
       }
       &.left {
         color: #FFFFFF;
-        background-color: rgba(55, 70, 73, 0.75);
         .message-content {
-          margin-left: 10px;
+          margin-left: 5px;
+          background-color: rgba(55, 70, 73, 0.75);
+          .time {
+            color: #a29f9f;
+          }
         }
       }
       &.right {
         align-self: end;
-        background-color: rgba(175, 232, 246, 0.75);
-      }
-      &.image {
-        background-color: unset;
+        .message-content {
+          background-color: rgba(175, 232, 246, 0.75);
+          .time {
+            color: #6c6b6b;
+          }
+        }
       }
     }
   }
