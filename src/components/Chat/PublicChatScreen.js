@@ -17,6 +17,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Constant from "../Utils/Constant";
 import {UserContext} from "../Context/UserContext";
+import MessageDate from "./MessageDate";
 
 export const PublicChatScreen = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -118,19 +119,23 @@ export const PublicChatScreen = () => {
             </div>
             <div className="content-wrap" onScroll={handleScroll}>
                 {messages.map((message, index) => (
-                    <div key={index}
-                         className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
-                         ref={index === messages.length - 1 ? messagesEndRef : null}>
-                        {
-                            message.createdBy !== userData.id &&
-                            <Avatar imgKey={message.userInfo.avatar} genderKey={message.userInfo.gender} sizeKey={30}/>
-                        }
-                        <div className="message-content">
-                            {message.createdBy !== userData.id &&
-                                <div style={{color: getRandomColor()}}>{message.userInfo.username}</div>
+                    <div className="d-flex flex-column" key={index}>
+                        <MessageDate index={index} messages={messages} />
+                        <div key={index}
+                             className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
+                             ref={index === messages.length - 1 ? messagesEndRef : null}>
+                            {
+                                message.createdBy !== userData.id &&
+                                <Avatar imgKey={message.userInfo.avatar} genderKey={message.userInfo.gender}
+                                        sizeKey={30}/>
                             }
-                            <span className="mt-1">{message.content}</span>
-                            <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                            <div className="message-content">
+                                {message.createdBy !== userData.id &&
+                                    <div style={{color: getRandomColor()}}>{message.userInfo.username}</div>
+                                }
+                                <span>{message.content}</span>
+                                <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                            </div>
                         </div>
                     </div>
                 ))}

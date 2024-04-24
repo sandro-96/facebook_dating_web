@@ -1,7 +1,55 @@
 {
+  "common": {
+    "save": "Lưu"
+  },
+  "login": {
+    "title": "Đăng nhập",
+    "withGG": "Đăng nhập với Google"
+  },
   "home": {
     "community": "Cộng đồng",
     "publicChat": "Kênh chat chung",
-    "userLiked": "Những người đã thích bạn:"
+    "userLiked": "Những người đã thích bạn:",
+    "startChat": "Bắt đầu đoạn chat"
+  },
+  "match": {
+    "title": "Kết Đôi",
+    "filter": "Bộ lọc"
+  },
+  "filter": {
+    "title": "Bộ Lọc",
+    "gender": "Giới tính",
+    "all": "Tất cả",
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác"
+  },
+  "chat": {
+    "title": "Đoạn Chat",
+    "noRecord": "Không có tin nhắn nào gần đây",
+    "confirm": "Xác nhận",
+    "confirmMessage": "Bạn có chắc chắn muốn kết thúc cuộc trò chuyện này không?",
+    "yes": "Có",
+    "cancel": "Hủy",
+    "goBack": "Quay lại",
+    "deleteChat": "Xóa cuộc trò chuyện"
+  },
+  "setting": {
+    "title": "Trang cá nhân",
+    "feedback": "Đóng góp ý kiến",
+    "support": "Trợ giúp & hỗ trợ",
+    "logout": "Đăng xuất"
+  },
+  "profile": {
+    "title": "Trang cá nhân",
+    "name": "Tên",
+    "introduction": "Giới thiệu",
+    "birthYear": "Năm sinh",
+    "city": "Thành phố",
+    "gender": "Giới tính",
+    "avatar": "Ảnh đại diện",
+    "namePlaceholder": "Nhập tên của bạn",
+    "updateSuccess": "Cập nhật thông tin thành công!",
+    "describeYourself": "Mô tả về bản thân"
   }
 }

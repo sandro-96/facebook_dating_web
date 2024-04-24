@@ -5,11 +5,13 @@ import {faAngleLeft, faMars, faVenus, faVenusMars} from "@fortawesome/free-solid
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {UserContext} from "../Context/UserContext";
+import {useTranslation} from "react-i18next";
 const Filter = (props) => {
     const { userData, setUserData } = useContext(UserContext)
     const navigate = useNavigate()
     const [gender, setGender] = useState(null);
     const [filter, setFilter] = useState(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         axios.get(`/match/filter_option`).then(value => {
@@ -35,38 +37,34 @@ const Filter = (props) => {
         <div className="match-wrap">
             <div className='mb-4 d-flex justify-content-between align-items-center'>
                 <FontAwesomeIcon icon={faAngleLeft} size="2xl" style={{color: "#e3e3e3"}} onClick={() => navigate(-1)} role='button'/>
-                <h2 className='flex-grow-1'>Bộ Lọc</h2>
-                <div className='save-btn' role='button' onClick={() => saveFilter()}>Lưu</div>
+                <h2 className='flex-grow-1'>{t('filter.title')}</h2>
+                <div className='save-btn' role='button' onClick={() => saveFilter()}>{t('common.save')}</div>
             </div>
             <div className='filter-content'>
                 <div className="filter-item">
-                    <span className='mb-2 fw-bold'>Giới tính</span>
+                    <span className='mb-2 fw-bold'>{t('filter.gender')}</span>
                     <div className='gender-wrap filter-item-content'>
                         <div className={`all d-flex ${gender === null ? 'active' : ''}`}
                              onClick={() => setGender(null)}>
-                            <span className="ms-1">Tất cả</span>
+                            <span className="ms-1">{t('filter.all')}</span>
                         </div>
                         <div className={`male d-flex ${gender === 'male' ? 'active' : ''}`}
                              onClick={() => setGender('male')}>
                             <FontAwesomeIcon icon={faMars} size="lg" style={{color: "#e3e3e3"}}/>
-                            <span className="ms-1">Nam</span>
+                            <span className="ms-1">{t('filter.male')}</span>
                         </div>
                         <div className={`female d-flex ${gender === 'female' ? 'active' : ''}`}
                              onClick={() => setGender('female')}>
                             <FontAwesomeIcon icon={faVenus} size="lg" style={{color: "#e3e3e3"}}/>
-                            <span className="ms-1">Nữ</span>
+                            <span className="ms-1">{t('filter.female')}</span>
                         </div>
                         <div className={`other d-flex ${gender === 'other' ? 'active' : ''}`}
                              onClick={() => setGender('other')}>
                             <FontAwesomeIcon icon={faVenusMars} size="lg" style={{color: "#e3e3e3"}}/>
-                            <span className="ms-1">Khác</span>
+                            <span className="ms-1">{t('filter.other')}</span>
                         </div>
                     </div>
                 </div>
-                {/*<div className="filter-item">
-                    <span className='mb-2 fw-bold'>Độ tuổi</span>
-                    <div className="filter-item-content">adsasdasdasd</div>
-                </div>*/}
             </div>
         </div>
     );

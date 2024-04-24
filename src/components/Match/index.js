@@ -6,6 +6,7 @@ import axios from "axios";
 import DateUtils from "../Utils/DateUtils";
 import {useNavigate} from "react-router-dom";
 import Avatar from "../Avatar";
+import {useTranslation} from "react-i18next";
 
 const MAX_LIKE_DAY = 10
 
@@ -13,6 +14,7 @@ export const Match = () => {
     const [users, setUsers] = useState([])
     const navigate = useNavigate()
     const [liked, setLiked] = useState(MAX_LIKE_DAY)
+    const { t } = useTranslation();
     useEffect(() => {
         loadData()
         getLikedCount()
@@ -43,9 +45,9 @@ export const Match = () => {
         users &&
         <div className="match-wrap">
             <div className='mb-4 d-flex align-items-center'>
-                <h2 className='flex-grow-1'>Match</h2>
+                <h2 className='flex-grow-1'>{t('match.title')}</h2>
                 <div className='btn-filter' onClick={event => navigate('/match/filter')}>
-                    <span>Bộ lọc</span>
+                    <span>{t('match.filter')}</span>
                     <FontAwesomeIcon icon={faFilter} size="xl" style={{color: "#e3e3e3"}}/>
                 </div>
             </div>

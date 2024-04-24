@@ -76,6 +76,11 @@
     flex-direction: column;
     height: calc(100vh - 75px - 60px); // Adjust this value based on the height of your top-bar and send-message-wrap
     overflow-y: auto;
+    .date {
+      font-size: 12px;
+      color: #a29f9f;
+      margin-top: 10px;
+    }
     .message-item {
       display: flex;
       margin-top: 10px;
@@ -93,7 +98,7 @@
         white-space: break-spaces;
         word-break: break-word;
         text-align: start;
-        padding: 10px 10px 10px 10px;
+        padding: 6px 10px 3px 10px;
         border-radius: 10px;
         display: flex;
         flex-direction: column;

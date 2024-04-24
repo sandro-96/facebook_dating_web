@@ -6,10 +6,12 @@ import Avatar from "../Avatar";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faCircleQuestion, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import Constant from "../Utils/Constant";
+import {useTranslation} from "react-i18next";
 
 const Setting = () => {
     const {userData, setIsAuthenticated } = useContext(UserContext);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const logout = () => {
         localStorage.removeItem(Constant.LOCAL_STORAGE.AUTHORIZATION)
@@ -29,7 +31,7 @@ const Setting = () => {
 
     return (
         <div className="setting-wrap">
-            <h2>Trang cá nhân</h2>
+            <h2>{t('setting.title')}</h2>
             <div className="content-wrap">
                 <Item onClick={() => navigate('/setting/profile')}>
                     <div className="flex-grow-1 text-start d-flex flex-column ms-2">
@@ -37,9 +39,9 @@ const Setting = () => {
                         <div className='fw-normal bio'>{userData.email}</div>
                     </div>
                 </Item>
-                <Item icon={faPaperPlane}>Đóng góp ý kiến</Item>
-                <Item icon={faCircleQuestion}>Trợ giúp & hỗ trợ</Item>
-                <Item icon={faRightFromBracket} onClick={logout} style={{color: '#ff5050'}}>Đăng xuất</Item>
+                <Item icon={faPaperPlane}>{t('setting.feedback')}</Item>
+                <Item icon={faCircleQuestion}>{t('setting.support')}</Item>
+                <Item icon={faRightFromBracket} onClick={logout} style={{color: '#ff5050'}}>{t('setting.logout')}</Item>
             </div>
         </div>
     )

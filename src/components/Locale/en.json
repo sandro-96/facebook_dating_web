@@ -1,7 +1,55 @@
 {
+  "common": {
+    "save": "Save"
+  },
+  "login": {
+    "title": "Login",
+    "withGG": "Login with Google"
+  },
   "home": {
     "community": "Community",
     "publicChat": "Public Chat",
-    "userLiked": "People who liked you:"
+    "userLiked": "People who liked you:",
+    "startChat": "Start Chat"
+  },
+  "match": {
+    "title": "Match",
+    "filter": "Filter"
+  },
+  "filter": {
+    "title": "Filter",
+    "gender": "Gender",
+    "all": "All",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
+  },
+  "chat": {
+    "title": "Chat",
+    "noRecord": "No chat record",
+    "confirm": "Confirm",
+    "confirmMessage": "Are you sure you want to delete this chat record?",
+    "yes": "Yes",
+    "cancel": "Cancel",
+    "goBack": "Go back",
+    "deleteChat": "Delete Chat"
+  },
+  "setting": {
+    "title": "Setting",
+    "feedback": "Feedback",
+    "support": "Help & support",
+    "logout": "Logout"
+  },
+  "profile": {
+    "title": "Profile",
+    "name": "Name",
+    "introduction": "Introduction",
+    "birthYear": "Birth Year",
+    "city": "City",
+    "gender": "Gender",
+    "avatar": "Avatar",
+    "namePlaceholder": "Please enter your name",
+    "updateSuccess": "Update success!",
+    "describeYourself": "Describe yourself"
   }
 }

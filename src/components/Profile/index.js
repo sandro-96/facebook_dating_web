@@ -27,6 +27,7 @@ import Other04 from "../../assets/avatar/other_04.png"
 import Other05 from "../../assets/avatar/other_05.png"
 import Other06 from "../../assets/avatar/other_06.png"
 import Other07 from "../../assets/avatar/other_07.png"
+import {useTranslation} from "react-i18next";
 
 const man_avatars = [Man01, Man02, Man03, Man04, Man05, Man06 ]
 const woman_avatars = [Woman01, Woman02, Woman03, Woman04, Woman05, Woman06 ]
@@ -42,6 +43,7 @@ export const Profile = () => {
     const [avatar, setAvatar] = useState(userData.avatar);
     const [saveSuccess, setSaveSuccess] = useState(false);
     const navigate = useNavigate()
+    const { t } = useTranslation();
 
     useEffect(() => {
         setGender(userData.gender)
@@ -99,25 +101,25 @@ export const Profile = () => {
                                              onClick={() => navigate(-1)}
                                              role='button'/>
                     }
-                    <h2>Hồ sơ</h2>
-                    <input className='save-btn' type='submit' value="Lưu"/>
+                    <h2>{t('profile.title')}</h2>
+                    <input className='save-btn' type='submit' value={t('common.save')}/>
                 </div>
                 <div>
                     {
-                        saveSuccess && <div className="save-success">Cập nhật thành công!</div>
+                        saveSuccess && <div className="save-success">{t('profile.updateSuccess')}</div>
                     }
                     <div className="d-flex">
-                        <span className='label-item'>Tên:</span>
+                        <span className='label-item'>{t('profile.name')}:</span>
                         <input max={50} className='form-control w-75' {...register('username', {required: true})}
-                               placeholder='Nhập tên người dùng'/>
+                               placeholder={t('profile.namePlaceholder')}/>
                     </div>
                     <div className="d-flex">
-                        <span className='label-item'>Giới thiệu:</span>
+                        <span className='label-item'>{t('profile.introduction')}:</span>
                         <textarea maxLength={100} className='form-control w-75' {...register('bio')}
-                                  placeholder='Mô tả bản thân'></textarea>
+                                  placeholder={t('profile.describeYourself')}></textarea>
                     </div>
                     <div className="d-flex mt-3">
-                        <span className='label-item'>Năm sinh:</span>
+                        <span className='label-item'>{t('profile.birthYear')}:</span>
                         <ThemeProvider theme={theme}>
                             <FormControl className='customize-form-control' color='blue' size='small'>
                                 <Select
@@ -137,7 +139,7 @@ export const Profile = () => {
                         </ThemeProvider>
                     </div>
                     <div className="d-flex mt-4">
-                        <span className='label-item'>Thành phố:</span>
+                        <span className='label-item'>{t('profile.city')}:</span>
                         <ThemeProvider theme={theme}>
                             <FormControl className='customize-form-control' color='blue' size='small'>
                                 <Select
@@ -157,27 +159,27 @@ export const Profile = () => {
                         </ThemeProvider>
                     </div>
                     <div className="d-flex mt-4">
-                        <span className='label-item'>Giới tính:</span>
+                        <span className='label-item'>{t('profile.gender')}:</span>
                         <div className='gender-wrap'>
                             <div className={`male d-flex ${gender === 'male' ? 'active' : ''}`}
                                  onClick={() => setGender('male')}>
                                 <FontAwesomeIcon icon={faMars} size="lg" style={{color: "#e3e3e3"}}/>
-                                <span className="ms-1">Nam</span>
+                                <span className="ms-1">{t('filter.male')}</span>
                             </div>
                             <div className={`female d-flex ${gender === 'female' ? 'active' : ''}`}
                                  onClick={() => setGender('female')}>
                                 <FontAwesomeIcon icon={faVenus} size="lg" style={{color: "#e3e3e3"}}/>
-                                <span className="ms-1">Nữ</span>
+                                <span className="ms-1">{t('filter.female')}</span>
                             </div>
                             <div className={`other d-flex ${gender === 'other' ? 'active' : ''}`}
                                  onClick={() => setGender('other')}>
                                 <FontAwesomeIcon icon={faVenusMars} size="lg" style={{color: "#e3e3e3"}}/>
-                                <span className="ms-1">Khác</span>
+                                <span className="ms-1">{t('filter.other')}</span>
                             </div>
                         </div>
                     </div>
                     <div className="d-flex mt-4">
-                        <span className='label-item'>Avatar:</span>
+                        <span className='label-item'>{t('profile.avatar')}:</span>
                         {
                             gender === 'male' ?
                                 <div className='d-flex flex-column gap-2'>

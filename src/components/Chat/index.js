@@ -5,12 +5,14 @@ import axios from "axios";
 import Avatar from "../Avatar";
 import {useLocation, useNavigate} from 'react-router-dom';
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
+import {useTranslation} from "react-i18next";
 
 export const Chat = () => {
     const { messageWs } = useContext(WebSocketContext);
     const {userData} = useContext(UserContext);
     const [topics, setTopics] = useState([]);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         loadTopics();
@@ -52,10 +54,10 @@ export const Chat = () => {
 
     return (
         <div className="chat-wrap">
-            <h2>Đoạn chat</h2>
+            <h2>{t('chat.title')}</h2>
             <div className="content-wrap">
                 {topics.length === 0 ? (
-                    <span className="noRecords">Không có cuộc trò chuyện nào gần đây</span>
+                    <span className="noRecords">{t('chat.noRecord')}</span>
                 ) : (
                     topics.map((topic, index) => (
                         <MatchItem key={`match-item_${index}`} value={topic} index={index}/>

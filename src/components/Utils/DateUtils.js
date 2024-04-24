@@ -7,6 +7,9 @@ class DateUtils {
     static formatTime(date) {
         return moment(date).format('HH:mm');
     }
+    static formatDate(date) {
+        return moment(date).format('DD/MM/YYYY');
+    }
 }
 
 export default DateUtils;

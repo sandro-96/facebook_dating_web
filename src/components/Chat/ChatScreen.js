@@ -16,6 +16,8 @@ import {Popper} from "@mui/material";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Constant from "../Utils/Constant";
+import MessageDate from "./MessageDate";
+import {useTranslation} from "react-i18next";
 
 export const ChatScreen = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -29,6 +31,7 @@ export const ChatScreen = () => {
     const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState(null);
     const [isSending, setIsSending] = useState(false);
+    const { t } = useTranslation();
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
@@ -109,18 +112,18 @@ export const ChatScreen = () => {
 
     const handleDeleteChat = () => {
         confirmAlert({
-            title: 'Xác nhận',
-            message: 'Bạn có muốn xóa đoạn chat này?',
+            title: t('chat.confirm'),
+            message: t('chat.confirmMessage'),
             buttons: [
                 {
-                    label: 'Có',
+                    label: t('chat.yes'),
                     onClick: () => {
                         axios.delete(`topic/deleteTopic/${state.topicId}`)
                             .then(() => navigate(-1));
                     }
                 },
                 {
-                    label: 'Không',
+                    label: t('chat.cancel'),
                     onClick: () => {
                         setAnchorEl(null)
                     }
@@ -141,34 +144,37 @@ export const ChatScreen = () => {
             <Popper id={idPopper} open={open} anchorEl={anchorEl}>
                 <div className="leave-chat-popover-body">
                     <div className="leave-chat-popover-item" onClick={() => navigate(-1) }>
-                        <span>Trở về</span>
+                        <span>{t('chat.goBack')}</span>
                         <FontAwesomeIcon icon={faArrowLeft} size="lg"/>
                     </div>
                     <div className="divider"></div>
                     <div className="leave-chat-popover-item" onClick={handleDeleteChat}>
-                        <span>Xóa đoạn chat</span>
+                        <span>{t('chat.deleteChat')}</span>
                         <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg"/>
                     </div>
                 </div>
             </Popper>
             <div className="content-wrap">
                 {messages.map((message, index) => (
-                    <div key={index}
-                         className={`message-item ${message.forUserId === userInfo.id ? 'right' : 'left'}`}
-                         ref={index === messages.length - 1 ? messagesEndRef : null}>
-                        {
-                            message.forUserId !== userInfo.id &&
-                            <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
-                        }
-                        <div className={`message-content ${message.imagePath && 'image'}`}>
-                            {message.imagePath ? <img
-                                src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
-                                alt="Chat Image"
-                                style={{ maxWidth: 200}}
-                                onLoad={() => messagesEndRef.current.scrollIntoView({ behavior: "smooth" })}
-                            /> : <span className="mt-1">{message.content}</span>
+                    <div className="d-flex flex-column" key={index}>
+                        <MessageDate index={index} messages={messages} />
+                        <div key={index}
+                             className={`message-item ${message.forUserId === userInfo.id ? 'right' : 'left'}`}
+                             ref={index === messages.length - 1 ? messagesEndRef : null}>
+                            {
+                                message.forUserId !== userInfo.id &&
+                                <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                             }
-                            <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                            <div className={`message-content ${message.imagePath && 'image'}`}>
+                                {message.imagePath ? <img
+                                    src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
+                                    alt="Chat Image"
+                                    style={{maxWidth: 200}}
+                                    onLoad={() => messagesEndRef.current.scrollIntoView({behavior: "smooth"})}
+                                /> : <span>{message.content}</span>
+                                }
+                                <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                            </div>
                         </div>
                     </div>
                 ))}
@@ -191,7 +197,8 @@ export const ChatScreen = () => {
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                 />
-                <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x" style={{color: "#74C0FC"}} disabled={isSending}/>
+                <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x" style={{color: "#74C0FC"}}
+                                 disabled={isSending}/>
             </div>
         </div>
     );

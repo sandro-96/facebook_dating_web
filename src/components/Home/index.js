@@ -5,7 +5,7 @@ import Constant from "../Utils/Constant";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEarthAsia, faGlobe} from "@fortawesome/free-solid-svg-icons";
+import {faEarthAsia} from "@fortawesome/free-solid-svg-icons";
 import DateUtils from "../Utils/DateUtils";
 import Avatar from "../Avatar";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
@@ -39,7 +39,7 @@ const Home = () => {
 
         axios.post('topic/createTopic', {
             forUserId: userId,
-            description: 'Bắt đầu đoạn chat'
+            description: t('home.startChat')
         }).then(value => {
             setLikedUsers(likedUsers.filter(user => user.id !== userId))
             navigate(`/chat/${value.data.id}?isHideNavBar=true`, {state: {topicId: value.data.id, userInfo: value.data.user2}})
@@ -75,12 +75,12 @@ const Home = () => {
                     <div className='fw-normal bio'>{userData.email}</div>
                 </div>
             </div>
-            <h6 className='title'>{t('home.publicChat')}</h6>
+            <h6 className='title'>{t('home.community')}</h6>
             <div className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
-                <h3>Kênh chat chung</h3>
+                <h3>{t('home.publicChat')}</h3>
                 <FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC",}}/>
             </div>
-            <h6 className='title'>Những người đã thích bạn:</h6>
+            <h6 className='title'>{t('home.userLiked')}</h6>
             {
                 likedUsers.map((value, index) => (
                     <MatchItem value={value} index={index} startChat={startChat} key={value.id}/>
