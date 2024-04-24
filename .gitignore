@@ -25,3 +25,4 @@ yarn-error.log*
 .idea/jsLibraryMappings.xml
 .idea/vcs.xml
 *.xml
+package-lock.json
