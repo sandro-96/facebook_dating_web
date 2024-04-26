@@ -1,6 +1,7 @@
 {
   "common": {
-    "save": "Lưu"
+    "save": "Lưu",
+    "ok": "Ok"
   },
   "login": {
     "title": "Đăng nhập",
@@ -51,5 +52,14 @@
     "namePlaceholder": "Nhập tên của bạn",
     "updateSuccess": "Cập nhật thông tin thành công!",
     "describeYourself": "Mô tả về bản thân"
+  },
+  "message": {
+    "updateSuccess": "Cập nhật thông tin thành công!"
+  },
+  "navBar": {
+    "home": "Trang chủ",
+    "match": "Kết đôi",
+    "chat": "Tin nhắn",
+    "setting": "Cài đặt"
   }
 }

@@ -28,6 +28,8 @@ import Other05 from "../../assets/avatar/other_05.png"
 import Other06 from "../../assets/avatar/other_06.png"
 import Other07 from "../../assets/avatar/other_07.png"
 import {useTranslation} from "react-i18next";
+import {confirmAlert} from "react-confirm-alert";
+import AlertPopup from "../Utils/AlertPopup";
 
 const man_avatars = [Man01, Man02, Man03, Man04, Man05, Man06 ]
 const woman_avatars = [Woman01, Woman02, Woman03, Woman04, Woman05, Woman06 ]
@@ -41,7 +43,6 @@ export const Profile = () => {
     const [city, setCity] = useState(userData.location ||'Thành phố Hồ Chí Minh');
     const [gender, setGender] = useState(userData.gender || 'other');
     const [avatar, setAvatar] = useState(userData.avatar);
-    const [saveSuccess, setSaveSuccess] = useState(false);
     const navigate = useNavigate()
     const { t } = useTranslation();
 
@@ -62,7 +63,11 @@ export const Profile = () => {
         if (userData.isFirstLogin) object.isFirstLogin = false
         axios.patch(`fbd_users/${userData.key}`, object).then(value => {
             setUserData(value.data)
-            setSaveSuccess(true)
+            AlertPopup.alert({
+                title: t('chat.confirm'),
+                message: t('message.updateSuccess'),
+                okLabel: t('common.ok')
+            })
         }).finally(() => {
             if (userData.isFirstLogin) {
                 setTimeout(() => {
@@ -93,7 +98,7 @@ export const Profile = () => {
     return (
         <div className='profile-wrap'>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className='mb-4 d-flex justify-content-between align-items-center'>
+                <div className='profile-header'>
                     {
                         userData.isFirstLogin ? <div/>
                             :
@@ -104,21 +109,18 @@ export const Profile = () => {
                     <h2>{t('profile.title')}</h2>
                     <input className='save-btn' type='submit' value={t('common.save')}/>
                 </div>
-                <div>
-                    {
-                        saveSuccess && <div className="save-success">{t('profile.updateSuccess')}</div>
-                    }
-                    <div className="d-flex">
-                        <span className='label-item'>{t('profile.name')}:</span>
-                        <input max={50} className='form-control w-75' {...register('username', {required: true})}
+                <div className="profile-content">
+                    <div className="profile-item">
+                        <span>{t('profile.name')}:</span>
+                        <input max={50} className='form-control' {...register('username', {required: true})}
                                placeholder={t('profile.namePlaceholder')}/>
                     </div>
-                    <div className="d-flex">
-                        <span className='label-item'>{t('profile.introduction')}:</span>
-                        <textarea maxLength={100} className='form-control w-75' {...register('bio')}
+                    <div className="profile-item">
+                        <span>{t('profile.introduction')}:</span>
+                        <textarea maxLength={100} className='form-control' {...register('bio')}
                                   placeholder={t('profile.describeYourself')}></textarea>
                     </div>
-                    <div className="d-flex mt-3">
+                    <div className="d-flex mt-2">
                         <span className='label-item'>{t('profile.birthYear')}:</span>
                         <ThemeProvider theme={theme}>
                             <FormControl className='customize-form-control' color='blue' size='small'>
@@ -138,7 +140,7 @@ export const Profile = () => {
                             </FormControl>
                         </ThemeProvider>
                     </div>
-                    <div className="d-flex mt-4">
+                    <div className="d-flex mt-2">
                         <span className='label-item'>{t('profile.city')}:</span>
                         <ThemeProvider theme={theme}>
                             <FormControl className='customize-form-control' color='blue' size='small'>
@@ -158,8 +160,8 @@ export const Profile = () => {
                             </FormControl>
                         </ThemeProvider>
                     </div>
-                    <div className="d-flex mt-4">
-                        <span className='label-item'>{t('profile.gender')}:</span>
+                    <div className="profile-item">
+                        <span>{t('profile.gender')}:</span>
                         <div className='gender-wrap'>
                             <div className={`male d-flex ${gender === 'male' ? 'active' : ''}`}
                                  onClick={() => setGender('male')}>
@@ -178,14 +180,14 @@ export const Profile = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="d-flex mt-4">
-                        <span className='label-item'>{t('profile.avatar')}:</span>
+                    <div className="profile-item">
+                        <span>{t('profile.avatar')}:</span>
                         {
                             gender === 'male' ?
                                 <div className='d-flex flex-column gap-2'>
                                     <div className='avatar-wrap'>
                                         {
-                                            man_avatars.slice(0, 4).map((value, index) => (
+                                            man_avatars.map((value, index) => (
                                                 <img
                                                     onClick={() => setAvatar(`man_0${index + 1}`)}
                                                     className={`${avatar === `man_0${index + 1}` ? 'active' : ''}`}
@@ -195,22 +197,12 @@ export const Profile = () => {
                                             ))
                                         }
                                     </div>
-                                    <div className='avatar-wrap'>
-                                        {
-                                            man_avatars.slice(4).map((value, index) => (
-                                                <img onClick={() => setAvatar(`man_0${index + 5}`)}
-                                                     className={`${avatar === `man_0${index + 5}` ? 'active' : ''}`}
-                                                     key={`man_${index + 5}`} src={value} width={56} height={56}
-                                                     alt={`man-${index + 5}`}/>
-                                            ))
-                                        }
-                                    </div>
                                 </div>
                                 : gender === 'female' ?
                                     <div className='d-flex flex-column gap-2'>
                                         <div className='avatar-wrap'>
                                             {
-                                                woman_avatars.slice(0, 4).map((value, index) => (
+                                                woman_avatars.map((value, index) => (
                                                     <img onClick={() => setAvatar(`woman_0${index + 1}`)}
                                                          className={`${avatar === `woman_0${index + 1}` ? 'active' : ''}`}
                                                          key={`woman_${index}`} src={value} width={56}
@@ -219,37 +211,17 @@ export const Profile = () => {
                                                 ))
                                             }
                                         </div>
-                                        <div className='avatar-wrap'>
-                                            {
-                                                woman_avatars.slice(4).map((value, index) => (
-                                                    <img onClick={() => setAvatar(`woman_0${index + 5}`)}
-                                                         className={`${avatar === `woman_0${index + 5}` ? 'active' : ''}`}
-                                                         key={`woman_${index + 5}`} src={value} width={56} height={56}
-                                                         alt={`woman-${index + 5}`}/>
-                                                ))
-                                            }
-                                        </div>
                                     </div>
                                     :
                                     <div className='d-flex flex-column gap-2'>
                                         <div className='avatar-wrap'>
                                             {
-                                                other_avatars.slice(0, 4).map((value, index) => (
+                                                other_avatars.map((value, index) => (
                                                     <img onClick={() => setAvatar(`other_0${index + 1}`)}
                                                          className={`${avatar === `other_0${index + 1}` ? 'active' : ''}`}
                                                          key={`other_${index}`} src={value} width={56}
                                                          height={56}
                                                          alt={`other-${index}`}/>
-                                                ))
-                                            }
-                                        </div>
-                                        <div className='avatar-wrap'>
-                                            {
-                                                other_avatars.slice(4).map((value, index) => (
-                                                    <img onClick={() => setAvatar(`other_0${index + 5}`)}
-                                                         className={`${avatar === `other_0${index + 5}` ? 'active' : ''}`}
-                                                         key={`other_${index + 5}`} src={value} width={56} height={56}
-                                                         alt={`other-${index + 5}`}/>
                                                 ))
                                             }
                                         </div>

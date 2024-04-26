@@ -1,6 +1,7 @@
 {
   "common": {
-    "save": "Save"
+    "save": "Save",
+    "ok": "Ok"
   },
   "login": {
     "title": "Login",
@@ -51,5 +52,14 @@
     "namePlaceholder": "Please enter your name",
     "updateSuccess": "Update success!",
     "describeYourself": "Describe yourself"
+  },
+  "message": {
+    "updateSuccess": "Update success!"
+  },
+  "navBar": {
+    "home": "Home",
+    "match": "Match",
+    "chat": "Message",
+    "setting": "Setting"
   }
 }

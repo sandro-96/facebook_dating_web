@@ -18,6 +18,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import Constant from "../Utils/Constant";
 import MessageDate from "./MessageDate";
 import {useTranslation} from "react-i18next";
+import AlertPopup from "../Utils/AlertPopup";
 
 export const ChatScreen = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -109,27 +110,17 @@ export const ChatScreen = () => {
             }
         }
     };
+    const deleteChat = async () => {
+        try {
+            await axios.delete(`topic/deleteTopic/${state.topicId}`);
+            navigate(-1);
+        } catch (error) {
+            console.error('Failed to delete chat:', error);
+        }
+    }
 
     const handleDeleteChat = () => {
-        confirmAlert({
-            title: t('chat.confirm'),
-            message: t('chat.confirmMessage'),
-            buttons: [
-                {
-                    label: t('chat.yes'),
-                    onClick: () => {
-                        axios.delete(`topic/deleteTopic/${state.topicId}`)
-                            .then(() => navigate(-1));
-                    }
-                },
-                {
-                    label: t('chat.cancel'),
-                    onClick: () => {
-                        setAnchorEl(null)
-                    }
-                }
-            ]
-        });
+        AlertPopup.confirm(t('chat.confirm'), t('chat.confirmMessage'), t('chat.ok'), t('chat.cancel'), deleteChat, setAnchorEl(null));
     };
 
     return (

@@ -9,16 +9,20 @@
   max-width: 648px;
   .nav-item {
     width: 100%;
-    float: left;
-    display: block;
     color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding-top: 3px;
+    span {
+      font-size: 12px;
+    }
     &.active {
       background-color: #595959;
-      color: white;
+      color: #aad3f3;
     }
   }
 }
