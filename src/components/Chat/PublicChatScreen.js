@@ -38,7 +38,7 @@ export const PublicChatScreen = () => {
         if (messagesEndRef.current && !isLoadingMore) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
-    }, [messages, isLoadingMore]);
+    }, [messagesEndRef, isLoadingMore]);
     useEffect(() => {
         if (messageWs &&
             messageWs.type === Constant.SOCKET.SOCKET_PUBLIC_CHAT_NEW_MESSAGE
@@ -141,9 +141,9 @@ export const PublicChatScreen = () => {
                 ))}
             </div>
             <div className="send-message-wrap stick-to-bottom">
-                <label htmlFor="file-upload">
+                {/*<label htmlFor="file-upload">
                     <FontAwesomeIcon icon={faImage} size="2x" style={{color: "#74C0FC"}}/>
-                </label>
+                </label>*/}
                 <input
                     className="form-control"
                     type="text"

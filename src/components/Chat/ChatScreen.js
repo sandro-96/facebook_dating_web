@@ -13,15 +13,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import {Popper} from "@mui/material";
-import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Constant from "../Utils/Constant";
 import MessageDate from "./MessageDate";
 import {useTranslation} from "react-i18next";
 import AlertPopup from "../Utils/AlertPopup";
+import {UserContext} from "../Context/UserContext";
+import ImageModal from "../Utils/ImageModal";
+
+const PAGE_SIZE = 1000;
 
 export const ChatScreen = () => {
     const { messageWs } = useContext(WebSocketContext);
+    const { userData } = useContext(UserContext);
     const { state } = useLocation();
     const { id } = useParams();
     const [messages, setMessages] = useState([]);
@@ -33,6 +37,9 @@ export const ChatScreen = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [isSending, setIsSending] = useState(false);
     const { t } = useTranslation();
+    const [page, setPage] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
+    const [selectedImage, setSelectedImage] = useState(null);
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
@@ -40,14 +47,15 @@ export const ChatScreen = () => {
     const idPopper = open ? 'leave-chat-popover' : undefined;
 
     useEffect(() => {
-        loadMessages();
+        loadMessages(page);
     }, [id]);
 
     useEffect(() => {
         if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+            messagesEndRef.current.scrollIntoView({ behavior: "instant" });
         }
     }, [messages]);
+
     useEffect(() => {
         if (messageWs && messageWs.topicId === state.topicId) {
             if (messageWs.type === Constant.SOCKET.SOCKET_TOPIC_DELETE) {
@@ -68,12 +76,25 @@ export const ChatScreen = () => {
         setSelectedFile(event.target.files[0]);
     };
 
-    const loadMessages = async () => {
+    const loadMessages = async (page) => {
         try {
-            const response = await axios.get(`chat/messages/ordered/${state.topicId}`);
-            setMessages(response.data);
+            const response = await axios.get(`chat/messages/${state.topicId}?page=${page}&size=${PAGE_SIZE}`);
+            if (response && response.data) {
+                setMessages(oldMessages => [...response.data.content.reverse(), ...oldMessages]);
+                setTotalPage(response.data.totalPages);
+            }
         } catch (error) {
             console.error('Failed to load messages:', error);
+        }
+    };
+
+    const handleScroll = (e) => {
+        const { scrollTop} = e.currentTarget;
+        if (scrollTop === 0) { // top of the chat
+            if (page < totalPage - 1) {
+                setPage(page + 1); // increment page number
+                loadMessages(page + 1);
+            }
         }
     };
 
@@ -98,11 +119,12 @@ export const ChatScreen = () => {
                 formData.append('topicId', state.topicId);
                 formData.append('content', newMessage);
 
-                await axios.post(`chat`, formData);
-
-                setNewMessage('');
-                setMessages([...messages, { content: newMessage, forUserId: userInfo.id, imagePath: selectedFile ? selectedFile.name : null}]);
-                setSelectedFile(null);
+                const  response = await axios.post(`chat`, formData);
+                if (response) {
+                    setNewMessage('');
+                    setMessages([...messages, response.data]);
+                    setSelectedFile(null);
+                }
             } catch (error) {
                 console.error('Failed to send message:', error);
             } finally {
@@ -125,6 +147,7 @@ export const ChatScreen = () => {
 
     return (
         <div className="chat-screen-wrap">
+            <ImageModal selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
             <div className="top-bar">
                 <div className="name-wrap">
                     <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
@@ -145,13 +168,16 @@ export const ChatScreen = () => {
                     </div>
                 </div>
             </Popper>
-            <div className="content-wrap">
+            <div className="content-wrap" onScroll={handleScroll}>
                 {messages.map((message, index) => (
                     <div className="d-flex flex-column" key={index}>
                         <MessageDate index={index} messages={messages} />
-                        <div key={index}
-                             className={`message-item ${message.forUserId === userInfo.id ? 'right' : 'left'}`}
-                             ref={index === messages.length - 1 ? messagesEndRef : null}>
+                        <div
+                            id={`id_${index}`}
+                            key={index}
+                            className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
+                            ref={index === messages.length - 1 ? messagesEndRef : null}
+                        >
                             {
                                 message.forUserId !== userInfo.id &&
                                 <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
@@ -161,7 +187,8 @@ export const ChatScreen = () => {
                                     src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
                                     alt="Chat Image"
                                     style={{maxWidth: 200}}
-                                    onLoad={() => messagesEndRef.current.scrollIntoView({behavior: "smooth"})}
+                                    onLoad={() => messagesEndRef.current.scrollIntoView({behavior: 'smooth'})}
+                                    onClick={() => setSelectedImage(`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`)}
                                 /> : <span>{message.content}</span>
                                 }
                                 <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
