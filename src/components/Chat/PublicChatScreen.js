@@ -1,19 +1,13 @@
-import React, {useState, useEffect, useRef, createContext, useContext} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import axios from 'axios';
-import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import Avatar from "../Avatar";
 import DateUtils from "../Utils/DateUtils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-    faPaperPlane,
-    faBars,
-    faArrowRightFromBracket,
-    faArrowLeft,
-    faImage
+    faPaperPlane
 } from "@fortawesome/free-solid-svg-icons";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
-import {Popper} from "@mui/material";
-import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Constant from "../Utils/Constant";
 import {UserContext} from "../Context/UserContext";
@@ -29,16 +23,15 @@ export const PublicChatScreen = () => {
     const [page, setPage] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [isSending, setIsSending] = useState(false);
-    const [isLoadingMore, setIsLoadingMore] = useState(false);
 
     useEffect(() => {
         loadMessages(page);
     }, []);
     useEffect(() => {
-        if (messagesEndRef.current && !isLoadingMore) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "auto" });
         }
-    }, [messagesEndRef, isLoadingMore]);
+    }, [messages]);
     useEffect(() => {
         if (messageWs &&
             messageWs.type === Constant.SOCKET.SOCKET_PUBLIC_CHAT_NEW_MESSAGE
@@ -53,7 +46,7 @@ export const PublicChatScreen = () => {
 
     const loadMessages = async (page) => {
         try {
-            const response = await axios.get(`chat/public?page=${page}&size=50`);
+            const response = await axios.get(`chat/public?page=${page}&size=20`);
             if (response && response.data) {
                 setMessages(oldMessages => [...response.data.content.reverse(), ...oldMessages]);
                 setTotalPage(response.data.totalPages);
@@ -66,10 +59,8 @@ export const PublicChatScreen = () => {
         const { scrollTop} = e.currentTarget;
         if (scrollTop === 0) { // top of the chat
             if (page < totalPage - 1) {
-                setIsLoadingMore(true);
                 setPage(page + 1); // increment page number
                 loadMessages(page + 1);
-                setIsLoadingMore(false);
             }
         }
     };
@@ -141,9 +132,6 @@ export const PublicChatScreen = () => {
                 ))}
             </div>
             <div className="send-message-wrap stick-to-bottom">
-                {/*<label htmlFor="file-upload">
-                    <FontAwesomeIcon icon={faImage} size="2x" style={{color: "#74C0FC"}}/>
-                </label>*/}
                 <input
                     className="form-control"
                     type="text"

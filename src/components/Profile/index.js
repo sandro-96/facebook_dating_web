@@ -62,7 +62,9 @@ export const Profile = () => {
         }
         if (userData.isFirstLogin) object.isFirstLogin = false
         axios.patch(`fbd_users/${userData.key}`, object).then(value => {
-            setUserData(value.data)
+            const response = value.data
+            response.id = userData.key
+            setUserData(response)
             AlertPopup.alert({
                 title: t('chat.confirm'),
                 message: t('message.updateSuccess'),
