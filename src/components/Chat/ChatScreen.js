@@ -20,8 +20,9 @@ import {useTranslation} from "react-i18next";
 import AlertPopup from "../Utils/AlertPopup";
 import {UserContext} from "../Context/UserContext";
 import ImageModal from "../Utils/ImageModal";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-const PAGE_SIZE = 1000;
+const PAGE_SIZE = 10;
 
 export const ChatScreen = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -31,7 +32,6 @@ export const ChatScreen = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [userInfo] = useState(state.userInfo);
-    const messagesEndRef = useRef(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState(null);
@@ -51,17 +51,11 @@ export const ChatScreen = () => {
     }, [id]);
 
     useEffect(() => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "instant" });
-        }
-    }, [messages]);
-
-    useEffect(() => {
         if (messageWs && messageWs.topicId === state.topicId) {
             if (messageWs.type === Constant.SOCKET.SOCKET_TOPIC_DELETE) {
                 navigate('/chat');
             } else {
-                setMessages([...messages, messageWs]);
+                setMessages([messageWs, ...messages]);
             }
         }
     }, [messageWs]);
@@ -80,7 +74,7 @@ export const ChatScreen = () => {
         try {
             const response = await axios.get(`chat/messages/${state.topicId}?page=${page}&size=${PAGE_SIZE}`);
             if (response && response.data) {
-                setMessages(oldMessages => [...response.data.content.reverse(), ...oldMessages]);
+                setMessages(oldMessages => [ ...oldMessages, ...response.data.content.reverse()]);
                 setTotalPage(response.data.totalPages);
             }
         } catch (error) {
@@ -122,7 +116,7 @@ export const ChatScreen = () => {
                 const  response = await axios.post(`chat`, formData);
                 if (response) {
                     setNewMessage('');
-                    setMessages([...messages, response.data]);
+                    setMessages([response.data, ...messages]);
                     setSelectedFile(null);
                 }
             } catch (error) {
@@ -144,6 +138,17 @@ export const ChatScreen = () => {
     const handleDeleteChat = () => {
         AlertPopup.confirm(t('chat.confirm'), t('chat.confirmMessage'), t('chat.ok'), t('chat.cancel'), deleteChat, setAnchorEl(null));
     };
+
+    const fetchMoreData = () => {
+        if (page < totalPage - 1) {
+            setPage(page + 1); // increment page number
+            loadMessages(page + 1);
+        }
+    }
+
+    const hasMore = () => {
+        return page < totalPage - 1;
+    }
 
     return (
         <div className="chat-screen-wrap">
@@ -168,34 +173,42 @@ export const ChatScreen = () => {
                     </div>
                 </div>
             </Popper>
-            <div className="content-wrap" onScroll={handleScroll}>
-                {messages.map((message, index) => (
-                    <div className="d-flex flex-column" key={index}>
-                        <MessageDate index={index} messages={messages} />
-                        <div
-                            id={`id_${index}`}
-                            key={index}
-                            className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
-                            ref={index === messages.length - 1 ? messagesEndRef : null}
-                        >
-                            {
-                                message.forUserId !== userInfo.id &&
-                                <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
-                            }
-                            <div className={`message-content ${message.imagePath && 'image'}`}>
-                                {message.imagePath ? <img
-                                    src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
-                                    alt="Chat Image"
-                                    style={{maxWidth: 200}}
-                                    onLoad={() => messagesEndRef.current.scrollIntoView({behavior: 'smooth'})}
-                                    onClick={() => setSelectedImage(`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`)}
-                                /> : <span>{message.content}</span>
+            <div className="content-wrap" id="scrollableDiv">
+                <InfiniteScroll
+                    dataLength={messages.length}
+                    next={fetchMoreData}
+                    style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
+                    inverse={true} //
+                    hasMore={hasMore()}
+                    loader={<span>Loading...</span>}
+                    scrollableTarget="scrollableDiv"
+                >
+                    {messages.map((message, index) => (
+                        <div className="d-flex flex-column" key={index}>
+                            {/*<MessageDate index={index} messages={messages} />*/}
+                            <div
+                                id={`id_${index}`}
+                                key={index}
+                                className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
+                            >
+                                {
+                                    message.forUserId !== userInfo.id &&
+                                    <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                                 }
-                                <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                                <div className={`message-content ${message.imagePath && 'image'}`}>
+                                    {message.imagePath ? <img
+                                        src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
+                                        alt="Chat Image"
+                                        style={{maxWidth: 200}}
+                                        onClick={() => setSelectedImage(`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`)}
+                                    /> : <span>{message.content}</span>
+                                    }
+                                    <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </InfiniteScroll>
             </div>
             <div className="send-message-wrap stick-to-bottom">
                 <label htmlFor="file-upload">

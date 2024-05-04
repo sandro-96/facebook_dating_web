@@ -13,6 +13,8 @@ import Constant from "../Utils/Constant";
 import {UserContext} from "../Context/UserContext";
 import MessageDate from "./MessageDate";
 
+const PAGE_SIZE = 200;
+
 export const PublicChatScreen = () => {
     const { messageWs } = useContext(WebSocketContext);
     const { userData } = useContext(UserContext);
@@ -23,14 +25,17 @@ export const PublicChatScreen = () => {
     const [page, setPage] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [isSending, setIsSending] = useState(false);
+    const [numberOfElements, setNumberOfElements] = useState(0);
 
     useEffect(() => {
         loadMessages(page);
+        console.log('vo truoc')
     }, []);
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "auto" });
         }
+        console.log('vo day')
     }, [messages]);
     useEffect(() => {
         if (messageWs &&
@@ -39,6 +44,7 @@ export const PublicChatScreen = () => {
         ) {
             setMessages([...messages, messageWs.data]);
         }
+        console.log('vo dau')
     }, [messageWs]);
     const handleInputChange = (event) => {
         setNewMessage(event.target.value);
@@ -46,10 +52,12 @@ export const PublicChatScreen = () => {
 
     const loadMessages = async (page) => {
         try {
-            const response = await axios.get(`chat/public?page=${page}&size=20`);
+            const response = await axios.get(`chat/public?page=${page}&size=${PAGE_SIZE}`);
             if (response && response.data) {
-                setMessages(oldMessages => [...response.data.content.reverse(), ...oldMessages]);
+                setNumberOfElements(response.data.numberOfElements);
                 setTotalPage(response.data.totalPages);
+                const newMessages = response.data.content.reverse();
+                setMessages([...newMessages, ...messages]);
             }
         } catch (error) {
             console.error('Failed to load messages:', error);
@@ -100,6 +108,13 @@ export const PublicChatScreen = () => {
         }
         return color;
     };
+    const calculatePosition = () => {
+        if (numberOfElements === PAGE_SIZE) {
+            return PAGE_SIZE - 1;
+        } else {
+            return numberOfElements - 1;
+        }
+    }
 
     return (
         <div className="chat-screen-wrap">
@@ -109,12 +124,13 @@ export const PublicChatScreen = () => {
                 </div>
             </div>
             <div className="content-wrap" onScroll={handleScroll}>
+                {console.log('messages: ', messages)}
                 {messages.map((message, index) => (
-                    <div className="d-flex flex-column" key={index}>
+                    <div className="d-flex flex-column" key={index} id={index}>
                         <MessageDate index={index} messages={messages} />
                         <div key={index}
                              className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
-                             ref={index === messages.length - 1 ? messagesEndRef : null}>
+                             ref={index === calculatePosition() ? messagesEndRef : null}>
                             {
                                 message.createdBy !== userData.id &&
                                 <Avatar imgKey={message.userInfo.avatar} genderKey={message.userInfo.gender}

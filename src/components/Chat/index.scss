@@ -73,9 +73,9 @@
   .content-wrap {
     margin-top: 10px;
     display: flex;
-    flex-direction: column;
-    height: calc(100vh - 75px - 60px); // Adjust this value based on the height of your top-bar and send-message-wrap
-    overflow-y: auto;
+    flex-direction: column-reverse;
+    height: calc(100vh - 75px - 60px); /// Adjust this value based on the height of your top-bar and send-message-wrap
+    overflow: auto;
     .date {
       font-size: 12px;
       color: #a29f9f;
