@@ -40,13 +40,15 @@ export const Profile = () => {
         {defaultValues: userData}
     );
     const [birthYear, setBirthYear] = useState(userData.birthYear || new Date().getFullYear());
-    const [city, setCity] = useState(userData.location ||'Thành phố Hồ Chí Minh');
+    const [city, setCity] = useState(userData.location || 'Thành phố Hồ Chí Minh');
     const [gender, setGender] = useState(userData.gender || 'other');
     const [avatar, setAvatar] = useState(userData.avatar);
     const navigate = useNavigate()
     const { t } = useTranslation();
 
     useEffect(() => {
+        setCity(userData.location || 'Thành phố Hồ Chí Minh')
+        setBirthYear(userData.birthYear || new Date().getFullYear())
         setGender(userData.gender)
         setAvatar(userData.avatar)
         reset(userData)
@@ -66,7 +68,6 @@ export const Profile = () => {
             response.id = userData.key
             setUserData(response)
             AlertPopup.alert({
-                title: t('chat.confirm'),
                 message: t('message.updateSuccess'),
                 okLabel: t('common.ok')
             })
@@ -114,12 +115,12 @@ export const Profile = () => {
                 <div className="profile-content">
                     <div className="profile-item">
                         <span>{t('profile.name')}:</span>
-                        <input max={50} className='form-control' {...register('username', {required: true})}
+                        <input max={30} className='form-control' {...register('username', {required: true})}
                                placeholder={t('profile.namePlaceholder')}/>
                     </div>
                     <div className="profile-item">
                         <span>{t('profile.introduction')}:</span>
-                        <textarea maxLength={100} className='form-control' {...register('bio')}
+                        <textarea maxLength={50} className='form-control' {...register('bio')}
                                   placeholder={t('profile.describeYourself')}></textarea>
                     </div>
                     <div className="d-flex mt-2">

@@ -31,9 +31,11 @@
     "confirm": "Xác nhận",
     "confirmMessage": "Bạn có chắc chắn muốn kết thúc cuộc trò chuyện này không?",
     "yes": "Có",
+    "ok": "Ok",
     "cancel": "Hủy",
     "goBack": "Quay lại",
-    "deleteChat": "Xóa cuộc trò chuyện"
+    "deleteChat": "Xóa cuộc trò chuyện",
+    "loading": "Đang tải..."
   },
   "setting": {
     "title": "Trang cá nhân",

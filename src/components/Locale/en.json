@@ -31,9 +31,11 @@
     "confirm": "Confirm",
     "confirmMessage": "Are you sure you want to delete this chat record?",
     "yes": "Yes",
+    "ok": "Ok",
     "cancel": "Cancel",
     "goBack": "Go back",
-    "deleteChat": "Delete Chat"
+    "deleteChat": "Delete Chat",
+    "loading": "Loading..."
   },
   "setting": {
     "title": "Setting",

@@ -68,9 +68,19 @@
   }
 }
 .react-confirm-alert-body {
-  color: #33c955 !important;
-  h1 {
-    color: #000 !important;
+  &.confirm {
+    color: #33c955 !important;
+  }
+  &.warning {
+    color: #c95555 !important;
+  }
+  min-height: auto !important;
+  .react-confirm-alert-button-group {
+    width: 100%;
+    position: unset;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
   }
 }
 .gender-wrap {

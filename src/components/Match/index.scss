@@ -19,6 +19,20 @@
     flex-grow: 1;
     margin-right: 15px;
     align-items: center;
+    .user-info {
+      flex-grow: 1;
+      text-align: start;
+      text-transform: capitalize;
+      display: flex;
+      flex-direction: column;
+      margin-left: 0.5rem;
+      .ellipsis {
+        width: calc(100vw - 165px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
     .bio {
       max-height: 3em;
       font-size: 12px;

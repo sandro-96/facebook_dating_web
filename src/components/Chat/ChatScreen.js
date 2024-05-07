@@ -22,10 +22,10 @@ import {UserContext} from "../Context/UserContext";
 import ImageModal from "../Utils/ImageModal";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 100;
 
 export const ChatScreen = () => {
-    const { messageWs } = useContext(WebSocketContext);
+    const { messageWs, setMessageWs } = useContext(WebSocketContext);
     const { userData } = useContext(UserContext);
     const { state } = useLocation();
     const { id } = useParams();
@@ -40,6 +40,7 @@ export const ChatScreen = () => {
     const [page, setPage] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [isInitialMessage, setIsInitialMessage] = useState(false);
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
@@ -54,8 +55,9 @@ export const ChatScreen = () => {
         if (messageWs && messageWs.topicId === state.topicId) {
             if (messageWs.type === Constant.SOCKET.SOCKET_TOPIC_DELETE) {
                 navigate('/chat');
-            } else {
-                setMessages([messageWs, ...messages]);
+            } else if (messageWs.type === Constant.SOCKET.SOCKET_CHAT_UPDATE) {
+                if (isInitialMessage) setMessages([messageWs, ...messages]);
+                setMessageWs(null)
             }
         }
     }, [messageWs]);
@@ -76,19 +78,10 @@ export const ChatScreen = () => {
             if (response && response.data) {
                 setMessages(oldMessages => [ ...oldMessages, ...response.data.content.reverse()]);
                 setTotalPage(response.data.totalPages);
+                setIsInitialMessage(true)
             }
         } catch (error) {
             console.error('Failed to load messages:', error);
-        }
-    };
-
-    const handleScroll = (e) => {
-        const { scrollTop} = e.currentTarget;
-        if (scrollTop === 0) { // top of the chat
-            if (page < totalPage - 1) {
-                setPage(page + 1); // increment page number
-                loadMessages(page + 1);
-            }
         }
     };
 
@@ -136,7 +129,8 @@ export const ChatScreen = () => {
     }
 
     const handleDeleteChat = () => {
-        AlertPopup.confirm(t('chat.confirm'), t('chat.confirmMessage'), t('chat.ok'), t('chat.cancel'), deleteChat, setAnchorEl(null));
+        setAnchorEl(null)
+        AlertPopup.confirm(t('chat.confirmMessage'), t('chat.ok'), t('chat.cancel'), deleteChat);
     };
 
     const fetchMoreData = () => {
@@ -156,7 +150,7 @@ export const ChatScreen = () => {
             <div className="top-bar">
                 <div className="name-wrap">
                     <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
-                    <span className='fs-4 ms-2'>{userInfo.username} {userInfo.birthYear > 0 && <span>, {DateUtils.calculateOlds(userInfo.birthYear)}</span>}</span>
+                    <span className='fs-4 ms-2 ellipsis'>{userInfo.username} {userInfo.birthYear > 0 && <span>, {DateUtils.calculateOlds(userInfo.birthYear)}</span>}</span>
                 </div>
                 <FontAwesomeIcon icon={faBars} size="lg" onClick={handleClick}/>
             </div>
@@ -180,7 +174,7 @@ export const ChatScreen = () => {
                     style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
                     inverse={true} //
                     hasMore={hasMore()}
-                    loader={<span>Loading...</span>}
+                    loader={<span>{t('chat.loading')}</span>}
                     scrollableTarget="scrollableDiv"
                 >
                     {messages.map((message, index) => (

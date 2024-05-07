@@ -12,11 +12,12 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import Constant from "../Utils/Constant";
 import {UserContext} from "../Context/UserContext";
 import MessageDate from "./MessageDate";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-const PAGE_SIZE = 200;
+const PAGE_SIZE = 100;
 
 export const PublicChatScreen = () => {
-    const { messageWs } = useContext(WebSocketContext);
+    const { messageWs, setMessageWs } = useContext(WebSocketContext);
     const { userData } = useContext(UserContext);
     const { state } = useLocation();
     const [messages, setMessages] = useState([]);
@@ -25,26 +26,18 @@ export const PublicChatScreen = () => {
     const [page, setPage] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [isSending, setIsSending] = useState(false);
-    const [numberOfElements, setNumberOfElements] = useState(0);
-
+    const [isInitialMessage, setIsInitialMessage] = useState(false);
     useEffect(() => {
         loadMessages(page);
-        console.log('vo truoc')
     }, []);
-    useEffect(() => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "auto" });
-        }
-        console.log('vo day')
-    }, [messages]);
     useEffect(() => {
         if (messageWs &&
             messageWs.type === Constant.SOCKET.SOCKET_PUBLIC_CHAT_NEW_MESSAGE
             && messageWs.data.createdBy !== userData.id
         ) {
-            setMessages([...messages, messageWs.data]);
+            isInitialMessage && setMessages([messageWs.data, ...messages]);
+            setMessageWs(null);
         }
-        console.log('vo dau')
     }, [messageWs]);
     const handleInputChange = (event) => {
         setNewMessage(event.target.value);
@@ -54,10 +47,10 @@ export const PublicChatScreen = () => {
         try {
             const response = await axios.get(`chat/public?page=${page}&size=${PAGE_SIZE}`);
             if (response && response.data) {
-                setNumberOfElements(response.data.numberOfElements);
                 setTotalPage(response.data.totalPages);
                 const newMessages = response.data.content.reverse();
-                setMessages([...newMessages, ...messages]);
+                setMessages(oldMessages => [ ...oldMessages, ...newMessages]);
+                setIsInitialMessage(true);
             }
         } catch (error) {
             console.error('Failed to load messages:', error);
@@ -89,7 +82,7 @@ export const PublicChatScreen = () => {
                 const response = await axios.post(`/chat/public/send`, formData);
                 if (response) {
                     setNewMessage('');
-                    setMessages([...messages, response.data]);
+                    setMessages([response.data, ...messages]);
                 }
             } catch (error) {
                 console.error('Failed to send message:', error);
@@ -108,14 +101,15 @@ export const PublicChatScreen = () => {
         }
         return color;
     };
-    const calculatePosition = () => {
-        if (numberOfElements === PAGE_SIZE) {
-            return PAGE_SIZE - 1;
-        } else {
-            return numberOfElements - 1;
+    const fetchMoreData = () => {
+        if (page < totalPage - 1) {
+            setPage(page + 1); // increment page number
+            loadMessages(page + 1);
         }
     }
-
+    const hasMore = () => {
+        return page < totalPage - 1;
+    }
     return (
         <div className="chat-screen-wrap">
             <div className="top-bar">
@@ -123,29 +117,37 @@ export const PublicChatScreen = () => {
                     Kênh chat chung
                 </div>
             </div>
-            <div className="content-wrap" onScroll={handleScroll}>
-                {console.log('messages: ', messages)}
-                {messages.map((message, index) => (
-                    <div className="d-flex flex-column" key={index} id={index}>
-                        <MessageDate index={index} messages={messages} />
-                        <div key={index}
-                             className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
-                             ref={index === calculatePosition() ? messagesEndRef : null}>
-                            {
-                                message.createdBy !== userData.id &&
-                                <Avatar imgKey={message.userInfo.avatar} genderKey={message.userInfo.gender}
-                                        sizeKey={30}/>
-                            }
-                            <div className="message-content">
-                                {message.createdBy !== userData.id &&
-                                    <div style={{color: getRandomColor()}}>{message.userInfo.username}</div>
+            <div className="content-wrap" id="scrollableDiv">
+                <InfiniteScroll
+                    dataLength={messages.length}
+                    next={fetchMoreData}
+                    style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
+                    inverse={true} //
+                    hasMore={hasMore()}
+                    loader={<span>{t('chat.loading')}</span>}
+                    scrollableTarget="scrollableDiv"
+                >
+                    {messages.map((message, index) => (
+                        <div className="d-flex flex-column" key={index} id={index}>
+                            <div key={index}
+                                 className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
+                            >
+                                {
+                                    message.createdBy !== userData.id &&
+                                    <Avatar imgKey={message.userInfo.avatar} genderKey={message.userInfo.gender}
+                                            sizeKey={30}/>
                                 }
-                                <span>{message.content}</span>
-                                <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                                <div className="message-content">
+                                    {message.createdBy !== userData.id &&
+                                        <div style={{color: getRandomColor()}}>{message.userInfo.username}</div>
+                                    }
+                                    <span>{message.content}</span>
+                                    <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </InfiniteScroll>
             </div>
             <div className="send-message-wrap stick-to-bottom">
                 <input
@@ -154,6 +156,7 @@ export const PublicChatScreen = () => {
                     value={newMessage}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
+                    onPaste={(event) => event.preventDefault()}
                 />
                 <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x"
                                  style={{color: "#74C0FC"}} disabled={isSending}/>

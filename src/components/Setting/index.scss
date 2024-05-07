@@ -14,6 +14,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .user-info {
+        flex-grow: 1;
+        text-align: start;
+        display: flex;
+        flex-direction: column;
+        .ellipsis {
+          width: calc(100vw - 165px);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
       &.log-out {
         margin-top: 20px;
         background: none;

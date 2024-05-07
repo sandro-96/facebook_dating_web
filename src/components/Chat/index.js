@@ -44,7 +44,7 @@ export const Chat = () => {
                  onClick={() => openChat(value.id, {username, avatar, gender, birthYear, id})}>
                 <Avatar imgKey={avatar} genderKey={gender} sizeKey={48}/>
                 <div className={`flex-grow-1-text-start ${value.unread && 'unread'}`}>
-                    <span className='fs-3'>{username}</span>
+                    <span className='fs-3 ellipsis'>{username}</span>
                     <div className='fw-normal bio'>{value.lastMessage ? value.lastMessage.imagePath ? "Đã gửi một hình ảnh" : value.lastMessage.content : value.description}</div>
                 </div>
                 {value.unread && <div className="red-dot"></div>}

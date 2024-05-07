@@ -56,8 +56,10 @@ const Home = () => {
         return (
             <div key={`match-item_${index}`} className={`match-item gap-1 ${genderClass}`} onClick={() => startChat(id)}>
                 <Avatar imgKey={avatar} genderKey={gender} sizeKey={48} />
-                <div className="flex-grow-1 text-start text-capitalize d-flex flex-column">
-                    <span className='fs-3'>{username}{age}</span>
+                <div className="user-info">
+                    <div className='fs-3'>
+                        <div className='ellipsis'>{username}{age}</div>
+                    </div>
                     <div className='fw-normal bio'>{bio}</div>
                 </div>
             </div>
@@ -66,26 +68,31 @@ const Home = () => {
 
     return (
         userData && <div className="home-wrap">
+            <div>
             <h1>FAction</h1>
-            <div className="d-flex gap-3 align-items-center mt-4">
-                <Avatar imgKey={userData.avatar} genderKey={userData.gender}></Avatar>
-                <div className="flex-grow-1 text-start d-flex flex-column ms-2">
-                    <span className="fs-2 fw-bold">{userData.username}{userData.birthYear > 0 &&
+                <div className="d-flex gap-3 align-items-center mt-4">
+                    <Avatar imgKey={userData.avatar} genderKey={userData.gender}></Avatar>
+                    <div className="flex-grow-start-column">
+                    <span className="fs-2 fw-bold ellipsis">{userData.username}{userData.birthYear > 0 &&
                         <span>, {DateUtils.calculateOlds(userData.birthYear)}</span>}</span>
-                    <div className='fw-normal bio'>{userData.email}</div>
+                        <div className='fw-normal bio'>{userData.email}</div>
+                    </div>
                 </div>
+                <h6 className='title'>{t('home.community')}</h6>
+                <div className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
+                    <h3>{t('home.publicChat')}</h3>
+                    <FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC",}}/>
+                </div>
+                <h6 className='title'>{t('home.userLiked')}</h6>
             </div>
-            <h6 className='title'>{t('home.community')}</h6>
-            <div className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
-                <h3>{t('home.publicChat')}</h3>
-                <FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC",}}/>
+
+            <div className="user-liked-wrap">
+                {
+                    likedUsers.map((value, index) => (
+                        <MatchItem value={value} index={index} startChat={startChat} key={value.id}/>
+                    ))
+                }
             </div>
-            <h6 className='title'>{t('home.userLiked')}</h6>
-            {
-                likedUsers.map((value, index) => (
-                    <MatchItem value={value} index={index} startChat={startChat} key={value.id}/>
-                ))
-            }
         </div>
     )
 }

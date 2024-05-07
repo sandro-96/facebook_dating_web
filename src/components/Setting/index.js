@@ -7,6 +7,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faCircleQuestion, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import Constant from "../Utils/Constant";
 import {useTranslation} from "react-i18next";
+import DateUtils from "../Utils/DateUtils";
 
 const Setting = () => {
     const {userData, setIsAuthenticated } = useContext(UserContext);
@@ -34,8 +35,10 @@ const Setting = () => {
             <h2>{t('setting.title')}</h2>
             <div className="content-wrap">
                 <Item onClick={() => navigate('/setting/profile')}>
-                    <div className="flex-grow-1 text-start d-flex flex-column ms-2">
-                        <span className='fs-3'>{userData.username}</span>
+                    <div className="user-info">
+                        <div className='fs-3'>
+                            <div className='ellipsis'>{userData.username}</div>
+                        </div>
                         <div className='fw-normal bio'>{userData.email}</div>
                     </div>
                 </Item>

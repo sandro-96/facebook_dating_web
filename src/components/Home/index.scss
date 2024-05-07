@@ -2,6 +2,19 @@
   padding: 20px 20px 60px;
   background-color: #2c3034;
   text-align: start;
+  .flex-grow-start-column {
+    flex-grow: 1;
+    text-align: start;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5rem;
+    .ellipsis {
+      width: calc(100vw - 125px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
   h1 {
     color: #aad3f3;
   }
@@ -20,6 +33,11 @@
     justify-content: space-between;
     border: 1px solid #bbb9b9;
   }
+  .user-liked-wrap {
+    max-height: calc(100vh - 450px);
+    overflow: auto;
+    overflow-x: hidden;
+  }
   .match-item {
     padding: 10px;
     border-radius: 10px;
@@ -30,6 +48,19 @@
     flex-grow: 1;
     margin-right: 15px;
     align-items: center;
+    .user-info {
+      flex-grow: 1;
+      text-align: start;
+      text-transform: capitalize;
+      display: flex;
+      flex-direction: column;
+      .ellipsis {
+        width: calc(100vw - 125px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
     &.male {
       background-color: rgba(175, 232, 246, 0.75);
     }

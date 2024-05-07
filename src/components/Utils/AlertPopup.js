@@ -2,33 +2,38 @@ import { confirmAlert } from 'react-confirm-alert';
 import axios from 'axios';
 
 class AlertPopup {
-    static confirm( title, message, okLabel, cancelLabel, onOk, onCancel ) {
+    static confirm(message, okLabel, cancelLabel, onOk ) {
         confirmAlert({
-            title: title,
-            message: message,
             closeOnClickOutside: false,
-            buttons: [
-                {
-                    label: okLabel,
-                    onClick: () => onOk()
-                },
-                {
-                    label: cancelLabel,
-                    onClick: () => onCancel
-                }
-            ]
+            customUI: ({ onClose }) => {
+                return (
+                    <div className='react-confirm-alert-body warning'>
+                        {message}
+                        <div className='react-confirm-alert-button-group'>
+                            <button onClick={() => {
+                                onOk();
+                                onClose();
+                            }}>Ok</button>
+                            <button onClick={onClose}>Cancel</button>
+                        </div>
+                    </div>
+                );
+            }
         });
     }
-    static alert({title, message, okLabel}) {
+    static alert({ message, okLabel}) {
         confirmAlert({
-            title: title,
-            message: message,
             closeOnClickOutside: false,
-            buttons: [
-                {
-                    label: okLabel
-                }
-            ]
+           customUI: ({ onClose }) => {
+                return (
+                    <div className='react-confirm-alert-body confirm'>
+                        {message}
+                        <div className='react-confirm-alert-button-group'>
+                            <button onClick={onClose}>{okLabel}</button>
+                        </div>
+                    </div>
+                );
+            }
         });
     }
 }

@@ -46,6 +46,12 @@
         flex-direction: column;
         margin-left: 0.5rem;
         color: #a29f9f;
+        .ellipsis {
+          width: calc(100vw - 125px);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
         &.unread {
           font-weight: bold;
           color: unset;
@@ -65,9 +71,17 @@
     justify-content: space-between;
     margin-right: 20px;
     align-items: center;
+    min-height: 32.28px;
     .name-wrap {
       display: flex;
-      justify-content: center;
+      text-align: start;
+      align-items: center;
+      .ellipsis {
+        width: calc(100vw - 125px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
   .content-wrap {
