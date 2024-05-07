@@ -35,7 +35,8 @@
     "cancel": "Cancel",
     "goBack": "Go back",
     "deleteChat": "Delete Chat",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "publicChat": "Public chat channel"
   },
   "setting": {
     "title": "Setting",

@@ -35,7 +35,8 @@
     "cancel": "Hủy",
     "goBack": "Quay lại",
     "deleteChat": "Xóa cuộc trò chuyện",
-    "loading": "Đang tải..."
+    "loading": "Đang tải...",
+    "publicChat": "Kênh chat chung"
   },
   "setting": {
     "title": "Trang cá nhân",

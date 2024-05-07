@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
-import {useLocation} from 'react-router-dom';
 import Avatar from "../Avatar";
 import DateUtils from "../Utils/DateUtils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -11,18 +10,17 @@ import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Constant from "../Utils/Constant";
 import {UserContext} from "../Context/UserContext";
-import MessageDate from "./MessageDate";
 import InfiniteScroll from "react-infinite-scroll-component";
+import {useTranslation} from "react-i18next";
 
 const PAGE_SIZE = 100;
 
 export const PublicChatScreen = () => {
     const { messageWs, setMessageWs } = useContext(WebSocketContext);
     const { userData } = useContext(UserContext);
-    const { state } = useLocation();
+    const { t } = useTranslation();
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
-    const messagesEndRef = useRef(null);
     const [page, setPage] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [isSending, setIsSending] = useState(false);
@@ -114,7 +112,7 @@ export const PublicChatScreen = () => {
         <div className="chat-screen-wrap">
             <div className="top-bar">
                 <div className="name-wrap">
-                    Kênh chat chung
+                    {t('chat.publicChat')}
                 </div>
             </div>
             <div className="content-wrap" id="scrollableDiv">
