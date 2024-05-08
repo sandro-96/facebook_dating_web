@@ -8,7 +8,7 @@ import {faPaperPlane, faCircleQuestion, faRightFromBracket} from "@fortawesome/f
 import Constant from "../Utils/Constant";
 import {useTranslation} from "react-i18next";
 
-const Setting = () => {
+const Support = () => {
     const {userData, setIsAuthenticated } = useContext(UserContext);
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -31,22 +31,10 @@ const Setting = () => {
 
     return (
         <div className="setting-wrap">
-            <h2>{t('setting.title')}</h2>
-            <div className="content-wrap">
-                <Item onClick={() => navigate('/setting/profile')}>
-                    <div className="user-info">
-                        <div className='fs-3'>
-                            <div className='ellipsis'>{userData.username}</div>
-                        </div>
-                        <div className='fw-normal bio'>{userData.email}</div>
-                    </div>
-                </Item>
-                <Item icon={faPaperPlane} onClick={() => navigate('feedback?isHideNavBar=true')}>{t('setting.feedback')}</Item>
-                <Item icon={faCircleQuestion} onClick={() => navigate('support?isHideNavBar=true')}>{t('setting.support')}</Item>
-                <Item icon={faRightFromBracket} onClick={logout} style={{color: '#ff5050'}}>{t('setting.logout')}</Item>
-            </div>
+            <h2>{t('setting.support')}</h2>
+            <div className="content-wrap"></div>
         </div>
     )
 }
 
-export default Setting;
+export default Support;

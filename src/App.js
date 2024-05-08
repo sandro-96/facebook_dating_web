@@ -6,6 +6,8 @@ import Home from "./components/Home";
 import Chat from "./components/Chat";
 import Match from "./components/Match";
 import Setting from "./components/Setting";
+import Feedback from "./components/Setting/Feedback";
+import Support from "./components/Setting/Support";
 import Filter from "./components/Match/Filter";
 import { Profile } from "./components/Profile";
 import {UserContextProvider} from "./components/Context/UserContext";
@@ -79,6 +81,8 @@ function App() {
                         <Route path="setting">
                             <Route path="" element={<Setting />} />
                             <Route path='profile' element={<Profile />} />
+                            <Route path='feedback' element={<Feedback />} />
+                            <Route path='support' element={<Support />} />
                         </Route>
                         <Route path='callBack' element={<LoginRedirectCallBack />} />
                     </Routes>
