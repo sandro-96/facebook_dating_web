@@ -36,6 +36,21 @@ class AlertPopup {
             }
         });
     }
+    static error({ message, okLabel}) {
+        confirmAlert({
+            closeOnClickOutside: false,
+            customUI: ({ onClose }) => {
+                return (
+                    <div className='react-confirm-alert-body warning'>
+                        {message}
+                        <div className='react-confirm-alert-button-group'>
+                            <button onClick={onClose}>{okLabel}</button>
+                        </div>
+                    </div>
+                );
+            }
+        });
+    }
 }
 
 export default AlertPopup;

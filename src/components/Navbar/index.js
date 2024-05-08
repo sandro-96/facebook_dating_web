@@ -1,7 +1,7 @@
 import "./index.scss"
 import {useContext, useEffect, useState} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faUser, faHouse, faCommentDots, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faHouse, faCommentDots, faGear } from '@fortawesome/free-solid-svg-icons';
 import Constant from "../Utils/Constant";
 import {UserContext} from "../Context/UserContext";
 import {useLocation, useNavigate} from "react-router-dom";

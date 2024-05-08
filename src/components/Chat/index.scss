@@ -48,6 +48,7 @@
         color: #a29f9f;
         .ellipsis {
           width: calc(100vw - 125px);
+          max-width: 500px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -78,17 +79,24 @@
       align-items: center;
       .ellipsis {
         width: calc(100vw - 125px);
+        max-width: 500px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
     }
   }
+  .leave-message {
+    color: #d03753;
+    font-size: 12px;
+    margin-top: 20px;
+  }
   .content-wrap {
     margin-top: 10px;
     display: flex;
     flex-direction: column-reverse;
-    height: calc(100vh - 75px - 60px); /// Adjust this value based on the height of your top-bar and send-message-wrap
+    height: auto;
+    max-height: calc(100vh - 75px - 60px); /// Adjust this value based on the height of your top-bar and send-message-wrap
     overflow: auto;
     .date {
       font-size: 12px;
@@ -150,10 +158,16 @@
     gap: 10px;
     align-items: center;
     &.stick-to-bottom {
-      position: relative;
+      position: fixed;
+      height: 60px;
+      width: 100%;
       bottom: 0;
-      right: 10px;
-      top: 10px;
+      left: 0;
+      right: 0;
+      max-width: 648px;
+      margin: auto;
+      padding-left: 10px;
+      padding-right: 10px;
     }
     .form-control {
       min-height: 40px !important;

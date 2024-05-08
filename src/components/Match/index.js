@@ -45,6 +45,7 @@ export const Match = () => {
         users &&
         <div className="match-wrap">
             <div className='mb-4 d-flex align-items-center'>
+                <div style={{width: 67}}></div>
                 <h2 className='flex-grow-1'>{t('match.title')}</h2>
                 <div className='btn-filter' onClick={event => navigate('/match/filter')}>
                     <span>{t('match.filter')}</span>

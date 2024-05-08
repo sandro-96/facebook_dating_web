@@ -21,6 +21,7 @@
         flex-direction: column;
         .ellipsis {
           width: calc(100vw - 165px);
+          max-width: 500px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;

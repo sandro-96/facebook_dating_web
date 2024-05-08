@@ -57,7 +57,9 @@
     "describeYourself": "Describe yourself"
   },
   "message": {
-    "updateSuccess": "Update success!"
+    "updateSuccess": "Update success!",
+    "avatarGenderNotMatch": "Avatar and gender do not match!",
+    "leave":"The other party has left the conversation"
   },
   "navBar": {
     "home": "Home",

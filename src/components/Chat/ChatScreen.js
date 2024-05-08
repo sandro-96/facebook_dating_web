@@ -15,14 +15,13 @@ import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import {Popper} from "@mui/material";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Constant from "../Utils/Constant";
-import MessageDate from "./MessageDate";
 import {useTranslation} from "react-i18next";
 import AlertPopup from "../Utils/AlertPopup";
 import {UserContext} from "../Context/UserContext";
 import ImageModal from "../Utils/ImageModal";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const PAGE_SIZE = 100;
+const PAGE_SIZE = 10;
 
 export const ChatScreen = () => {
     const { messageWs, setMessageWs } = useContext(WebSocketContext);
@@ -41,6 +40,7 @@ export const ChatScreen = () => {
     const [totalPage, setTotalPage] = useState(0);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isInitialMessage, setIsInitialMessage] = useState(false);
+    const [isUserLeaved, setIsUserLeaved] = useState(false);
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
@@ -48,13 +48,19 @@ export const ChatScreen = () => {
     const idPopper = open ? 'leave-chat-popover' : undefined;
 
     useEffect(() => {
-        loadMessages(page);
+        axios.get(`fbd_topics/${state.topicId}`)
+            .then(response => loadMessages(page))
+            .catch(() => {
+                setIsInitialMessage(true);
+                setIsUserLeaved(true);
+            })
+            .finally(() => setIsInitialMessage(true));
     }, [id]);
 
     useEffect(() => {
         if (messageWs && messageWs.topicId === state.topicId) {
             if (messageWs.type === Constant.SOCKET.SOCKET_TOPIC_DELETE) {
-                navigate('/chat');
+                setIsUserLeaved(true);
             } else if (messageWs.type === Constant.SOCKET.SOCKET_CHAT_UPDATE) {
                 if (isInitialMessage) setMessages([messageWs, ...messages]);
                 setMessageWs(null)
@@ -67,6 +73,14 @@ export const ChatScreen = () => {
         }
     }, [selectedFile]);
 
+    const handleUserLeaved = () => {
+        const message = {
+            isLeave: true,
+            content: 'leaved the chat',
+        }
+        setMessages([message, ...messages]);
+    }
+
     const handleFileChange = (event) => {
         // Create a new message with the selected file
         setSelectedFile(event.target.files[0]);
@@ -78,7 +92,6 @@ export const ChatScreen = () => {
             if (response && response.data) {
                 setMessages(oldMessages => [ ...oldMessages, ...response.data.content.reverse()]);
                 setTotalPage(response.data.totalPages);
-                setIsInitialMessage(true)
             }
         } catch (error) {
             console.error('Failed to load messages:', error);
@@ -141,37 +154,44 @@ export const ChatScreen = () => {
     }
 
     const hasMore = () => {
+        if (isUserLeaved) return false;
         return page < totalPage - 1;
     }
 
     return (
         <div className="chat-screen-wrap">
-            <ImageModal selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
+            <ImageModal selectedImage={selectedImage} setSelectedImage={setSelectedImage}/>
             <div className="top-bar">
                 <div className="name-wrap">
                     <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
-                    <span className='fs-4 ms-2 ellipsis'>{userInfo.username} {userInfo.birthYear > 0 && <span>, {DateUtils.calculateOlds(userInfo.birthYear)}</span>}</span>
+                    <span className='fs-4 ms-2 ellipsis'>{userInfo.username} {userInfo.birthYear > 0 &&
+                        <span>, {DateUtils.calculateOlds(userInfo.birthYear)}</span>}</span>
                 </div>
                 <FontAwesomeIcon icon={faBars} size="lg" onClick={handleClick}/>
             </div>
             <Popper id={idPopper} open={open} anchorEl={anchorEl}>
                 <div className="leave-chat-popover-body">
-                    <div className="leave-chat-popover-item" onClick={() => navigate(-1) }>
+                    <div className="leave-chat-popover-item" onClick={() => navigate(-1)}>
                         <span>{t('chat.goBack')}</span>
                         <FontAwesomeIcon icon={faArrowLeft} size="lg"/>
                     </div>
                     <div className="divider"></div>
-                    <div className="leave-chat-popover-item" onClick={handleDeleteChat}>
-                        <span>{t('chat.deleteChat')}</span>
-                        <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg"/>
-                    </div>
+                    {!isUserLeaved &&
+                        <div className="leave-chat-popover-item" onClick={handleDeleteChat}>
+                            <span>{t('chat.deleteChat')}</span>
+                            <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg"/>
+                        </div>
+                    }
                 </div>
             </Popper>
-            <div className="content-wrap" id="scrollableDiv">
+            {isInitialMessage && <div className="content-wrap" id="scrollableDiv">
                 <InfiniteScroll
                     dataLength={messages.length}
                     next={fetchMoreData}
-                    style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column-reverse'
+                    }} //To put endMessage and loader to the top.
                     inverse={true} //
                     hasMore={hasMore()}
                     loader={<span>{t('chat.loading')}</span>}
@@ -180,51 +200,57 @@ export const ChatScreen = () => {
                     {messages.map((message, index) => (
                         <div className="d-flex flex-column" key={index}>
                             {/*<MessageDate index={index} messages={messages} />*/}
-                            <div
-                                id={`id_${index}`}
-                                key={index}
-                                className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
-                            >
-                                {
-                                    message.forUserId !== userInfo.id &&
-                                    <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
-                                }
-                                <div className={`message-content ${message.imagePath && 'image'}`}>
-                                    {message.imagePath ? <img
-                                        src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
-                                        alt="Chat Image"
-                                        style={{maxWidth: 200}}
-                                        onClick={() => setSelectedImage(`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`)}
-                                    /> : <span>{message.content}</span>
+                            {message.isLeave ? <div>lsdladsadas</div> :
+                                <div
+                                    id={`id_${index}`}
+                                    key={index}
+                                    className={`message-item ${message.createdBy === userData.id ? 'right' : 'left'}`}
+                                >
+                                    {
+                                        message.forUserId !== userInfo.id &&
+                                        <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                                     }
-                                    <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                                    <div className={`message-content ${message.imagePath && 'image'}`}>
+                                        {message.imagePath ? <img
+                                            src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
+                                            alt="Chat Image"
+                                            style={{maxWidth: 200}}
+                                            onClick={() => setSelectedImage(`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`)}
+                                        /> : <span>{message.content}</span>
+                                        }
+                                        <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     ))}
                 </InfiniteScroll>
-            </div>
-            <div className="send-message-wrap stick-to-bottom">
-                <label htmlFor="file-upload">
-                    <FontAwesomeIcon icon={faImage} size="2x" style={{color: "#74C0FC"}}/>
-                </label>
-                <input
-                    id="file-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    style={{display: 'none'}}
-                />
-                <input
-                    className="form-control"
-                    type="text"
-                    value={newMessage}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                />
-                <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x" style={{color: "#74C0FC"}}
-                                 disabled={isSending}/>
-            </div>
+            </div>}
+
+            {isUserLeaved ? <div className="leave-message">{t('message.leave')}</div> :
+                isInitialMessage && <div className="send-message-wrap stick-to-bottom">
+                    <label htmlFor="file-upload">
+                        <FontAwesomeIcon icon={faImage} size="2x" style={{color: "#74C0FC"}}/>
+                    </label>
+                    <input
+                        id="file-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        style={{display: 'none'}}
+                    />
+                    <input
+                        className="form-control"
+                        type="text"
+                        value={newMessage}
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
+                    />
+                    <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x"
+                                     style={{color: "#74C0FC"}}
+                                     disabled={isSending}/>
+                </div>
+            }
         </div>
     );
 };

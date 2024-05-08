@@ -57,7 +57,9 @@
     "describeYourself": "Mô tả về bản thân"
   },
   "message": {
-    "updateSuccess": "Cập nhật thông tin thành công!"
+    "updateSuccess": "Cập nhật thông tin thành công!",
+    "avatarGenderNotMatch": "Ảnh đại diện và giới tính không khớp nhau!",
+    "leave": "Đối phương đã rời khỏi cuộc trò chuyện"
   },
   "navBar": {
     "home": "Trang chủ",

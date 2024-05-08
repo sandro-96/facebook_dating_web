@@ -28,7 +28,6 @@ import Other05 from "../../assets/avatar/other_05.png"
 import Other06 from "../../assets/avatar/other_06.png"
 import Other07 from "../../assets/avatar/other_07.png"
 import {useTranslation} from "react-i18next";
-import {confirmAlert} from "react-confirm-alert";
 import AlertPopup from "../Utils/AlertPopup";
 
 const man_avatars = [Man01, Man02, Man03, Man04, Man05, Man06 ]
@@ -56,11 +55,21 @@ export const Profile = () => {
     const onSubmit = data => {
         let object = {
             username: data.username,
-            gender: gender,
             location: city,
             birthYear: birthYear,
-            bio: data.bio,
-            avatar: avatar
+            bio: data.bio
+        }
+        if (avatar) {
+            if ((avatar.startsWith('man') && gender === 'male') || (avatar.startsWith('woman') && gender === 'female') || (avatar.startsWith('other') && gender === 'other')){
+                object.avatar = avatar
+                object.gender = gender
+            } else {
+                AlertPopup.error({
+                    message: t('message.avatarGenderNotMatch'),
+                    okLabel: t('common.ok')
+                })
+                return
+            }
         }
         if (userData.isFirstLogin) object.isFirstLogin = false
         axios.patch(`fbd_users/${userData.key}`, object).then(value => {

@@ -7,7 +7,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faCircleQuestion, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import Constant from "../Utils/Constant";
 import {useTranslation} from "react-i18next";
-import DateUtils from "../Utils/DateUtils";
 
 const Setting = () => {
     const {userData, setIsAuthenticated } = useContext(UserContext);
