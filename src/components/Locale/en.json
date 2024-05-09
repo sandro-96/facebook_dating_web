@@ -1,7 +1,8 @@
 {
   "common": {
     "save": "Save",
-    "ok": "Ok"
+    "ok": "Ok",
+    "create": "Create"
   },
   "login": {
     "title": "Login",

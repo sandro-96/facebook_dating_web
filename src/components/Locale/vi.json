@@ -1,7 +1,8 @@
 {
   "common": {
     "save": "Lưu",
-    "ok": "Ok"
+    "ok": "Ok",
+    "create": "Tạo"
   },
   "login": {
     "title": "Đăng nhập",

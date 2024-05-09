@@ -35,9 +35,9 @@ const Filter = (props) => {
     }
     return (
         <div className="match-wrap">
-            <div className='mb-4 d-flex justify-content-between align-items-center'>
-                <FontAwesomeIcon icon={faAngleLeft} size="2xl" style={{color: "#e3e3e3"}} onClick={() => navigate(-1)} role='button'/>
-                <h2 className='flex-grow-1'>{t('filter.title')}</h2>
+            <div className='d-flex justify-content-between align-items-center match-header'>
+                <FontAwesomeIcon icon={faAngleLeft} size="xl" style={{color: "#e3e3e3"}} onClick={() => navigate(-1)} role='button'/>
+                <h5 className='flex-grow-1'>{t('filter.title')}</h5>
                 <div className='save-btn' role='button' onClick={() => saveFilter()}>{t('common.save')}</div>
             </div>
             <div className='filter-content'>

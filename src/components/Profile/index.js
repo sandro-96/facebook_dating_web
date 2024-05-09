@@ -114,11 +114,11 @@ export const Profile = () => {
                     {
                         userData.isFirstLogin ? <div/>
                             :
-                            <FontAwesomeIcon icon={faAngleLeft} size="2xl" style={{color: "#e3e3e3"}}
+                            <FontAwesomeIcon icon={faAngleLeft} size="xl" style={{color: "#e3e3e3"}}
                                              onClick={() => navigate(-1)}
                                              role='button'/>
                     }
-                    <h2>{t('profile.title')}</h2>
+                    <h5>{t('profile.title')}</h5>
                     <input className='save-btn' type='submit' value={t('common.save')}/>
                 </div>
                 <div className="profile-content">
