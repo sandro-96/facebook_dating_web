@@ -7,6 +7,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faCircleQuestion, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import Constant from "../Utils/Constant";
 import {useTranslation} from "react-i18next";
+import VietNamFlag from "./assets/vietnam.png";
+import UKFlag from "./assets/united-kingdom.png";
+import i18n from "i18next";
 
 const Setting = () => {
     const {userData, setIsAuthenticated } = useContext(UserContext);
@@ -29,6 +32,11 @@ const Setting = () => {
         </div>
     )
 
+    const changeLanguage = (lang) => {
+        i18n.changeLanguage(lang);
+        localStorage.setItem('language', lang);
+    }
+
     return (
         <div className="setting-wrap">
             <h2>{t('setting.title')}</h2>
@@ -43,6 +51,13 @@ const Setting = () => {
                 </Item>
                 <Item icon={faPaperPlane} onClick={() => navigate('feedback?isHideNavBar=true')}>{t('setting.feedback')}</Item>
                 <Item icon={faCircleQuestion} onClick={() => navigate('support?isHideNavBar=true')}>{t('setting.support')}</Item>
+                <div className="item-wrap">
+                    <span className="fs-6 fw-bold">{t('setting.language')}</span>
+                    <div className="d-flex gap-2">
+                        <div className={`p-1 ${(localStorage.getItem('language') === null || localStorage.getItem('language') === 'vi') && 'selected'}`} onClick={() => changeLanguage('vi')}><img src={VietNamFlag} width={24} height={24} alt={'vi-flag'}/></div>
+                        <div className={`p-1 ${localStorage.getItem('language') === 'en' && 'selected'}`} onClick={() => changeLanguage('en')}><img src={UKFlag} width={24} height={24} alt={'uk-flag'}/></div>
+                    </div>
+                </div>
                 <Item icon={faRightFromBracket} onClick={logout} style={{color: '#ff5050'}}>{t('setting.logout')}</Item>
             </div>
         </div>

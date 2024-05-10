@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {UserContext} from "../Context/UserContext";
 import {useTranslation} from "react-i18next";
-const Filter = (props) => {
+const Filter = () => {
     const { userData, setUserData } = useContext(UserContext)
     const navigate = useNavigate()
     const [gender, setGender] = useState(null);

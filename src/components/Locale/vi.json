@@ -2,7 +2,8 @@
   "common": {
     "save": "Lưu",
     "ok": "Ok",
-    "create": "Tạo"
+    "create": "Tạo",
+    "cancel": "Hủy"
   },
   "login": {
     "title": "Đăng nhập",
@@ -43,7 +44,12 @@
     "title": "Trang cá nhân",
     "feedback": "Đóng góp ý kiến",
     "support": "Trợ giúp & hỗ trợ",
-    "logout": "Đăng xuất"
+    "logout": "Đăng xuất",
+    "noFeedback": "Không có ý kiến nào",
+    "noRequest": "Không có yêu cầu nào",
+    "pending": "Đang chờ xử lý",
+    "language": "Ngôn ngữ",
+    "max300": "Tối đa 300 ký tự"
   },
   "profile": {
     "title": "Trang cá nhân",

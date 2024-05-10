@@ -2,7 +2,8 @@
   "common": {
     "save": "Save",
     "ok": "Ok",
-    "create": "Create"
+    "create": "Create",
+    "cancel": "Cancel"
   },
   "login": {
     "title": "Login",
@@ -43,7 +44,12 @@
     "title": "Setting",
     "feedback": "Feedback",
     "support": "Help & support",
-    "logout": "Logout"
+    "logout": "Logout",
+    "noFeedback": "No feedback",
+    "noRequest": "No request",
+    "pending": "Pending",
+    "language": "Language",
+    "max300": "Max 300 characters"
   },
   "profile": {
     "title": "Profile",
