@@ -19,6 +19,9 @@
   h1 {
     color: #aad3f3;
   }
+  h5 {
+    margin: 0 !important;
+  }
   .title {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -34,10 +37,27 @@
     justify-content: space-between;
     border: 1px solid #bbb9b9;
   }
+  .user-liked {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    border: 1px solid #bbb9b9;
+    padding: 12px;
+    border-radius: 10px ;
+    font-weight: bold;
+  }
+  .user-liked-header{
+    display: flex;
+    align-items: center;
+    padding: 20px;
+  }
   .user-liked-wrap {
-    max-height: calc(100vh - 450px);
+    height: auto;
+    max-height: calc(100vh - 64px);
     overflow: auto;
     overflow-x: hidden;
+    padding: 0 20px 20px;
   }
   .match-item {
     padding: 10px;

@@ -12,8 +12,10 @@
   "home": {
     "community": "Community",
     "publicChat": "Public Chat",
-    "userLiked": "People who liked you:",
-    "startChat": "Start Chat"
+    "userLiked": " people  liked you",
+    "startChat": "Start Chat",
+    "goBack": "Go back",
+    "noRecord": "There are no people recently"
   },
   "match": {
     "title": "Match",

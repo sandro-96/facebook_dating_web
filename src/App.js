@@ -3,6 +3,7 @@ import {Routes, Route, useSearchParams} from 'react-router-dom'
 import Login from "./components/Login";
 import LoginRedirectCallBack from "./components/LoginRedirectCallBack";
 import Home from "./components/Home";
+import LikedUser from "./components/Home/UserLiked";
 import Chat from "./components/Chat";
 import Match from "./components/Match";
 import Setting from "./components/Setting";
@@ -68,7 +69,10 @@ function App() {
                 <WebSocketComponent>
                     <Routes>
                         <Route path='' element={<Login />} />
-                        <Route path='home' element={<Home />} />
+                        <Route path="home">
+                            <Route path="" element={<Home />} />
+                            <Route path="likedUser" element={<LikedUser />} />
+                        </Route>
                         <Route path="chat">
                             <Route path="" element={<Chat />} />
                             <Route path=":id" element={<ChatScreen />} />

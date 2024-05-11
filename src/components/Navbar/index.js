@@ -30,9 +30,9 @@ export const Navbar = (props) => {
         contextStatus === Constant.CONTEXT_STATUS.SUCCESS &&
         <div className="nav-menu">
             <div onClick={() => onSelectTab('home')}
-                 className={`nav-item ${selectedTab === 'home' ? 'active' : ''}`}>
+                 className={`nav-item ${selectedTab.startsWith('home') ? 'active' : ''}`}>
                 <FontAwesomeIcon icon={faHouse} size="1x"
-                                 style={{color: selectedTab === 'home' ? "#aad3f3" : "#ffffff"}}/>
+                                 style={{color: selectedTab.startsWith('home') ? "#aad3f3" : "#ffffff"}}/>
                 <span>{t('navBar.home')}</span>
             </div>
             <div onClick={() => onSelectTab('chat')}

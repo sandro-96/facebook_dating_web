@@ -12,8 +12,10 @@
   "home": {
     "community": "Cộng đồng",
     "publicChat": "Kênh chat chung",
-    "userLiked": "Những người đã thích bạn:",
-    "startChat": "Bắt đầu đoạn chat"
+    "userLiked": " người đã thích bạn",
+    "startChat": "Bắt đầu đoạn chat",
+    "goBack": "Quay lại",
+    "noRecord": "Không có người nào gần đây"
   },
   "match": {
     "title": "Kết Đôi",

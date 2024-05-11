@@ -5,7 +5,7 @@ import Constant from "../Utils/Constant";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEarthAsia} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faCircleArrowRight, faEarthAsia} from "@fortawesome/free-solid-svg-icons";
 import DateUtils from "../Utils/DateUtils";
 import Avatar from "../Avatar";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
@@ -69,7 +69,7 @@ const Home = () => {
     return (
         userData && <div className="home-wrap">
             <div>
-            <h1>FAction</h1>
+            <h1>FDating</h1>
                 <div className="d-flex gap-3 align-items-center mt-4">
                     <Avatar imgKey={userData.avatar} genderKey={userData.gender}></Avatar>
                     <div className="flex-grow-start-column">
@@ -81,18 +81,15 @@ const Home = () => {
                 <h6 className='title'>{t('home.community')}</h6>
                 <div className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
                     <h3>{t('home.publicChat')}</h3>
-                    <FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC",}}/>
+                    <FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC"}}/>
                 </div>
-                <h6 className='title'>{t('home.userLiked')}</h6>
             </div>
-
-            <div className="user-liked-wrap">
-                {
-                    likedUsers.map((value, index) => (
-                        <MatchItem value={value} index={index} startChat={startChat} key={value.id}/>
-                    ))
-                }
-            </div>
+            {
+                likedUsers.length > 0 && <div className="user-liked" onClick={() => navigate('/home/likedUser?isHideNavBar=true')}>
+                    <span>{likedUsers.length}{t('home.userLiked')}</span>
+                    <FontAwesomeIcon icon={faCircleArrowRight} size="2xl" style={{color: 'rgba(239,174,230,0.8)'}}/>
+                </div>
+            }
         </div>
     )
 }
