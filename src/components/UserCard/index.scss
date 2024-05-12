@@ -1,0 +1,19 @@
+.user-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  word-break: break-word;
+  h2 {
+    margin: 0 !important;
+  }
+  margin-bottom: 20px;
+}
+.floating-btn-group {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}

@@ -129,7 +129,7 @@ export const Profile = () => {
                     </div>
                     <div className="profile-item">
                         <span>{t('profile.introduction')}:</span>
-                        <textarea maxLength={50} className='form-control' {...register('bio')}
+                        <textarea maxLength={200} className='form-control' {...register('bio')}
                                   placeholder={t('profile.describeYourself')}></textarea>
                     </div>
                     <div className="d-flex mt-2">

@@ -13,6 +13,7 @@ export const Chat = () => {
     const [topics, setTopics] = useState([]);
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         loadTopics();
@@ -29,19 +30,21 @@ export const Chat = () => {
 
     const loadTopics = async () => {
         try {
+            setIsLoading(true)
             const response = await axios.get(`topic/topicsWithLatestChat/${userData.id}`);
             setTopics(response.data);
+            setIsLoading(false)
         } catch (error) {
             console.error('Failed to load topics:', error);
         }
     };
 
     const MatchItem = ({value}) => {
-        const {username, avatar, gender, birthYear, id} = userData.id === value.user1.id ? value.user2 : value.user1;
+        const {username, avatar, gender, birthYear, id, bio} = userData.id === value.user1.id ? value.user2 : value.user1;
 
         return (
             <div className={`match-item gap-1`}
-                 onClick={() => openChat(value.id, {username, avatar, gender, birthYear, id})}>
+                 onClick={() => openChat(value.id, {username, avatar, gender, birthYear, id, bio})}>
                 <Avatar imgKey={avatar} genderKey={gender} sizeKey={48}/>
                 <div className={`flex-grow-1-text-start ${value.unread && 'unread'}`}>
                     <span className='fs-3 ellipsis'>{username}</span>
@@ -55,15 +58,17 @@ export const Chat = () => {
     return (
         <div className="chat-wrap">
             <h2>{t('chat.title')}</h2>
-            <div className="content-wrap">
-                {topics.length === 0 ? (
-                    <span className="noRecords">{t('chat.noRecord')}</span>
-                ) : (
-                    topics.map((topic, index) => (
-                        <MatchItem key={`match-item_${index}`} value={topic} index={index}/>
-                    ))
-                )}
-            </div>
+            {
+                !isLoading && <div className="content-wrap">
+                    {topics.length === 0 ? (
+                        <span className="noRecords">{t('chat.noRecord')}</span>
+                    ) : (
+                        topics.map((topic, index) => (
+                            <MatchItem key={`match-item_${index}`} value={topic} index={index}/>
+                        ))
+                    )}
+                </div>
+            }
         </div>
     )
 }

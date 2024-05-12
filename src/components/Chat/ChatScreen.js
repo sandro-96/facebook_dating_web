@@ -20,6 +20,8 @@ import AlertPopup from "../Utils/AlertPopup";
 import {UserContext} from "../Context/UserContext";
 import ImageModal from "../Utils/ImageModal";
 import InfiniteScroll from "react-infinite-scroll-component";
+import UserCard from "../UserCard";
+import UserCardInfo from "../UserCard/UserCardInfo";
 
 const PAGE_SIZE = 10;
 
@@ -41,6 +43,7 @@ export const ChatScreen = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [isInitialMessage, setIsInitialMessage] = useState(false);
     const [isUserLeaved, setIsUserLeaved] = useState(false);
+    const [showUserCard, setShowUserCard] = useState(false);
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
@@ -157,18 +160,22 @@ export const ChatScreen = () => {
         if (isUserLeaved) return false;
         return page < totalPage - 1;
     }
+    const closeUserCard = () => {
+        setShowUserCard(false)
+    }
 
     return (
         <div className="chat-screen-wrap">
             <ImageModal selectedImage={selectedImage} setSelectedImage={setSelectedImage}/>
             <div className="top-bar">
-                <div className="name-wrap">
+                <div className="name-wrap" onClick={() => setShowUserCard(true)}>
                     <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                     <span className='fs-4 ms-2 ellipsis'>{userInfo.username} {userInfo.birthYear > 0 &&
                         <span>, {DateUtils.calculateOlds(userInfo.birthYear)}</span>}</span>
                 </div>
                 <FontAwesomeIcon icon={faBars} size="lg" onClick={handleClick}/>
             </div>
+            <UserCardInfo data={userInfo} isOpen={showUserCard} closeUserCard={closeUserCard}></UserCardInfo>
             <Popper id={idPopper} open={open} anchorEl={anchorEl}>
                 <div className="leave-chat-popover-body">
                     <div className="leave-chat-popover-item" onClick={() => navigate(-1)}>
