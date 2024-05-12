@@ -168,23 +168,23 @@ export const ChatScreen = () => {
         <div className="chat-screen-wrap">
             <ImageModal selectedImage={selectedImage} setSelectedImage={setSelectedImage}/>
             <div className="top-bar">
-                <div className="name-wrap" onClick={() => setShowUserCard(true)}>
+                <div role="button" className="name-wrap" onClick={() => setShowUserCard(true)}>
                     <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                     <span className='fs-4 ms-2 ellipsis'>{userInfo.username} {userInfo.birthYear > 0 &&
                         <span>, {DateUtils.calculateOlds(userInfo.birthYear)}</span>}</span>
                 </div>
-                <FontAwesomeIcon icon={faBars} size="lg" onClick={handleClick}/>
+                <FontAwesomeIcon role="button" icon={faBars} size="lg" onClick={handleClick}/>
             </div>
             <UserCardInfo data={userInfo} isOpen={showUserCard} closeUserCard={closeUserCard}></UserCardInfo>
             <Popper id={idPopper} open={open} anchorEl={anchorEl}>
                 <div className="leave-chat-popover-body">
-                    <div className="leave-chat-popover-item" onClick={() => navigate(-1)}>
+                    <div role="button" className="leave-chat-popover-item" onClick={() => navigate(-1)}>
                         <span>{t('chat.goBack')}</span>
                         <FontAwesomeIcon icon={faArrowLeft} size="lg"/>
                     </div>
                     <div className="divider"></div>
                     {!isUserLeaved &&
-                        <div className="leave-chat-popover-item" onClick={handleDeleteChat}>
+                        <div role="button" className="leave-chat-popover-item" onClick={handleDeleteChat}>
                             <span>{t('chat.deleteChat')}</span>
                             <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg"/>
                         </div>
@@ -237,7 +237,7 @@ export const ChatScreen = () => {
             {isUserLeaved ? <div className="leave-message">{t('message.leave')}</div> :
                 isInitialMessage && <div className="send-message-wrap stick-to-bottom">
                     <label htmlFor="file-upload">
-                        <FontAwesomeIcon icon={faImage} size="2x" style={{color: "#74C0FC"}}/>
+                        <FontAwesomeIcon role="button" icon={faImage} size="2x" style={{color: "#74C0FC"}}/>
                     </label>
                     <input
                         id="file-upload"
@@ -253,7 +253,7 @@ export const ChatScreen = () => {
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
                     />
-                    <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x"
+                    <FontAwesomeIcon role="button" icon={faPaperPlane} onClick={handleSendMessage} size="2x"
                                      style={{color: "#74C0FC"}}
                                      disabled={isSending}/>
                 </div>

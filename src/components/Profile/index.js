@@ -201,6 +201,7 @@ export const Profile = () => {
                                         {
                                             man_avatars.map((value, index) => (
                                                 <img
+                                                    role="button"
                                                     onClick={() => setAvatar(`man_0${index + 1}`)}
                                                     className={`${avatar === `man_0${index + 1}` ? 'active' : ''}`}
                                                     key={`man_${index}`} src={value} width={56}
@@ -215,7 +216,7 @@ export const Profile = () => {
                                         <div className='avatar-wrap'>
                                             {
                                                 woman_avatars.map((value, index) => (
-                                                    <img onClick={() => setAvatar(`woman_0${index + 1}`)}
+                                                    <img role="button" onClick={() => setAvatar(`woman_0${index + 1}`)}
                                                          className={`${avatar === `woman_0${index + 1}` ? 'active' : ''}`}
                                                          key={`woman_${index}`} src={value} width={56}
                                                          height={56}
@@ -229,7 +230,7 @@ export const Profile = () => {
                                         <div className='avatar-wrap'>
                                             {
                                                 other_avatars.map((value, index) => (
-                                                    <img onClick={() => setAvatar(`other_0${index + 1}`)}
+                                                    <img role="button" onClick={() => setAvatar(`other_0${index + 1}`)}
                                                          className={`${avatar === `other_0${index + 1}` ? 'active' : ''}`}
                                                          key={`other_${index}`} src={value} width={56}
                                                          height={56}

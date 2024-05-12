@@ -19,7 +19,8 @@
   },
   "match": {
     "title": "Match",
-    "filter": "Filter"
+    "filter": "Filter",
+    "noRecord": "No people found"
   },
   "filter": {
     "title": "Filter",
@@ -27,7 +28,8 @@
     "all": "All",
     "male": "Male",
     "female": "Female",
-    "other": "Other"
+    "other": "Other",
+    "age": "Age"
   },
   "chat": {
     "title": "Chat",

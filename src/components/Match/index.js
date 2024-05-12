@@ -19,6 +19,8 @@ export const Match = () => {
     const { t } = useTranslation();
     const [page, setPage] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
+    const [isLikedLoaded, setIsLikedLoaded] = useState(false);
     useEffect(() => {
         loadData(page)
         getLikedCount()
@@ -27,7 +29,7 @@ export const Match = () => {
     const getLikedCount = () => {
         axios.get(`match/matched_count`).then(res => {
             res.data && setLiked(liked - res.data)
-        })
+        }).finally(() => setIsLikedLoaded(true))
     }
 
     const loadData = (page) => {
@@ -37,7 +39,7 @@ export const Match = () => {
                 setUsers(oldMessages => [...oldMessages, ...response.data.content]);
                 setTotalPage(response.data.totalPages);
             }
-        })
+        }).finally(() => setIsDataLoaded(true))
     }
     const handleChoose = (id) => {
         if (liked === 0) return
@@ -71,49 +73,58 @@ export const Match = () => {
                         <FontAwesomeIcon icon={faFilter} size="xl" style={{color: "#e3e3e3"}}/>
                     </div>
                 </div>
-                <div className="bolt-lightning">
-                    <FontAwesomeIcon icon={faBoltLightning} size="lg" style={{color: '#ff5050'}}/>
-                    <span>{liked}</span>
-                </div>
+                {
+                    isLikedLoaded &&
+                    <div className="bolt-lightning">
+                        <FontAwesomeIcon icon={faBoltLightning} size="lg" style={{color: '#ff5050'}}/>
+                        <span>{liked}</span>
+                    </div>
+                }
             </div>
-            <div className="content-wrap" id="scrollableDiv">
-                <InfiniteScroll
-                    dataLength={users.length}
-                    next={fetchMoreData}
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}
-                    hasMore={hasMore()}
-                    loader={<span>{t('chat.loading')}</span>}
-                    scrollableTarget="scrollableDiv"
-                >
+            {
+                isDataLoaded &&
+                <div className="content-wrap" id="scrollableDiv">
                     {
-                        users.map((value, index) => (
-                            <div className="d-flex" key={`person_${index}`}>
-                                <div key={`match-item_${index}`}
-                                     className={`match-item ${value.gender ? value.gender : 'other'} gap-1`}>
-                                    <Avatar imgKey={value.avatar} genderKey={value.gender} sizeKey={48}></Avatar>
-                                    <div className="user-info">
-                                        <div className='fs-5'>
-                                            <div className='ellipsis'>
-                                                {value.username}{value.birthYear > 0 &&
-                                                <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}
+                        users.length === 0 && <div className='noRecords'>{t('match.noRecord')}</div>
+                    }
+                    <InfiniteScroll
+                        dataLength={users.length}
+                        next={fetchMoreData}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}
+                        hasMore={hasMore()}
+                        loader={<span>{t('chat.loading')}</span>}
+                        scrollableTarget="scrollableDiv"
+                    >
+                        {
+                            users.map((value, index) => (
+                                <div className="d-flex" key={`person_${index}`}>
+                                    <div key={`match-item_${index}`}
+                                         className={`match-item ${value.gender ? value.gender : 'other'} gap-1`}>
+                                        <Avatar imgKey={value.avatar} genderKey={value.gender} sizeKey={48}></Avatar>
+                                        <div className="user-info">
+                                            <div className={`fs-5 ${value.gender}`}>
+                                                <div className='ellipsis'>
+                                                    {value.username}{value.birthYear > 0 &&
+                                                    <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}
+                                                </div>
                                             </div>
+                                            <div className='fw-normal bio'>{value.bio}</div>
                                         </div>
-                                        <div className='fw-normal bio'>{value.bio}</div>
+                                    </div>
+                                    <div className="heart-icon" onClick={() => {
+                                        handleChoose(value.key)
+                                    }}>
+                                        <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: '#e3e3e3'}}/>
                                     </div>
                                 </div>
-                                <div className="heart-icon" onClick={() => {
-                                    handleChoose(value.key)
-                                }}>
-                                    <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: '#e3e3e3'}}/>
-                                </div>
-                            </div>
-                        ))
-                    }
-                </InfiniteScroll>
-            </div>
+                            ))
+                        }
+                    </InfiniteScroll>
+                </div>
+            }
         </div>
     )
 }

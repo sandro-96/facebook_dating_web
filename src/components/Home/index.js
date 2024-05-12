@@ -79,13 +79,13 @@ const Home = () => {
                     </div>
                 </div>
                 <h6 className='title'>{t('home.community')}</h6>
-                <div className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
+                <div role="button" className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
                     <h3>{t('home.publicChat')}</h3>
                     <FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC"}}/>
                 </div>
             </div>
             {
-                likedUsers.length > 0 && <div className="user-liked" onClick={() => navigate('/home/likedUser?isHideNavBar=true')}>
+                likedUsers.length > 0 && <div role="button" className="user-liked" onClick={() => navigate('/home/likedUser?isHideNavBar=true')}>
                     <span>{likedUsers.length}{t('home.userLiked')}</span>
                     <FontAwesomeIcon icon={faCircleArrowRight} size="2xl" style={{color: 'rgba(239,174,230,0.8)'}}/>
                 </div>

@@ -42,6 +42,15 @@
       display: flex;
       flex-direction: column;
       margin-left: 0.5rem;
+      .male {
+        color: rgba(175, 232, 246, 0.75);
+      }
+      .female {
+        color: rgba(236, 200, 246, 0.73);
+      }
+      .other {
+        color: rgba(250, 224, 207, 0.73);
+      }
       .ellipsis {
         width: calc(100vw - 165px);
         max-width: 450px;
@@ -74,6 +83,9 @@
     flex-direction: column;
     align-items: flex-start;
     padding-bottom: 15px;
+    .age-wrap {
+      padding: 20px !important;
+    }
     .filter-item-content {
       border: solid 1px rgba(175, 232, 246, 0.75);
       width: 100%;

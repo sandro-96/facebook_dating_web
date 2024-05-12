@@ -156,7 +156,7 @@ export const PublicChatScreen = () => {
                     onKeyDown={handleKeyDown}
                     onPaste={(event) => event.preventDefault()}
                 />
-                <FontAwesomeIcon icon={faPaperPlane} onClick={handleSendMessage} size="2x"
+                <FontAwesomeIcon role="button" icon={faPaperPlane} onClick={handleSendMessage} size="2x"
                                  style={{color: "#74C0FC"}} disabled={isSending}/>
             </div>
         </div>

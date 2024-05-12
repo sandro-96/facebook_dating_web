@@ -19,7 +19,8 @@
   },
   "match": {
     "title": "Kết Đôi",
-    "filter": "Bộ lọc"
+    "filter": "Bộ lọc",
+    "noRecord": "Không có người nào phù hợp"
   },
   "filter": {
     "title": "Bộ Lọc",
@@ -27,7 +28,8 @@
     "all": "Tất cả",
     "male": "Nam",
     "female": "Nữ",
-    "other": "Khác"
+    "other": "Khác",
+    "age":  "Độ tuổi"
   },
   "chat": {
     "title": "Đoạn Chat",

@@ -54,8 +54,8 @@ const Setting = () => {
                 <div className="item-wrap">
                     <span className="fs-6 fw-bold">{t('setting.language')}</span>
                     <div className="d-flex gap-2">
-                        <div className={`p-1 ${(localStorage.getItem('language') === null || localStorage.getItem('language') === 'vi') && 'selected'}`} onClick={() => changeLanguage('vi')}><img src={VietNamFlag} width={24} height={24} alt={'vi-flag'}/></div>
-                        <div className={`p-1 ${localStorage.getItem('language') === 'en' && 'selected'}`} onClick={() => changeLanguage('en')}><img src={UKFlag} width={24} height={24} alt={'uk-flag'}/></div>
+                        <div role="button" className={`p-1 ${(localStorage.getItem('language') === null || localStorage.getItem('language') === 'vi') && 'selected'}`} onClick={() => changeLanguage('vi')}><img src={VietNamFlag} width={24} height={24} alt={'vi-flag'}/></div>
+                        <div role="button" className={`p-1 ${localStorage.getItem('language') === 'en' && 'selected'}`} onClick={() => changeLanguage('en')}><img src={UKFlag} width={24} height={24} alt={'uk-flag'}/></div>
                     </div>
                 </div>
                 <Item icon={faRightFromBracket} onClick={logout} style={{color: '#ff5050'}}>{t('setting.logout')}</Item>

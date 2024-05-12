@@ -17,13 +17,14 @@ const UserLiked = () => {
     const [isCreatingTopic, setIsCreatingTopic] = useState(false);
     const { t } = useTranslation();
     const [selectedUser, setSelectedUser] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
         loadUserLikedYou()
     }, []);
     const loadUserLikedYou = () => {
         axios.get('users/likedList').then(value => {
             value.data && setLikedUsers(value.data)
-        })
+        }).finally(() => setIsLoaded(true))
     }
 
     const deleteMatch = (createdBy) => {
@@ -77,19 +78,22 @@ const UserLiked = () => {
                     <h5 className='flex-grow-1'>{t('home.goBack')}</h5>
                 </div>
             </div>
-            <div className="user-liked-wrap">
-                {
-                    likedUsers.length === 0 &&
-                    <span className="noRecords">{t('home.noRecord')}</span>
-                }
-                {
-                    likedUsers.map((value, index) => (
-                        <MatchItem value={value} index={index} startChat={startChat} key={value.id}/>
-                    ))
-                }
-            </div>
             {
-                selectedUser && <UserCard deleteMatch={deleteMatch} startChat={startChat} selectedUser={selectedUser} setSelectedUser={setSelectedUser}></UserCard>
+                isLoaded && <div className="user-liked-wrap">
+                    {
+                        likedUsers.length === 0 &&
+                        <span className="noRecords">{t('home.noRecord')}</span>
+                    }
+                    {
+                        likedUsers.map((value, index) => (
+                            <MatchItem value={value} index={index} startChat={startChat} key={value.id}/>
+                        ))
+                    }
+                </div>
+            }
+            {
+                selectedUser && <UserCard deleteMatch={deleteMatch} startChat={startChat} selectedUser={selectedUser}
+                                          setSelectedUser={setSelectedUser}></UserCard>
             }
         </div>
     )

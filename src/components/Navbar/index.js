@@ -29,25 +29,25 @@ export const Navbar = (props) => {
         isAuthenticated &&
         contextStatus === Constant.CONTEXT_STATUS.SUCCESS &&
         <div className="nav-menu">
-            <div onClick={() => onSelectTab('home')}
+            <div role="button" onClick={() => onSelectTab('home')}
                  className={`nav-item ${selectedTab.startsWith('home') ? 'active' : ''}`}>
                 <FontAwesomeIcon icon={faHouse} size="1x"
                                  style={{color: selectedTab.startsWith('home') ? "#aad3f3" : "#ffffff"}}/>
                 <span>{t('navBar.home')}</span>
             </div>
-            <div onClick={() => onSelectTab('chat')}
+            <div role="button" onClick={() => onSelectTab('chat')}
                  className={`nav-item ${selectedTab.startsWith('chat') ? 'active' : ''}`}>
                 <FontAwesomeIcon icon={faCommentDots} size={"1x"}
                                  style={{color: selectedTab.startsWith('chat') ? "#aad3f3" : "#ffffff"}}/>
                 <span>{t('navBar.chat')}</span>
             </div>
-            <div onClick={() => onSelectTab('match')}
+            <div role="button" onClick={() => onSelectTab('match')}
                  className={`nav-item ${selectedTab.startsWith('match') ? 'active' : ''}`}>
                 <FontAwesomeIcon icon={faHeart} size={"1x"}
                                  style={{color: selectedTab.startsWith('match') ? "#aad3f3" : "#ffffff"}}/>
                 <span>{t('navBar.match')}</span>
             </div>
-            <div onClick={() => onSelectTab('setting')}
+            <div role="button" onClick={() => onSelectTab('setting')}
                  className={`nav-item ${selectedTab.startsWith('setting') ? 'active' : ''}`}>
                 <FontAwesomeIcon icon={faGear} size="1x"
                                  style={{color: selectedTab.startsWith('setting') ? "#aad3f3" : "#ffffff"}}/>
