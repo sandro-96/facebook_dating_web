@@ -9,7 +9,11 @@ import {
     faBars,
     faArrowRightFromBracket,
     faArrowLeft,
-    faImage
+    faImage,
+    faFaceSmile,
+    faFaceLaughSquint,
+    faFaceAngry,
+    faFaceSadTear, faHeart, faFaceGrimace
 } from "@fortawesome/free-solid-svg-icons";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import {Popper} from "@mui/material";
@@ -20,10 +24,18 @@ import AlertPopup from "../Utils/AlertPopup";
 import {UserContext} from "../Context/UserContext";
 import ImageModal from "../Utils/ImageModal";
 import InfiniteScroll from "react-infinite-scroll-component";
-import UserCard from "../UserCard";
 import UserCardInfo from "../UserCard/UserCardInfo";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 50;
+
+const EMOJI_ICONS = [
+    {icon: faFaceSmile, color: "#6b6a6a"},
+    {icon: faHeart, color: "#ff003f"},
+    {icon: faFaceGrimace, color: "#fdcd4d"},
+    {icon: faFaceLaughSquint, color: "#fdcd4d"},
+    {icon: faFaceAngry, color: "#fdcd4d"},
+    {icon: faFaceSadTear, color: "#fdcd4d"},
+]
 
 export const ChatScreen = () => {
     const { messageWs, setMessageWs } = useContext(WebSocketContext);
@@ -34,6 +46,7 @@ export const ChatScreen = () => {
     const [newMessage, setNewMessage] = useState('');
     const [userInfo] = useState(state.userInfo);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEmojiEl, setAnchorEmojiEl] = useState(null);
     const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState(null);
     const [isSending, setIsSending] = useState(false);
@@ -44,6 +57,7 @@ export const ChatScreen = () => {
     const [isInitialMessage, setIsInitialMessage] = useState(false);
     const [isUserLeaved, setIsUserLeaved] = useState(false);
     const [showUserCard, setShowUserCard] = useState(false);
+    const [selectedIcons, setSelectedIcons] = useState({});
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
@@ -112,6 +126,16 @@ export const ChatScreen = () => {
         }
     };
 
+    const showEmoji = (event, messageId) => {
+        if (anchorEmojiEl && anchorEmojiEl.id === messageId) {
+            // If the emoji popper is currently shown for the same message, hide it
+            setAnchorEmojiEl(null);
+        } else {
+            // Otherwise, show the emoji popper for the current message
+            setAnchorEmojiEl({ anchor: event.currentTarget, id: messageId });
+        }
+    };
+
     const handleSendMessage = async () => {
         if ((newMessage.trim() !== '' || selectedFile) && !isSending) {
             setIsSending(true);
@@ -163,6 +187,11 @@ export const ChatScreen = () => {
     const closeUserCard = () => {
         setShowUserCard(false)
     }
+    const handleIconClick = (index, messageId) => {
+        setSelectedIcons(prevIcons => ({ ...prevIcons, [messageId]: index }));
+        setAnchorEmojiEl(null);
+        axios.patch(`fbd_chats/${messageId}`, {emoji: index})
+    };
 
     return (
         <div className="chat-screen-wrap">
@@ -226,6 +255,29 @@ export const ChatScreen = () => {
                                         /> : <span>{message.content}</span>
                                         }
                                         <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
+                                        {
+                                            message.forUserId !== userInfo.id &&
+                                            <FontAwesomeIcon
+                                                className="like-btn"
+                                                icon={selectedIcons[message.id] !== undefined ? EMOJI_ICONS[selectedIcons[message.id]].icon : EMOJI_ICONS[message.emoji].icon}
+                                                style={{color: selectedIcons[message.id] !== undefined ? EMOJI_ICONS[selectedIcons[message.id]].color : EMOJI_ICONS[message.emoji].color}}
+                                                onClick={(event) => showEmoji(event, message.id)}
+                                            />
+                                        }
+                                        <Popper open={Boolean(anchorEmojiEl) && anchorEmojiEl.id === message.id} anchorEl={anchorEmojiEl ? anchorEmojiEl.anchor : null}>
+                                            <div className="emoji-popover">
+                                                {EMOJI_ICONS.map((emoji, index) => (
+                                                    index !== 0 && (
+                                                        <FontAwesomeIcon
+                                                            key={index}
+                                                            icon={emoji.icon}
+                                                            style={{color: emoji.color}}
+                                                            onClick={() => handleIconClick(index, message.id)}
+                                                        />
+                                                    )
+                                                ))}
+                                            </div>
+                                        </Popper>
                                     </div>
                                 </div>
                             }

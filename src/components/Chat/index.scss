@@ -114,6 +114,7 @@
       max-width: 70%;
       float: left; // Default float
       .message-content {
+        position: relative;
         font-size: 14px;
         line-height: 1.5em;
         font-weight: normal;
@@ -130,6 +131,11 @@
         }
         &.image {
           background-color: unset !important;
+        }
+        .like-btn {
+          position: absolute;
+          top: 0;
+          right: -20px;
         }
       }
       &.left {
@@ -204,4 +210,12 @@
 }
 .react-confirm-alert-overlay {
   background: none !important;
+}
+.emoji-popover {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  background-color: rgba(55, 70, 73, 0.75);
+  padding: 10px;
+  border-radius: 10px;
 }
