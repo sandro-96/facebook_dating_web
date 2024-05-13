@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleLeft} from "@fortawesome/free-solid-svg-icons";
 import UserCard from "../UserCard";
+import LoaderSpin from "../LoaderSpin";
 
 const UserLiked = () => {
     const { userData } = useContext(UserContext);
@@ -78,6 +79,9 @@ const UserLiked = () => {
                     <h5 className='flex-grow-1'>{t('home.goBack')}</h5>
                 </div>
             </div>
+            {
+                !isLoaded && <LoaderSpin/>
+            }
             {
                 isLoaded && <div className="user-liked-wrap">
                     {

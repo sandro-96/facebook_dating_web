@@ -6,6 +6,7 @@ import Avatar from "../Avatar";
 import {useLocation, useNavigate} from 'react-router-dom';
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import {useTranslation} from "react-i18next";
+import LoaderSpin from "../LoaderSpin";
 
 export const Chat = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -57,6 +58,9 @@ export const Chat = () => {
     return (
         <div className="chat-wrap">
             <h2>{t('chat.title')}</h2>
+            {
+                !isLoaded && <LoaderSpin/>
+            }
             {
                 isLoaded && <div className="content-wrap">
                     {topics.length === 0 ? (

@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 import Avatar from "../Avatar";
 import {useTranslation} from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
+import LoaderSpin from "../LoaderSpin";
 
 const MAX_LIKE_DAY = 10
 const PAGE_SIZE = 30;
@@ -81,6 +82,9 @@ export const Match = () => {
                     </div>
                 }
             </div>
+            {
+                !isDataLoaded && <LoaderSpin/>
+            }
             {
                 isDataLoaded &&
                 <div className="content-wrap" id="scrollableDiv">
