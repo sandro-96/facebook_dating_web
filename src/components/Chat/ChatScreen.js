@@ -31,9 +31,9 @@ const PAGE_SIZE = 50;
 const EMOJI_ICONS = [
     {icon: faFaceSmile, color: "#6b6a6a"},
     {icon: faHeart, color: "#ff003f"},
-    {icon: faFaceGrimace, color: "#fdcd4d"},
+    {icon: faFaceGrimace, color: "#00b2ff"},
     {icon: faFaceLaughSquint, color: "#fdcd4d"},
-    {icon: faFaceAngry, color: "#fdcd4d"},
+    {icon: faFaceAngry, color: "#ff4200"},
     {icon: faFaceSadTear, color: "#fdcd4d"},
 ]
 
@@ -81,6 +81,9 @@ export const ChatScreen = () => {
             } else if (messageWs.type === Constant.SOCKET.SOCKET_CHAT_UPDATE) {
                 if (isInitialMessage) setMessages([messageWs, ...messages]);
                 setMessageWs(null)
+            } else if (messageWs.type === Constant.SOCKET.SOCKET_CHAT_EMOJI) {
+                setMessages(messages.map(message => message.id === messageWs.id ? messageWs : message));
+                setMessageWs(null)
             }
         }
     }, [messageWs]);
@@ -89,14 +92,6 @@ export const ChatScreen = () => {
             handleSendMessage();
         }
     }, [selectedFile]);
-
-    const handleUserLeaved = () => {
-        const message = {
-            isLeave: true,
-            content: 'leaved the chat',
-        }
-        setMessages([message, ...messages]);
-    }
 
     const handleFileChange = (event) => {
         // Create a new message with the selected file
@@ -190,7 +185,7 @@ export const ChatScreen = () => {
     const handleIconClick = (index, messageId) => {
         setSelectedIcons(prevIcons => ({ ...prevIcons, [messageId]: index }));
         setAnchorEmojiEl(null);
-        axios.patch(`fbd_chats/${messageId}`, {emoji: index})
+        axios.put(`/chat/message/${messageId}/emoji`, {emoji: index}).then(() => {});
     };
 
     return (
@@ -247,12 +242,21 @@ export const ChatScreen = () => {
                                         <Avatar imgKey={userInfo.avatar} genderKey={userInfo.gender} sizeKey={30}/>
                                     }
                                     <div className={`message-content ${message.imagePath && 'image'}`}>
+                                        {
+                                            message.forUserId === userInfo.id && message.emoji !== 0 &&
+                                            <FontAwesomeIcon
+                                                className="like-btn-right"
+                                                icon={EMOJI_ICONS[message.emoji].icon}
+                                                style={{color:  EMOJI_ICONS[message.emoji].color}}
+                                                beat
+                                            />
+                                        }
                                         {message.imagePath ? <img
                                             src={`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`}
                                             alt="Chat Image"
                                             style={{maxWidth: 200}}
                                             onClick={() => setSelectedImage(`${process.env.REACT_APP_API_BASE_URL}/chat/image/${message.imagePath}?topicId=${state.topicId}`)}
-                                        /> : <span>{message.content}</span>
+                                        /> : <span style={{whiteSpace: 'normal'}}>{message.content}</span>
                                         }
                                         <span className="time">{DateUtils.formatTime(message.createdAt)}</span>
                                         {
@@ -262,9 +266,10 @@ export const ChatScreen = () => {
                                                 icon={selectedIcons[message.id] !== undefined ? EMOJI_ICONS[selectedIcons[message.id]].icon : EMOJI_ICONS[message.emoji].icon}
                                                 style={{color: selectedIcons[message.id] !== undefined ? EMOJI_ICONS[selectedIcons[message.id]].color : EMOJI_ICONS[message.emoji].color}}
                                                 onClick={(event) => showEmoji(event, message.id)}
+                                                beat={message.emoji > 0 || selectedIcons[message.id] !== undefined}
                                             />
                                         }
-                                        <Popper open={Boolean(anchorEmojiEl) && anchorEmojiEl.id === message.id} anchorEl={anchorEmojiEl ? anchorEmojiEl.anchor : null}>
+                                        <Popper placement="top" open={Boolean(anchorEmojiEl) && anchorEmojiEl.id === message.id} anchorEl={anchorEmojiEl ? anchorEmojiEl.anchor : null}>
                                             <div className="emoji-popover">
                                                 {EMOJI_ICONS.map((emoji, index) => (
                                                     index !== 0 && (
@@ -273,6 +278,7 @@ export const ChatScreen = () => {
                                                             icon={emoji.icon}
                                                             style={{color: emoji.color}}
                                                             onClick={() => handleIconClick(index, message.id)}
+                                                            beat
                                                         />
                                                     )
                                                 ))}

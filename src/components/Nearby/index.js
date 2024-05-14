@@ -1,12 +1,12 @@
 import "./index.scss"
 import React, {useContext, useEffect, useState} from "react";
 import {UserContext} from "../Context/UserContext";
-import axios from "axios";
-import Avatar from "../Avatar";
 import {useNavigate} from 'react-router-dom';
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import {useTranslation} from "react-i18next";
-import LoaderSpin from "../LoaderSpin";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCompass} from "@fortawesome/free-solid-svg-icons";
+import RadarGif from "./assests/radar.gif";
 
 export const NearBy = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -31,8 +31,10 @@ export const NearBy = () => {
     return (
         <div className="nearby-wrap">
             <h2>Nearby</h2>
+            <button onClick={checkLocation}>location</button>
             <div className="nearby-content">
-                <button onClick={checkLocation}>location</button>
+                <img src={RadarGif} alt="Description of the gif"/>
+                <FontAwesomeIcon size="2xl" icon={faCompass} spin style={{color: "#74C0FC",}}/>
             </div>
         </div>
     )

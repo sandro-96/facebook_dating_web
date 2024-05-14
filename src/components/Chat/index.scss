@@ -121,21 +121,26 @@
         white-space: break-spaces;
         word-break: break-word;
         text-align: start;
-        padding: 6px 10px 3px 10px;
+        padding: 6px 10px 0 10px;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
         .time {
-          font-size: 12px;
-          margin-top: 2px;
+          min-width: 30px;
+          font-size: 8px;
         }
         &.image {
           background-color: unset !important;
         }
         .like-btn {
           position: absolute;
-          top: 0;
-          right: -20px;
+          bottom: 0;
+          right: -5px;
+        }
+        .like-btn-right {
+            position: absolute;
+            top: 0;
+            left: -20px;
         }
       }
       &.left {
