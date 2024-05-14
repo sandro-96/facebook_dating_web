@@ -21,6 +21,7 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {I18nextProvider} from "react-i18next";
 import i18n from "./i18n";
+import NearBy from "./components/Nearby";
 
 // Define the languages your application supports
 const supportedLanguages = ['en', 'vi']; // replace with your supported languages
@@ -81,6 +82,9 @@ function App() {
                         <Route path="match">
                             <Route path="" element={<Match />} />
                             <Route path="filter" element={<Filter />} />
+                        </Route>
+                        <Route path="nearby">
+                            <Route path="" element={<NearBy />} />
                         </Route>
                         <Route path="setting">
                             <Route path="" element={<Setting />} />
