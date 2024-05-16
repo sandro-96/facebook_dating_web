@@ -10,9 +10,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleLeft} from "@fortawesome/free-solid-svg-icons";
 import UserCard from "../UserCard";
 import LoaderSpin from "../LoaderSpin";
+import {WebSocketContext} from "../WebSocket/WebSocketComponent";
+import Constant from "../Utils/Constant";
 
 const UserLiked = () => {
-    const { userData } = useContext(UserContext);
+    const { userData, setUserLikedCount, userLikedCount  } = useContext(UserContext);
+    const { messageWs } = useContext(WebSocketContext);
     const navigate = useNavigate()
     const [likedUsers, setLikedUsers] = useState([])
     const [isCreatingTopic, setIsCreatingTopic] = useState(false);
@@ -22,6 +25,12 @@ const UserLiked = () => {
     useEffect(() => {
         loadUserLikedYou()
     }, []);
+
+    useEffect(() => {
+        if (messageWs && messageWs.type === Constant.SOCKET.SOCKET_MATCH_UPDATE) {
+            setLikedUsers([...likedUsers, messageWs.data])
+        }
+    }, [messageWs]);
     const loadUserLikedYou = () => {
         axios.get('users/likedList').then(value => {
             value.data && setLikedUsers(value.data)
@@ -31,7 +40,7 @@ const UserLiked = () => {
     const deleteMatch = (createdBy) => {
         axios.delete(`match/delete?createdBy=${createdBy}`).then(value => {
             setLikedUsers(likedUsers.filter(user => user.id !== createdBy))
-        })
+        }).finally(() => setUserLikedCount(userLikedCount - 1))
     }
 
     const startChat = (userId) => {
@@ -49,6 +58,7 @@ const UserLiked = () => {
             navigate(`/chat/${value.data.id}?isHideNavBar=true`, {state: {topicId: value.data.id, userInfo: value.data.user2}})
         }).finally(() => {
             setIsCreatingTopic(false); // Set isCreatingTopic back to false when the topic creation process ends
+            setUserLikedCount(userLikedCount - 1)
         });
     }
 

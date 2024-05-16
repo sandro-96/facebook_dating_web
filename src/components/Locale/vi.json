@@ -42,7 +42,8 @@
     "goBack": "Quay lại",
     "deleteChat": "Xóa cuộc trò chuyện",
     "loading": "Đang tải...",
-    "publicChat": "Kênh chat chung"
+    "publicChat": "Kênh chat chung",
+    "imageSent": "Đã gửi một hình ảnh"
   },
   "setting": {
     "title": "Trang cá nhân",

@@ -35,7 +35,6 @@ export const Match = () => {
 
     const loadData = (page) => {
         axios.get(`users/list?page=${page}&size=${PAGE_SIZE}`).then(response => {
-            console.log(response.data)
             if (response && response.data) {
                 setUsers(oldMessages => [...oldMessages, ...response.data.content]);
                 setTotalPage(response.data.totalPages);

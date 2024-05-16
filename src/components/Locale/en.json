@@ -42,7 +42,8 @@
     "goBack": "Go back",
     "deleteChat": "Delete Chat",
     "loading": "Loading...",
-    "publicChat": "Public chat channel"
+    "publicChat": "Public chat channel",
+    "imageSent": "Sent an image"
   },
   "setting": {
     "title": "Setting",

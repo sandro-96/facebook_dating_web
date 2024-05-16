@@ -7,6 +7,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import {useTranslation} from "react-i18next";
 import LoaderSpin from "../LoaderSpin";
+import Constant from "../Utils/Constant";
 
 export const Chat = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -17,11 +18,22 @@ export const Chat = () => {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        loadTopics();
-    }, [userData]);
+        loadTopics()
+    }, []);
     useEffect(() => {
         if (messageWs) {
-            loadTopics();
+            if (messageWs.type === Constant.SOCKET.SOCKET_TOPIC_NEW)
+                setTopics([...topics, messageWs.data]);
+            if (messageWs.type === Constant.SOCKET.SOCKET_TOPIC_DELETE)
+                setTopics(topics.filter(topic => topic.id !== messageWs.data.id))
+            if (messageWs.type === Constant.SOCKET.SOCKET_CHAT_UPDATE) {
+                setTopics(topics.map(topic => {
+                    if (topic.id === messageWs.topicId) {
+                        return {...topic, lastMessage: messageWs.lastMessage, unread: true}
+                    }
+                    return topic;
+                }))
+            }
         }
     }, [messageWs]);
 
@@ -31,7 +43,7 @@ export const Chat = () => {
 
     const loadTopics = async () => {
         try {
-            const response = await axios.get(`topic/topicsWithLatestChat/${userData.id}`);
+            const response = await axios.get(`topic/topicsWithLatestChat`);
             setTopics(response.data);
             setIsLoaded(true);
         } catch (error) {
@@ -48,7 +60,7 @@ export const Chat = () => {
                 <Avatar imgKey={avatar} genderKey={gender} sizeKey={48}/>
                 <div className={`flex-grow-1-text-start ${value.unread && 'unread'}`}>
                     <span className='fs-3 ellipsis'>{username}</span>
-                    <div className='fw-normal bio'>{value.lastMessage ? value.lastMessage.imagePath ? "Đã gửi một hình ảnh" : value.lastMessage.content : value.description}</div>
+                    <div className='fw-normal bio'>{value.lastMessage ? value.lastMessage.imagePath ? t('chat.imageSent') : value.lastMessage.content : value.description}</div>
                 </div>
                 {value.unread && <div className="red-dot"></div>}
             </div>

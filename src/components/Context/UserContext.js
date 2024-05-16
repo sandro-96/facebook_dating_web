@@ -10,6 +10,8 @@ export const UserContextProvider = (props) => {
     const token = localStorage.getItem(Constant.LOCAL_STORAGE.AUTHORIZATION) || '';
     const [contextStatus, setContextStatus] = useState(Constant.CONTEXT_STATUS.IDLE);
     const [isAuthenticated, setIsAuthenticated] = useState(token.length > 0);
+    const [userLikedCount, setUserLikedCount] = useState(0)
+    const [lastPublicMessage, setLastPublicMessage] = useState('')
     const [role, setRole] = useState('ROLE_USER');
     const [userData, setUserData] = useState({});
     const navigate = useNavigate();
@@ -25,11 +27,13 @@ export const UserContextProvider = (props) => {
                         localStorage.removeItem(Constant.LOCAL_STORAGE.AUTHORIZATION);
                         setIsAuthenticated(false);
                         setUserData({});
+                        setUserLikedCount(0);
                         navigate('/');
                     });
                     setContextStatus(Constant.CONTEXT_STATUS.SUCCESS);
                     let userInfo = resultPromise.data;
                     setUserData(userInfo.user);
+                    setUserLikedCount(userInfo.userLikedCount);
                 } catch (err) {
                     setContextStatus(Constant.CONTEXT_STATUS.FAILED);
                     console.log('Error: ' + err.message);
@@ -46,6 +50,10 @@ export const UserContextProvider = (props) => {
             role,
             setRole,
             userData,
+            userLikedCount,
+            setUserLikedCount,
+            setLastPublicMessage,
+            lastPublicMessage,
             setUserData,
             contextStatus,
             setContextStatus,

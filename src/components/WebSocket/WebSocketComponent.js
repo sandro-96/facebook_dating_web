@@ -10,7 +10,7 @@ const defaultWebSocketContext = {};
 export const WebSocketContext = createContext(defaultWebSocketContext);
 export const WebSocketComponent = (props) => {
   const clientRef = useRef(null);
-  const {userData } = useContext(UserContext);
+  const {userData, setUserLikedCount, userLikedCount, setLastPublicMessage } = useContext(UserContext);
   const [messageWs, setMessageWs] = useState(null);
 
   useEffect(() => {
@@ -29,8 +29,10 @@ export const WebSocketComponent = (props) => {
         const messageBody = JSON.parse(message.body);
         if (messageBody?.forUserId === userData.id) {
           setMessageWs(messageBody);
+          if (messageBody.type === Constant.SOCKET.SOCKET_MATCH_UPDATE) setUserLikedCount(userLikedCount + 1);
         } else if (messageBody.type === Constant.SOCKET.SOCKET_PUBLIC_CHAT_NEW_MESSAGE) {
           setMessageWs(messageBody);
+          setLastPublicMessage(messageBody.data.content);
         }
         if (messageBody.type === Constant.SOCKET.SOCKET_CHAT_EMOJI) {
           const newMessageWs = messageBody.data
