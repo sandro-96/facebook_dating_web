@@ -2,6 +2,7 @@ import "./index.scss"
 import React, {useEffect} from "react";
 import Lottie from 'lottie-react';
 import animationData from './assests/animation.json';
+import animationData2 from './assests/animation2.json';
 
 export const NearBy = () => {
 
@@ -22,7 +23,7 @@ export const NearBy = () => {
             <h2>Nearby</h2>
             <button onClick={checkLocation}>location</button>
             <div className="nearby-content">
-                <Lottie animationData={animationData} />
+                <Lottie animationData={animationData2} />
             </div>
         </div>
     )
