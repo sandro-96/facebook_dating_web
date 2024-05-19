@@ -3,11 +3,11 @@ import React, {useContext, useEffect, useState} from "react";
 import {UserContext} from "../Context/UserContext";
 import axios from "axios";
 import Avatar from "../Avatar";
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import {useTranslation} from "react-i18next";
-import LoaderSpin from "../LoaderSpin";
 import Constant from "../Utils/Constant";
+import LoadingAnimation from "../LoaderSpin/LoadingAnimation";
 
 export const Chat = () => {
     const { messageWs } = useContext(WebSocketContext);
@@ -71,7 +71,7 @@ export const Chat = () => {
         <div className="chat-wrap">
             <h2>{t('chat.title')}</h2>
             {
-                !isLoaded && <LoaderSpin/>
+                !isLoaded && <LoadingAnimation/>
             }
             {
                 isLoaded && <div className="content-wrap">

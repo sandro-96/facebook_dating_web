@@ -78,5 +78,11 @@
     "match": "Match",
     "chat": "Message",
     "setting": "Setting"
+  },
+  "nearby": {
+    "title": "Nearby",
+    "start": "Start",
+    "searching": "Searching...",
+    "error": "Please enable location permission"
   }
 }

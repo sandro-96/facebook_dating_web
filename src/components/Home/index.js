@@ -9,6 +9,8 @@ import DateUtils from "../Utils/DateUtils";
 import Avatar from "../Avatar";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import { useTranslation } from 'react-i18next';
+import GlobalAnimation from "./assets/global.json";
+import Lottie from "lottie-react";
 
 const Home = () => {
     const { isAuthenticated, contextStatus, userData, userLikedCount, lastPublicMessage } = useContext(UserContext);
@@ -16,9 +18,11 @@ const Home = () => {
     const [likedCount, setLikedCount] = useState(0)
     const webSocket = useContext(WebSocketContext);
     const { t } = useTranslation();
+    const [isLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
         if (isAuthenticated && contextStatus === Constant.CONTEXT_STATUS.SUCCESS) {
             if (userData.isFirstLogin) navigate('/setting/profile?isHideNavBar=true')
+            setIsLoaded(true)
             setLikedCount(userLikedCount)
         }
     }, [contextStatus, webSocket]);
@@ -34,7 +38,7 @@ const Home = () => {
     };
 
     return (
-        userData && <div className="home-wrap">
+        userData && isLoaded  && <div className="home-wrap">
             <div>
             <h1>FDating</h1>
                 <div className="d-flex gap-3 align-items-center mt-4">
@@ -49,7 +53,8 @@ const Home = () => {
                 <div role="button" className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
                     <div className="public-chat-header">
                         <h3>{t('home.publicChat')}</h3>
-                        <FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC"}}/>
+                        <Lottie animationData={GlobalAnimation} style={{width: "50px", height: "50px"}} />
+                        {/*<FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC"}}/>*/}
                     </div>
                     <div className='fw-normal bio' style={{color: getRandomColor()}}>{lastPublicMessage}</div>
                 </div>

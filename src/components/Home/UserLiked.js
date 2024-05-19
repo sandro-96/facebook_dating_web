@@ -9,9 +9,9 @@ import { useTranslation } from 'react-i18next';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleLeft} from "@fortawesome/free-solid-svg-icons";
 import UserCard from "../UserCard";
-import LoaderSpin from "../LoaderSpin";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import Constant from "../Utils/Constant";
+import LoadingAnimation from "../LoaderSpin/LoadingAnimation";
 
 const UserLiked = () => {
     const { userData, setUserLikedCount, userLikedCount  } = useContext(UserContext);
@@ -90,7 +90,7 @@ const UserLiked = () => {
                 </div>
             </div>
             {
-                !isLoaded && <LoaderSpin/>
+                !isLoaded && <LoadingAnimation/>
             }
             {
                 isLoaded && <div className="user-liked-wrap">

@@ -12,6 +12,7 @@ import Constant from "../Utils/Constant";
 import {UserContext} from "../Context/UserContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {useTranslation} from "react-i18next";
+import LoadingAnimation from "../LoaderSpin/LoadingAnimation";
 
 const PAGE_SIZE = 100;
 
@@ -54,15 +55,6 @@ export const PublicChatScreen = () => {
             console.error('Failed to load messages:', error);
         }
     }
-    const handleScroll = (e) => {
-        const { scrollTop} = e.currentTarget;
-        if (scrollTop === 0) { // top of the chat
-            if (page < totalPage - 1) {
-                setPage(page + 1); // increment page number
-                loadMessages(page + 1);
-            }
-        }
-    };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -115,6 +107,9 @@ export const PublicChatScreen = () => {
                     {t('chat.publicChat')}
                 </div>
             </div>
+            {
+                !isInitialMessage && <LoadingAnimation/>
+            }
             <div className="content-wrap" id="scrollableDiv">
                 <InfiniteScroll
                     dataLength={messages.length}

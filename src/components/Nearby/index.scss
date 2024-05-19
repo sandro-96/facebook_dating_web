@@ -3,8 +3,34 @@
   font-weight: bold;
   background-color: #2c3034;
   text-align: start;
+  height: calc(100vh - 60px);
   .nearby-content {
-    overflow: auto;
-    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%; // Adjust this as needed
+    position: relative;
+    .start-searching-circle-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 85px;
+        height: 85px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.56);
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+      position: absolute;
+      top: 49.5%;
+      left: 50.5%;
+      transform: translate(-50%, -50%);
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.87);
+        }
+    }
   }
 }

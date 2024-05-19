@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import Avatar from "../Avatar";
 import {useTranslation} from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
-import LoaderSpin from "../LoaderSpin";
+import LoadingAnimation from "../LoaderSpin/LoadingAnimation";
 
 const MAX_LIKE_DAY = 10
 const PAGE_SIZE = 30;
@@ -82,7 +82,7 @@ export const Match = () => {
                 }
             </div>
             {
-                !isDataLoaded && <LoaderSpin/>
+                !isDataLoaded && <LoadingAnimation></LoadingAnimation>
             }
             {
                 isDataLoaded &&
@@ -120,7 +120,7 @@ export const Match = () => {
                                     <div className="heart-icon" onClick={() => {
                                         handleChoose(value.key)
                                     }}>
-                                        <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: '#e3e3e3'}}/>
+                                        <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: '#dc3327'}}/>
                                     </div>
                                 </div>
                             ))
