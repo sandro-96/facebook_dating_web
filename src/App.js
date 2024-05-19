@@ -73,6 +73,7 @@ function App() {
                         <Route path="home">
                             <Route path="" element={<Home />} />
                             <Route path="likedUser" element={<LikedUser />} />
+                            <Route path="nearby" element={<NearBy />} />
                         </Route>
                         <Route path="chat">
                             <Route path="" element={<Chat />} />
@@ -82,9 +83,6 @@ function App() {
                         <Route path="match">
                             <Route path="" element={<Match />} />
                             <Route path="filter" element={<Filter />} />
-                        </Route>
-                        <Route path="nearby">
-                            <Route path="" element={<NearBy />} />
                         </Route>
                         <Route path="setting">
                             <Route path="" element={<Setting />} />

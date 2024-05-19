@@ -80,7 +80,7 @@
     "setting": "Setting"
   },
   "nearby": {
-    "title": "Nearby",
+    "title": "Friend nearby",
     "start": "Start",
     "searching": "Searching...",
     "error": "Please enable location permission"

@@ -10,6 +10,7 @@ import Avatar from "../Avatar";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import { useTranslation } from 'react-i18next';
 import GlobalAnimation from "./assets/global.json";
+import Nearby from "./assets/nearby.json";
 import Lottie from "lottie-react";
 
 const Home = () => {
@@ -40,7 +41,7 @@ const Home = () => {
     return (
         userData && isLoaded  && <div className="home-wrap">
             <div>
-            <h1>FDating</h1>
+                <h1>FDating</h1>
                 <div className="d-flex gap-3 align-items-center mt-4">
                     <Avatar imgKey={userData.avatar} genderKey={userData.gender}></Avatar>
                     <div className="flex-grow-start-column">
@@ -50,13 +51,21 @@ const Home = () => {
                     </div>
                 </div>
                 <h6 className='title'>{t('home.community')}</h6>
-                <div role="button" className="public-chat-wrap" onClick={() => navigate('/chat/public?isHideNavBar=true')}>
+                <div role="button" className="public-chat-wrap"
+                     onClick={() => navigate('/chat/public?isHideNavBar=true')}>
                     <div className="public-chat-header">
                         <h3>{t('home.publicChat')}</h3>
-                        <Lottie animationData={GlobalAnimation} style={{width: "50px", height: "50px"}} />
+                        <Lottie animationData={GlobalAnimation} style={{width: "50px", height: "50px"}}/>
                         {/*<FontAwesomeIcon icon={faEarthAsia} size="2xl" style={{color: "#74C0FC"}}/>*/}
                     </div>
                     <div className='fw-normal bio' style={{color: getRandomColor()}}>{lastPublicMessage}</div>
+                </div>
+                <div role="button" className="public-chat-wrap"
+                     onClick={() => navigate('/home/nearby?isHideNavBar=true')}>
+                    <div className="public-chat-header">
+                        <h3>{t('nearby.title')}</h3>
+                        <Lottie animationData={Nearby} style={{width: "50px", height: "50px"}}/>
+                    </div>
                 </div>
             </div>
             {
