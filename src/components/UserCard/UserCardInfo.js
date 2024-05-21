@@ -35,7 +35,7 @@ const UserCardInfo = ({data = null, isOpen = false, closeUserCard}) => {
                         overflowX: 'hidden',
                         WebkitOverflowScrolling: 'touch',
                         border: 'none',
-                        borderRadius: '4px',
+                        borderRadius: '20px',
                         outline: 'none',
                         padding: '20px'
                     }

@@ -12,6 +12,7 @@ import {useNavigate} from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Avatar from "../Avatar";
 import DateUtils from "../Utils/DateUtils";
+import UserCard from "../UserCard";
 const PAGE_SIZE = 30;
 export const NearBy = () => {
     const [isSearching, setIsSearching] = React.useState(false);
@@ -22,6 +23,8 @@ export const NearBy = () => {
     const [totalPage, setTotalPage] = useState(0);
     const [longitude, setLongitude] = useState(0);
     const [latitude, setLatitude] = useState(0);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [renderedUsers, setRenderedUsers] = useState([]);
 
     const  { t } = useTranslation();
     useEffect(() => {
@@ -40,7 +43,7 @@ export const NearBy = () => {
             setTimeout(() => {
                 setIsSearching(false)
                 setUsersLoaded(true)
-            }, 5000)
+            }, 1000)
         })
     }
     const fetchMoreData = () => {
@@ -75,6 +78,33 @@ export const NearBy = () => {
         }
     }
 
+    const handleChoose = (id) => {
+        axios.post('fbd_matches', {
+            forUserId: id,
+            isFromNearby: true
+        }).then(() => {
+            let likedUser = nearbyUsers.find(value1 => value1.key === id)
+            likedUser.isLikeDisable = true
+            setNearbyUsers(nearbyUsers.map(value => value.key === id ? likedUser : value))
+        })
+    }
+    const handleClose = () => {
+        setSelectedUser(null)
+    }
+
+    useEffect(() => {
+        let i = 0;
+        const timer = setInterval(() => {
+            if (i < nearbyUsers.length) {
+                setRenderedUsers(prevUsers => [...prevUsers, nearbyUsers[i]]);
+                i++;
+            } else {
+                clearInterval(timer);
+            }
+        }, 300);
+        return () => clearInterval(timer); // Clean up on unmount
+    }, [nearbyUsers]);
+
     return (
         <div className="nearby-wrap">
             <div className='nearby-header'>
@@ -97,59 +127,32 @@ export const NearBy = () => {
                                 display: 'flex',
                                 flexWrap: 'wrap',
                                 gap: '10px',
-                                justifyContent: 'center'
+                                justifyContent: 'flex-start',
+                                marginTop: '20px',
+                                alignItems: 'center'
                             }}
                             hasMore={hasMore()}
                             loader={<span>{t('chat.loading')}</span>}
                             scrollableTarget="scrollableDiv"
                         >
-                            <div className="circle-item">
-                                <span>dassddasdas</span>
-                            </div>
-                            <div className="circle-item">
-                                <span>dasdsdasdas</span>
-                            </div>
-                            <div className="circle-item">
-                                <span>dsadsdasdas</span>
-                            </div>
-                            <div className="circle-item">
-                                <span>dasdassda</span>
-                            </div>
-                            <div className="circle-item">
-                                <span>das</span>
-                            </div>
-                            <div className="circle-item">
-                                <span>hjgjgh</span>
-                            </div>
                             {
-                                /*nearbyUsers.map((value, index) => (
-                                    <div className="circle-item">
-                                        <span>{value.username}</span>
+                                nearbyUsers.map((value, index) => (
+                                    <div className="circle-item-wrap" key={`person_${index}`}
+                                         onClick={() => setSelectedUser(value)}>
+                                        <div className="circle-item">
+                                            <Avatar imgKey={value.avatar} genderKey={value.gender}></Avatar>
+                                        </div>
+                                        <span>{value.username}{value.birthYear > 0 &&
+                                            <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}</span>
                                     </div>
-                                    /!*<div className="d-flex" key={`person_${index}`}>
-                                        <div key={`match-item_${index}`}
-                                             className={`match-item ${value.gender ? value.gender : 'other'} gap-1`}>
-                                            <Avatar imgKey={value.avatar} genderKey={value.gender}
-                                                    sizeKey={48}></Avatar>
-                                            <div className="user-info">
-                                                <div className={`fs-5 ${value.gender}`}>
-                                                    <div className='ellipsis'>
-                                                        {value.username}{value.birthYear > 0 &&
-                                                        <span>, {DateUtils.calculateOlds(value.birthYear)}</span>}
-                                                    </div>
-                                                </div>
-                                                <div className='fw-normal bio'>{value.bio}</div>
-                                            </div>
-                                        </div>
-                                        <div className="heart-icon" onClick={() => {
-                                            /!*handleChoose(value.key)*!/
-                                        }}>
-                                            <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: '#dc3327'}}/>
-                                        </div>
-                                    </div>*!/
-                                ))*/
+                                ))
                             }
                         </InfiniteScroll>
+                        {
+                            selectedUser &&
+                            <UserCard deleteMatch={handleClose} startChat={handleChoose} selectedUser={selectedUser}
+                                      setSelectedUser={setSelectedUser}></UserCard>
+                        }
                     </div> :
                     <div className="nearby-content">
                         {

@@ -18,7 +18,7 @@ export const Navbar = (props) => {
 
     useEffect(() => {
         setSelectedTab(location.pathname.substring(1))
-    }, [location.pathname, messageWs]);
+    }, [location.pathname]);
 
     const onSelectTab = (tab) => {
         setSelectedTab(tab);

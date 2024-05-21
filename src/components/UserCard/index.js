@@ -13,6 +13,7 @@ const UserCard = ({selectedUser=  null, setSelectedUser, startChat, deleteMatch}
         setSelectedUser(null)
     }
     const match = () => {
+        if (selectedUser.isLikeDisable) return
         selectedUser.key && startChat(selectedUser.key)
     }
 
@@ -25,6 +26,7 @@ const UserCard = ({selectedUser=  null, setSelectedUser, startChat, deleteMatch}
             <Modal
                 isOpen={selectedUser !== null}
                 onRequestClose={closeModal}
+                shouldCloseOnOverlayClick={false}
                 style={{
                     overlay: {
                         backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -42,7 +44,7 @@ const UserCard = ({selectedUser=  null, setSelectedUser, startChat, deleteMatch}
                         overflowX: 'hidden',
                         WebkitOverflowScrolling: 'touch',
                         border: 'none',
-                        borderRadius: '4px',
+                        borderRadius: '24px',
                         outline: 'none',
                         padding: '20px'
                     }
@@ -81,7 +83,7 @@ const UserCard = ({selectedUser=  null, setSelectedUser, startChat, deleteMatch}
                         color: 'rgb(108,107,107)'
                     }}/>
                     <FontAwesomeIcon onClick={match} icon={faHeart} size="2xl" style={{
-                        color: 'rgba(183,8,8,0.92)'
+                        color: selectedUser.isLikeDisable ? 'rgba(145,140,140,0.92)' : 'rgba(183,8,8,0.92)'
                     }}/>
                 </div>
             </Modal>

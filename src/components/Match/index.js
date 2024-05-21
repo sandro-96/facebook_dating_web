@@ -10,7 +10,7 @@ import {useTranslation} from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingAnimation from "../LoaderSpin/LoadingAnimation";
 
-const MAX_LIKE_DAY = 10
+const MAX_LIKE_DAY = 30
 const PAGE_SIZE = 30;
 
 export const Match = () => {
@@ -118,9 +118,10 @@ export const Match = () => {
                                         </div>
                                     </div>
                                     <div className="heart-icon" onClick={() => {
+                                        if (liked <= 0) return
                                         handleChoose(value.key)
                                     }}>
-                                        <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: '#dc3327'}}/>
+                                        <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: liked <= 0 ? 'rgba(145,140,140,0.92)' : '#dc3327'}}/>
                                     </div>
                                 </div>
                             ))

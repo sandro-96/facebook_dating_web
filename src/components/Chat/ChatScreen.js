@@ -75,7 +75,8 @@ export const ChatScreen = () => {
     }, [id]);
 
     useEffect(() => {
-        if (messageWs && messageWs.topicId === state.topicId) {
+        if (messageWs && (messageWs.topicId === state.topicId || messageWs?.data?.id === state.topicId)) {
+            console.log(messageWs)
             if (messageWs.type === Constant.SOCKET.SOCKET_TOPIC_DELETE) {
                 setIsUserLeaved(true);
             } else if (messageWs.type === Constant.SOCKET.SOCKET_CHAT_UPDATE) {
