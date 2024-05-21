@@ -60,7 +60,7 @@ const Home = () => {
                     </div>
                     <div className='fw-normal bio' style={{color: getRandomColor()}}>{lastPublicMessage}</div>
                 </div>
-                <div role="button" className="public-chat-wrap"
+                <div role="button" className="public-chat-wrap mt-3"
                      onClick={() => navigate('/home/nearby?isHideNavBar=true')}>
                     <div className="public-chat-header">
                         <h3>{t('nearby.title')}</h3>

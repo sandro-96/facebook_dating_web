@@ -48,7 +48,7 @@
     padding-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
-    flex-direction: column;
+    flex-wrap: wrap;
     height: calc(100vh - 64px);
     .match-item {
       padding: 10px;
@@ -94,5 +94,26 @@
       align-self: center;
       margin-top: 0.5rem;
     }
+    .circle-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 85px;
+        height: 85px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.56);
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.87);
+        }
+    }
   }
+}
+.fade-out {
+  opacity: 0;
+  transition: opacity 2s ease-out;
 }

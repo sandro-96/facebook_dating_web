@@ -12,7 +12,7 @@ import {useNavigate} from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Avatar from "../Avatar";
 import DateUtils from "../Utils/DateUtils";
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 30;
 export const NearBy = () => {
     const [isSearching, setIsSearching] = React.useState(false);
     const navigate = useNavigate()
@@ -31,7 +31,7 @@ export const NearBy = () => {
         })
     }
 
-    const findNearbyUsers = (long, lat) => {
+    const findNearbyUsers = (long, lat, page) => {
         axios.get(`users/nearbyUsers?latitude=${lat}&longitude=${long}&page=${page}&size=${PAGE_SIZE}`).then((response) => {
             if (response && response.data) {
                 setNearbyUsers(oldMessages => [...oldMessages, ...response.data.content]);
@@ -95,15 +95,38 @@ export const NearBy = () => {
                             next={fetchMoreData}
                             style={{
                                 display: 'flex',
-                                flexDirection: 'column'
+                                flexWrap: 'wrap',
+                                gap: '10px',
+                                justifyContent: 'center'
                             }}
                             hasMore={hasMore()}
                             loader={<span>{t('chat.loading')}</span>}
                             scrollableTarget="scrollableDiv"
                         >
+                            <div className="circle-item">
+                                <span>dassddasdas</span>
+                            </div>
+                            <div className="circle-item">
+                                <span>dasdsdasdas</span>
+                            </div>
+                            <div className="circle-item">
+                                <span>dsadsdasdas</span>
+                            </div>
+                            <div className="circle-item">
+                                <span>dasdassda</span>
+                            </div>
+                            <div className="circle-item">
+                                <span>das</span>
+                            </div>
+                            <div className="circle-item">
+                                <span>hjgjgh</span>
+                            </div>
                             {
-                                nearbyUsers.map((value, index) => (
-                                    <div className="d-flex" key={`person_${index}`}>
+                                /*nearbyUsers.map((value, index) => (
+                                    <div className="circle-item">
+                                        <span>{value.username}</span>
+                                    </div>
+                                    /!*<div className="d-flex" key={`person_${index}`}>
                                         <div key={`match-item_${index}`}
                                              className={`match-item ${value.gender ? value.gender : 'other'} gap-1`}>
                                             <Avatar imgKey={value.avatar} genderKey={value.gender}
@@ -119,12 +142,12 @@ export const NearBy = () => {
                                             </div>
                                         </div>
                                         <div className="heart-icon" onClick={() => {
-                                            /*handleChoose(value.key)*/
+                                            /!*handleChoose(value.key)*!/
                                         }}>
                                             <FontAwesomeIcon icon={faHeart} size="2xl" style={{color: '#dc3327'}}/>
                                         </div>
-                                    </div>
-                                ))
+                                    </div>*!/
+                                ))*/
                             }
                         </InfiniteScroll>
                     </div> :
