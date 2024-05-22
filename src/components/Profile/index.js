@@ -124,7 +124,7 @@ export const Profile = () => {
                 <div className="profile-content">
                     <div className="profile-item">
                         <span>{t('profile.name')}:</span>
-                        <input max={30} className='form-control' {...register('username', {required: true})}
+                        <input maxLength={30} className='form-control' {...register('username', {required: true})}
                                placeholder={t('profile.namePlaceholder')}/>
                     </div>
                     <div className="profile-item">

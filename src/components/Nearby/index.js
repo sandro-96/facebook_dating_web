@@ -7,12 +7,13 @@ import AlertPopup from "../Utils/AlertPopup";
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faAngleLeft, faHeart} from "@fortawesome/free-solid-svg-icons";
+import {faAngleLeft, faFilter, faHeart} from "@fortawesome/free-solid-svg-icons";
 import {useNavigate} from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Avatar from "../Avatar";
 import DateUtils from "../Utils/DateUtils";
 import UserCard from "../UserCard";
+import FilterSlideUp from "./FilterSlideUp";
 const PAGE_SIZE = 30;
 export const NearBy = () => {
     const [isSearching, setIsSearching] = React.useState(false);
@@ -24,7 +25,7 @@ export const NearBy = () => {
     const [longitude, setLongitude] = useState(0);
     const [latitude, setLatitude] = useState(0);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [renderedUsers, setRenderedUsers] = useState([]);
+    const [isShowFilter, setIsShowFilter] = useState(false)
 
     const  { t } = useTranslation();
     useEffect(() => {
@@ -71,7 +72,6 @@ export const NearBy = () => {
                     message: t('nearby.error'),
                     okLabel: 'OK'
                 })
-                console.log(positionError)
             });
         } else {
             console.log("Geolocation is not supported by this browser.");
@@ -92,18 +92,15 @@ export const NearBy = () => {
         setSelectedUser(null)
     }
 
-    useEffect(() => {
-        let i = 0;
-        const timer = setInterval(() => {
-            if (i < nearbyUsers.length) {
-                setRenderedUsers(prevUsers => [...prevUsers, nearbyUsers[i]]);
-                i++;
-            } else {
-                clearInterval(timer);
-            }
-        }, 300);
-        return () => clearInterval(timer); // Clean up on unmount
-    }, [nearbyUsers]);
+    const handleNearbyFilter = () => {
+        setIsShowFilter(!isShowFilter)
+    }
+
+    const applyFilter = (distance, gender) => {
+        console.log(distance)
+        console.log(gender)
+        setIsShowFilter(false)
+    }
 
     return (
         <div className="nearby-wrap">
@@ -112,6 +109,10 @@ export const NearBy = () => {
                      role='button'>
                     <FontAwesomeIcon icon={faAngleLeft} size="xl" style={{color: "#e3e3e3"}}/>
                     <h5 className='flex-grow-1'>{t('nearby.title')}</h5>
+                </div>
+                <div className='btn-filter' onClick={handleNearbyFilter}>
+                    <span>{t('match.filter')}</span>
+                    <FontAwesomeIcon icon={faFilter} size="xl" style={{color: "#e3e3e3"}}/>
                 </div>
             </div>
             {
@@ -170,6 +171,7 @@ export const NearBy = () => {
                         }
                     </div>
             }
+            { isShowFilter && <FilterSlideUp onSave={applyFilter}/>}
         </div>
     )
 }

@@ -3,7 +3,8 @@
     "save": "Save",
     "ok": "Ok",
     "create": "Create",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "apply": "Apply"
   },
   "login": {
     "title": "Login",

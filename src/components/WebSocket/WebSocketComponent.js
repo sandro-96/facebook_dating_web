@@ -27,7 +27,6 @@ export const WebSocketComponent = (props) => {
     client.onConnect = () => {
       client.subscribe('/queue/messages', (message) => {
         const messageBody = JSON.parse(message.body);
-        console.log('Received message:', messageBody);
         if (messageBody?.forUserId === userData.id) {
           setMessageWs(messageBody);
           if (messageBody.type === Constant.SOCKET.SOCKET_MATCH_UPDATE) setUserLikedCount(userLikedCount + 1);
