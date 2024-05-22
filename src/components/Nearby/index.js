@@ -1,5 +1,5 @@
 import "./index.scss"
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Lottie from 'lottie-react';
 import animationData from './assests/animation.json';
 import animationData2 from './assests/animation2.json';
@@ -14,8 +14,10 @@ import Avatar from "../Avatar";
 import DateUtils from "../Utils/DateUtils";
 import UserCard from "../UserCard";
 import FilterSlideUp from "./FilterSlideUp";
+import {UserContext} from "../Context/UserContext";
 const PAGE_SIZE = 30;
 export const NearBy = () => {
+    const { userData } = useContext(UserContext)
     const [isSearching, setIsSearching] = React.useState(false);
     const navigate = useNavigate()
     const [usersLoaded, setUsersLoaded] = React.useState(false);
@@ -26,9 +28,15 @@ export const NearBy = () => {
     const [latitude, setLatitude] = useState(0);
     const [selectedUser, setSelectedUser] = useState(null);
     const [isShowFilter, setIsShowFilter] = useState(false)
-
+    const [filter, setFilter] = useState(null);
     const  { t } = useTranslation();
+
     useEffect(() => {
+        axios.get(`/match/filter_option`).then(value => {
+            if (value.data) {
+                setFilter(value.data)
+            }
+        })
     }, []);
     const updateUserLocation = (long, lat) => {
         axios.patch(`users/location/update?latitude=${lat}&longitude=${long}`).then((value) => {
@@ -97,9 +105,36 @@ export const NearBy = () => {
     }
 
     const applyFilter = (distance, gender) => {
-        console.log(distance)
-        console.log(gender)
+        if (filter) {
+            axios.patch(`fbd_filterOptions/${filter.key}`, {
+                gender: gender,
+                distance: distance
+            }).then(value => {
+                setFilter(value.data)
+                resetFilter()
+            })
+        } else {
+            axios.post(`fbd_filterOptions`, {
+                gender: gender,
+                distance: distance,
+                userId: userData.id
+            }).then(value => {
+                setFilter(value.data)
+                resetFilter()
+            })
+        }
+    }
+    const resetFilter = () => {
+        setIsSearching(false)
+        setUsersLoaded(false)
         setIsShowFilter(false)
+        setNearbyUsers([])
+    }
+    const cancelFilter = (distance, gender) => {
+        setIsShowFilter(false)
+    }
+    const handleBackdropClick = (e) => {
+        e.stopPropagation(); // Prevent click events from propagating to elements below the backdrop
     }
 
     return (
@@ -171,7 +206,19 @@ export const NearBy = () => {
                         }
                     </div>
             }
-            { isShowFilter && <FilterSlideUp onSave={applyFilter}/>}
+            { isShowFilter &&
+                <div onClick={handleBackdropClick} style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 9999, // Ensure the backdrop is above all other elements
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+                }}>
+                    <FilterSlideUp onSave={applyFilter} onCancel={cancelFilter} data={filter}/>
+                </div>
+            }
         </div>
     )
 }

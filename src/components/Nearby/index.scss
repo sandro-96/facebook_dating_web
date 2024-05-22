@@ -177,9 +177,18 @@
     }
     .apply-btn {
       border: none;
-      width: 50%;
       border-radius: 10px;
       color: #48a2ea;
+      background-color: #fff;
+      padding: 10px;
+      font-weight: bold;
+      margin: 0 !important;
+      font-size: 14px;
+    }
+    .cancel-btn {
+      border: none;
+      border-radius: 10px;
+      color: #808283;
       background-color: #fff;
       padding: 10px;
       font-weight: bold;

@@ -1,16 +1,19 @@
 import "./index.scss"
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMars, faVenus, faVenusMars} from "@fortawesome/free-solid-svg-icons";
 import {useTranslation} from "react-i18next";
 import RangeSlider from "react-range-slider-input";
-export const FilterSlideUp = ({ onSave }) => {
-    const [gender, setGender] = useState(null);
-    const [distance, setDistance] = useState([0, 30]);
+export const FilterSlideUp = ({ onSave, onCancel, data }) => {
+    const [gender, setGender] = useState(data ? data.gender : null);
+    const [distance, setDistance] = useState([0, data ? data.distance : 30]);
     const { t } = useTranslation();
 
     const handleApply = () => {
         onSave(distance[1], gender)
+    }
+    const handleCancel = () => {
+        onCancel()
     }
     return (
         <div className="slide-up-wrapper">
@@ -49,7 +52,10 @@ export const FilterSlideUp = ({ onSave }) => {
                         onInput={value => setDistance(value)}
                     />
                 </div>
-                <input className='apply-btn' type='button' onClick={handleApply} value={t('common.apply')}/>
+                <div className="d-flex justify-content-center w-100 gap-4">
+                    <input className='cancel-btn' type='button' onClick={handleCancel} value={t('common.cancel')}/>
+                    <input className='apply-btn' type='button' onClick={handleApply} value={t('common.apply')}/>
+                </div>
             </div>
         </div>
     )
