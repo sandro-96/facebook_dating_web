@@ -11,7 +11,7 @@ import LoadingAnimation from "../LoaderSpin/LoadingAnimation";
 
 export const Chat = () => {
     const { messageWs } = useContext(WebSocketContext);
-    const {userData} = useContext(UserContext);
+    const {userData, unreadTopics, setUnreadTopics} = useContext(UserContext);
     const [topics, setTopics] = useState([]);
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -56,7 +56,10 @@ export const Chat = () => {
 
         return (
             <div role="button" className={`match-item gap-1`}
-                 onClick={() => openChat(value.id, {username, avatar, gender, birthYear, id, bio})}>
+                 onClick={() => {
+                     openChat(value.id, {username, avatar, gender, birthYear, id, bio})
+                     if (value.unread) setUnreadTopics(unreadTopics.filter(topicId => topicId !== value.id))
+                 }}>
                 <Avatar imgKey={avatar} genderKey={gender} sizeKey={48}/>
                 <div className={`flex-grow-1-text-start ${value.unread && 'unread'}`}>
                     <span className='fs-3 ellipsis'>{username}</span>

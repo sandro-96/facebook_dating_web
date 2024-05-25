@@ -2,7 +2,6 @@ import React, {createContext, useEffect, useState} from "react";
 import Constant from "../Utils/Constant";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import i18n from "../../i18n";
 const defaultUserContext = {}
 export const UserContext = createContext(defaultUserContext);
 
@@ -11,6 +10,7 @@ export const UserContextProvider = (props) => {
     const [contextStatus, setContextStatus] = useState(Constant.CONTEXT_STATUS.IDLE);
     const [isAuthenticated, setIsAuthenticated] = useState(token.length > 0);
     const [userLikedCount, setUserLikedCount] = useState(0)
+    const [unreadTopics, setUnreadTopics] = useState([])
     const [lastPublicMessage, setLastPublicMessage] = useState('')
     const [role, setRole] = useState('ROLE_USER');
     const [userData, setUserData] = useState({});
@@ -28,12 +28,14 @@ export const UserContextProvider = (props) => {
                         setIsAuthenticated(false);
                         setUserData({});
                         setUserLikedCount(0);
+                        setUnreadTopics([])
                         navigate('/');
                     });
                     setContextStatus(Constant.CONTEXT_STATUS.SUCCESS);
                     let userInfo = resultPromise.data;
                     setUserData(userInfo.user);
                     setUserLikedCount(userInfo.userLikedCount);
+                    setUnreadTopics(userInfo.unreadTopics);
                 } catch (err) {
                     setContextStatus(Constant.CONTEXT_STATUS.FAILED);
                     console.log('Error: ' + err.message);
@@ -51,7 +53,9 @@ export const UserContextProvider = (props) => {
             setRole,
             userData,
             userLikedCount,
+            unreadTopics,
             setUserLikedCount,
+            setUnreadTopics,
             setLastPublicMessage,
             lastPublicMessage,
             setUserData,

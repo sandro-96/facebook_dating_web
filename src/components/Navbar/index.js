@@ -1,16 +1,14 @@
 import "./index.scss"
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faHouse, faCommentDots, faGear } from '@fortawesome/free-solid-svg-icons';
 import Constant from "../Utils/Constant";
 import {UserContext} from "../Context/UserContext";
 import {useLocation, useNavigate} from "react-router-dom";
-import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import {useTranslation} from "react-i18next";
 
 export const Navbar = (props) => {
-    const { messageWs } = useContext(WebSocketContext);
-    const { isAuthenticated, contextStatus } = useContext(UserContext);
+    const { isAuthenticated, contextStatus, unreadTopics, userLikedCount } = useContext(UserContext);
     const [ selectedTab, setSelectedTab ] = useState('home');
     const navigate = useNavigate()
     const location = useLocation();
@@ -34,12 +32,18 @@ export const Navbar = (props) => {
                 <FontAwesomeIcon icon={faHouse} size="1x"
                                  style={{color: selectedTab.startsWith('home') ? "#aad3f3" : "#ffffff"}}/>
                 <span>{t('navBar.home')}</span>
+                {
+                    userLikedCount > 0 && <div className="red-dot"></div>
+                }
             </div>
             <div role="button" onClick={() => onSelectTab('chat')}
                  className={`nav-item ${selectedTab.startsWith('chat') ? 'active' : ''}`}>
                 <FontAwesomeIcon icon={faCommentDots} size={"1x"}
                                  style={{color: selectedTab.startsWith('chat') ? "#aad3f3" : "#ffffff"}}/>
                 <span>{t('navBar.chat')}</span>
+                {
+                    unreadTopics.length > 0 && <div className="red-dot"></div>
+                }
             </div>
             <div role="button" onClick={() => onSelectTab('match')}
                  className={`nav-item ${selectedTab.startsWith('match') ? 'active' : ''}`}>

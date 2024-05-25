@@ -10,7 +10,7 @@ const defaultWebSocketContext = {};
 export const WebSocketContext = createContext(defaultWebSocketContext);
 export const WebSocketComponent = (props) => {
   const clientRef = useRef(null);
-  const {userData, setUserLikedCount, userLikedCount, setLastPublicMessage } = useContext(UserContext);
+  const {userData, setUserLikedCount, userLikedCount, setLastPublicMessage, unreadTopics, setUnreadTopics } = useContext(UserContext);
   const [messageWs, setMessageWs] = useState(null);
 
   useEffect(() => {
@@ -29,6 +29,15 @@ export const WebSocketComponent = (props) => {
         const messageBody = JSON.parse(message.body);
         if (messageBody?.forUserId === userData.id) {
           setMessageWs(messageBody);
+          if (messageBody.type === Constant.SOCKET.SOCKET_CHAT_UPDATE) {
+            if (!unreadTopics.includes(messageBody.topicId)) {
+              setUnreadTopics([...unreadTopics, messageBody.topicId]);
+            }
+          }
+         if (messageBody.type === Constant.SOCKET.SOCKET_TOPIC_DELETE) {
+           setUnreadTopics(unreadTopics.filter(topicId => topicId !== messageBody.data.id));
+          }
+            //setUnreadTopics(unreadTopics.filter(topicId => topicId !== messageBody.data.id));
           if (messageBody.type === Constant.SOCKET.SOCKET_MATCH_UPDATE) setUserLikedCount(userLikedCount + 1);
         } else if (messageBody.type === Constant.SOCKET.SOCKET_PUBLIC_CHAT_NEW_MESSAGE) {
           setMessageWs(messageBody);
