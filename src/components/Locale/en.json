@@ -67,7 +67,10 @@
     "avatar": "Avatar",
     "namePlaceholder": "Please enter your name",
     "updateSuccess": "Update success!",
-    "describeYourself": "Describe yourself"
+    "describeYourself": "Describe yourself",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
   },
   "message": {
     "updateSuccess": "Update success!",

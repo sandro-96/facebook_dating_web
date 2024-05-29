@@ -78,6 +78,7 @@
     color: #2c3034;
     font-weight: bold;
     align-items: center;
+    position: relative;
     .user-info {
       flex-grow: 1;
       text-align: start;
@@ -90,6 +91,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+    }
+    .marker-icon {
+      position: absolute;
+      top: 15px;
+      right: 15px;
     }
     &.male {
       background-color: rgba(175, 232, 246, 0.75);

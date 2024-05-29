@@ -55,7 +55,7 @@ const UserCard = ({selectedUser=  null, setSelectedUser, startChat, deleteMatch}
                     <h2>{selectedUser.username}</h2>
                     {
                         selectedUser.gender && <div className='fw-normal bio'>
-                            <span className="fw-bold"> {t('profile.gender')}:</span> {selectedUser.gender}
+                            <span className="fw-bold"> {t('profile.gender')}:</span> {t(`profile.${selectedUser.gender}`)}
                         </div>
                     }
                     {
@@ -72,6 +72,7 @@ const UserCard = ({selectedUser=  null, setSelectedUser, startChat, deleteMatch}
                         selectedUser.bio && <div className='fw-normal bio'><span className="fw-bold">Bio:</span> {selectedUser.bio}
                         </div>
                     }
+                    <FontAwesomeIcon onClick={closeModal} size="xl" className="close-btn" icon={faXmark}  role="button" style={{ color: 'rgb(108,107,107)'}}/>
                 </div>
                 <div className="floating-btn-group">
                     <FontAwesomeIcon onClick={
@@ -81,10 +82,10 @@ const UserCard = ({selectedUser=  null, setSelectedUser, startChat, deleteMatch}
                         }
                     } icon={faCircleXmark} size="2xl" style={{
                         color: 'rgb(108,107,107)'
-                    }}/>
+                    }} role="button"/>
                     <FontAwesomeIcon onClick={match} icon={faHeart} size="2xl" style={{
                         color: selectedUser.isLikeDisable ? 'rgba(145,140,140,0.92)' : 'rgba(183,8,8,0.92)'
-                    }}/>
+                    }} role="button"/>
                 </div>
             </Modal>
         </div>

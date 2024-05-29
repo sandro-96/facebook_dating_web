@@ -67,7 +67,10 @@
     "avatar": "Ảnh đại diện",
     "namePlaceholder": "Nhập tên của bạn",
     "updateSuccess": "Cập nhật thông tin thành công!",
-    "describeYourself": "Mô tả về bản thân"
+    "describeYourself": "Mô tả về bản thân",
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác"
   },
   "message": {
     "updateSuccess": "Cập nhật thông tin thành công!",

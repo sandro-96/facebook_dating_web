@@ -7,7 +7,7 @@ import DateUtils from "../Utils/DateUtils";
 import Avatar from "../Avatar";
 import { useTranslation } from 'react-i18next';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faAngleLeft} from "@fortawesome/free-solid-svg-icons";
+import {faAngleLeft, faLocationDot} from "@fortawesome/free-solid-svg-icons";
 import UserCard from "../UserCard";
 import {WebSocketContext} from "../WebSocket/WebSocketComponent";
 import Constant from "../Utils/Constant";
@@ -68,7 +68,7 @@ const UserLiked = () => {
         const genderClass = gender || 'other';
 
         return (
-            <div key={`match-item_${index}`} className={`match-item gap-1 ${genderClass}`} onClick={() => setSelectedUser(value)}>
+            <div role="button" key={`match-item_${index}`} className={`match-item gap-1 ${genderClass}`} onClick={() => setSelectedUser(value)}>
                 <Avatar imgKey={avatar} genderKey={gender} sizeKey={48} />
                 <div className="user-info">
                     <div className='fs-3'>
@@ -76,6 +76,9 @@ const UserLiked = () => {
                     </div>
                     <div className='fw-normal bio'>{bio}</div>
                 </div>
+                {
+                    value.isFromNearby && <FontAwesomeIcon className="marker-icon" icon={faLocationDot} style={{color: "rgba(253,47,47,0.85)"}} />
+                }
             </div>
         );
     };

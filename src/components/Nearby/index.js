@@ -145,7 +145,7 @@ export const NearBy = () => {
                     <FontAwesomeIcon icon={faAngleLeft} size="xl" style={{color: "#e3e3e3"}}/>
                     <h5 className='flex-grow-1'>{t('nearby.title')}</h5>
                 </div>
-                <div className='btn-filter' onClick={handleNearbyFilter}>
+                <div role="button" className='btn-filter' onClick={handleNearbyFilter}>
                     <span>{t('match.filter')}</span>
                     <FontAwesomeIcon icon={faFilter} size="xl" style={{color: "#e3e3e3"}}/>
                 </div>
