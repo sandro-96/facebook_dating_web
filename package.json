@@ -38,7 +38,7 @@
     "sass": "^1.54.0",
     "sockjs-client": "^1.6.1",
     "web-vitals": "^2.1.4",
-    "@fortawesomefontawesome-svg-core/": "^1.2.35"
+    "@fortawesome/fontawesome-svg-core": "^1.2.35"
   },
   "scripts": {
     "start": "react-scripts start",
