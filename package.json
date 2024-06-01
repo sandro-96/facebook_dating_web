@@ -37,7 +37,8 @@
     "react-zoom-pan-pinch": "^3.4.4",
     "sass": "^1.54.0",
     "sockjs-client": "^1.6.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@fortawesomefontawesome-svg-core/": "^1.2.35"
   },
   "scripts": {
     "start": "react-scripts start",
