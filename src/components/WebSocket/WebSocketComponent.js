@@ -16,7 +16,7 @@ export const WebSocketComponent = (props) => {
   useEffect(() => {
     if (!userData) return; // Don't run the effect if userData is not set
 
-    const socket = new SockJS('wss://fdating.online:3000/ws');
+    const socket = new SockJS('https://fdating.online/ws');
     const client = new Client();
 
     client.webSocketFactory = () => {
