@@ -16,7 +16,7 @@ export const WebSocketComponent = (props) => {
   useEffect(() => {
     if (!userData) return; // Don't run the effect if userData is not set
 
-    const socket = new SockJS(process.env.REACT_APP_API_BASE_URL + 'ws');
+    const socket = new SockJS(process.env.REACT_APP_API_BASE_URL + '/ws');
     const client = new Client();
 
     client.webSocketFactory = () => {
