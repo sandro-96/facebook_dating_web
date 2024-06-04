@@ -41,7 +41,7 @@ const Home = () => {
     return (
         userData && isLoaded  && <div className="home-wrap">
             <div>
-                <h1>FDating</h1>
+                <h1>FDating.online</h1>
                 <div className="d-flex gap-3 align-items-center mt-4">
                     <Avatar imgKey={userData.avatar} genderKey={userData.gender}></Avatar>
                     <div className="flex-grow-start-column">
