@@ -4,9 +4,42 @@ input {
 }
 .login-wrap {
   padding: 20px;
-  text-align: center;
+  text-align: left;
+  h2 {
+    background: linear-gradient(to right, #cbe2f3, #96d1fc, #6c8ca4, #96d1fc, #cbe2f3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+  }
   a {
     color: #17b1db;
+  }
+  .tag-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    .tag {
+      display: flex;
+      padding: 5px 10px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 11px;
+      font-weight: bold;
+      font-size: 14px;
+      &.first {
+        background: rgb(168, 12, 12);
+      }
+      &.second {
+          background: rgba(0, 102, 204, 0.88);
+      }
+      &.third {
+          background: rgb(198, 13, 240);
+      }
+      &.fourth {
+        background: rgb(217, 135, 41);
+      }
+    }
   }
 }
 .lp-btn {

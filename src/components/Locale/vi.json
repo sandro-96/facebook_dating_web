@@ -8,7 +8,13 @@
   },
   "login": {
     "title": "Đăng nhập",
-    "withGG": "Đăng nhập với Google"
+    "withGG": "Google",
+    "desc":"Giúp thể hiện nhiều hơn con người thật của bạn, để hẹn hò người mà bạn cảm thấy thích.",
+    "signInOrSignUp": "Đăng nhập hoặc đăng ký với:",
+    "tag1": "Tìm bạn mới",
+    "tag2": "Tìm quanh đây",
+    "tag3": "Nhóm chat chung",
+    "tag4": "Kết đôi hẹn hò"
   },
   "home": {
     "community": "Cộng đồng",

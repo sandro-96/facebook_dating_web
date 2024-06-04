@@ -8,7 +8,13 @@
   },
   "login": {
     "title": "Login",
-    "withGG": "Login with Google"
+    "withGG": "Google",
+    "desc":"Helps show more of your true self, to date someone you like.",
+    "signInOrSignUp": "Sign in or sign up with:",
+    "tag1": "Find new friends",
+    "tag2": "Find nearby friends",
+    "tag3": "Public chat",
+    "tag4": "Match & date"
   },
   "home": {
     "community": "Community",
