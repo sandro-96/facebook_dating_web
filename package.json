@@ -37,6 +37,7 @@
     "react-toastify": "^10.0.5",
     "react-zoom-pan-pinch": "^3.4.4",
     "sass": "^1.54.0",
+    "sitemap": "^8.0.0",
     "sockjs-client": "^1.6.1",
     "web-vitals": "^2.1.4"
   },
