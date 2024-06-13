@@ -9,12 +9,12 @@
   "login": {
     "title": "Login",
     "withGG": "Google",
-    "desc":"Helps show more of your true self, to date someone you like.",
-    "signInOrSignUp": "Sign in or sign up with:",
-    "tag1": "Find new friends",
-    "tag2": "Find nearby friends",
-    "tag3": "Public chat",
-    "tag4": "Match & date"
+    "desc":"Ứng dụng hẹn hò của chúng tôi giúp bạn dễ dàng kết nối với người lạ quanh đây, trò chuyện trực tuyến an toàn và bảo mật, mở ra cơ hội tìm bạn mới và hẹn hò thú vị",
+    "signInOrSignUp": "Đăng nhập hoặc đăng ký với:",
+    "tag1": "Tìm bạn mới",
+    "tag2": "Tìm quanh đây",
+    "tag3": "Nhóm chat chung",
+    "tag4": "Kết đôi hẹn hò"
   },
   "home": {
     "community": "Community",
